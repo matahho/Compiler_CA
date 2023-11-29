@@ -223,6 +223,7 @@ statement :
     | whileLoop statement
     | forLoop statement
     | print statement
+    | trycatch statement
     | //epsilon
     ;
 
