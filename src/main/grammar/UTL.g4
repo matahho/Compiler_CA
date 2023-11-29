@@ -259,6 +259,8 @@ whileLoop
     ((LBRACE statement SEMICOLON RBRACE) | statement SEMICOLON)
     ;
 
+
+
 function
     :
     (type|VOID)
@@ -295,7 +297,14 @@ connect
     SEMICOLON
     ;
 
-
+observe
+    :
+    OBSERVE
+    LPAR
+    STRING_VAL
+    RPAR
+    SEMICOLON
+    ;
 
 
 
