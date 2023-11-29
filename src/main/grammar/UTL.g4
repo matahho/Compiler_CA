@@ -3,7 +3,7 @@ grammar UTL;
 // ---Lexer rules---
 
 // Keywords
-MAIN:     'Main';
+MAIN:     'main';
 FOR:      'for';
 WHILE:    'while';
 RETURN:   'return';
@@ -269,7 +269,7 @@ function
     :
     (type|VOID)
     name=IDENTIFIER { System.out.println("MethodDec:" + $name.text + "\n"); }
-    LPAR (statement SEMICOLON) RPAR
+    LPAR () RPAR
     LBRACE
     body_function
     RBRACE
