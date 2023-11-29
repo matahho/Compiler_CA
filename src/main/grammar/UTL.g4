@@ -320,10 +320,10 @@ refreshrate
 trycatch
     :
     TRY
-    LBRACE (statement)* RBRACE|(statement)
+    (LBRACE (statement) RBRACE) // TODO : CHECK if we need something without { - }
     CATCH
     EXCEPTION IDENTIFIER
-    LBRACE (statement)* RBRACE|(statement)
+    (LBRACE (statement) RBRACE) // TODO : CHECK if we need something without { - }
     ;
 
 

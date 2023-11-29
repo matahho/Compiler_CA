@@ -1,5 +1,14 @@
 
+void Main()
+{
+    try
+    {
+        Print("Mahdi");
+    }
+    catch Exception e
+    {
+        Print("Mahdi");
+    }
 
-void Main(){
-    Print("Mhaid");
 }
+
