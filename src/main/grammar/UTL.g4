@@ -246,7 +246,7 @@ whileLoop
 function
     :
     (type|VOID)
-    name=IDENTIFIER { System.out.println("MethodDec:"$name.text\n); }
+    name=IDENTIFIER { System.out.println("MethodDec:"$name.text"\n"); }
     LPAR (statement) RPAR
     LBRACE
     body_function
