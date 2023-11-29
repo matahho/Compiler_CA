@@ -306,6 +306,11 @@ observe
     SEMICOLON
     ;
 
+refrechrate
+    :
+    LPAR
+    RPAR
+    ;
 
 
 //program : statement+;
