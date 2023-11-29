@@ -151,7 +151,7 @@ SEMICOLON : ';';
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
 ARROW:      '=>';
 LINECOMMENT:'//' ~[\r\n]* -> skip;
-COMMENT:    '/*' .*? '*/' -> skip;
+MULTICOMMENT:    '/*' .*? '*/' -> skip;
 WS:         [ \t\r\n]+ -> skip;
 
 
@@ -163,7 +163,7 @@ WS:         [ \t\r\n]+ -> skip;
 // Parser rules
 UTL
     :
-    (globalVars | sharedVars)* (function | COMMENT | LINECOMMENT)* main (COMMENT | LINECOMMENT)*
+    (globalVars | sharedVars)* (function )* main (comment)*
     ;
 
 
@@ -177,21 +177,46 @@ main
     RBRACE
     ;
 
+
+varDecName:
+    var_dec=IDENTIFIER
+    { System.out.print("VarDec:"+$var_dec.text+"\n");}
+;
+
+
 globalVars
     :
-    STATIC type IDENTIFIER (ASSIGN IDENTIFIER)?
+    STATIC type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON?
     ;
 
 sharedVars
     :
-    SHARED type IDENTIFIER (ASSIGN IDENTIFIER)?
+    comment*
+    SHARED type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON?
+    comment*
     ;
+
+
+varDeclaration:
+    comment*
+    type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON?
+    comment*
+    ;
+
+
+
 
 
 type
     :
     INT | FLOAT | BOOLEAN | DOUBLE | STRING
     ;
+
+comment
+    :
+    (MULTICOMMENT | LINECOMMENT)+
+    ;
+
 
 
 //program : statement+;
