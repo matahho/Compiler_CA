@@ -174,7 +174,7 @@ main
     :
     (type | VOID)
     MAIN
-    LBRACE
+    LPAR (statement) RPAR LBRACE
     body_function
     RBRACE
     ;
@@ -268,7 +268,15 @@ whileLoop
     ((LBRACE statement SEMICOLON RBRACE) | statement SEMICOLON)
     ;
 
-
+function
+    :
+    (type|VOID)
+    name=IDENTIFIER { System.out.println("MethodDec:"$name.text\n); }
+    LPAR (statement) RPAR
+    LBRACE
+    body_funtion
+    RBRACE
+    ;
 
 
 print
