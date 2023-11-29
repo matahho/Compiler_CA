@@ -261,7 +261,7 @@ whileLoop
 
 oSoIfunction
     :
-    VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR
+    VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (THROW EXCEPTION)?
     LBRACE statement SEMICOLON RBRACE
     ;
 
@@ -269,7 +269,7 @@ function
     :
     (type|VOID)
     name=IDENTIFIER { System.out.println("MethodDec:" + $name.text); }
-    LPAR () RPAR
+    LPAR (/* TODO */) RPAR (THROW EXCEPTION)?
     LBRACE
     body_function
     RBRACE
@@ -316,6 +316,15 @@ refreshrate
     RPAR
     ;
 
+
+trycatch
+    :
+    TRY
+    LBRACE (statement)* RBRACE|(statement)
+    CATCH
+    EXCEPTION IDENTIFIER
+    LBRACE (statement)* RBRACE|(statement)
+    ;
 
 
 //program : statement+;
