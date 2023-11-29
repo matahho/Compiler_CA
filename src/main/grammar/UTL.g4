@@ -31,7 +31,7 @@ REFRESHRATE:'RefreshRate';
 TERMINATE:  'Terminate';
 CONNECT:    'Connect';
 OBSERVE:    'Observe';
-PRINT:      'print';
+PRINT:      'Print';
 GETCANDLE:  'GetCandle';
 
 //Special Method Function
@@ -228,7 +228,7 @@ statement :
 
 type
     :
-    INT | FLOAT | BOOL | DOUBLE | STRING
+    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE
     ;
 
 comment
@@ -315,6 +315,7 @@ refrechrate
     LPAR
     RPAR
     ;
+
 
 
 //program : statement+;
