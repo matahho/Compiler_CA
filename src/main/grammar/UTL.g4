@@ -180,13 +180,13 @@ sharedVars
 
 varDeclaration:
     comment*
-    type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
+    type (varDecName (ASSIGN {System.out.print("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     comment*
     ;
 
 arrDeclaration :
     comment*
-    type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
+    type (varDecName (ASSIGN {System.out.print("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     comment*
     ;
 
