@@ -144,14 +144,14 @@ WS:         [ \t\r\n]+ -> skip;
 // Parser rules
 program
     :
-    (globalVars | sharedVars)* (function )* main (comment)*
+    (globalVars | sharedVars)* (oSoIfunction | function)* main (comment)*
     ;
 
 main
     :
     (type | VOID)
     MAIN
-    LPAR (statement) RPAR LBRACE
+    LPAR (statement SEMICOLON) RPAR LBRACE
     body_function
     RBRACE
     ;
@@ -269,7 +269,7 @@ function
     :
     (type|VOID)
     name=IDENTIFIER { System.out.println("MethodDec:" + $name.text + "\n"); }
-    LPAR (statement) RPAR
+    LPAR (statement SEMICOLON) RPAR
     LBRACE
     body_function
     RBRACE
