@@ -34,9 +34,11 @@ OBSERVE:    'Observe';
 PRINT:      'Print';
 GETCANDLE:  'GetCandle';
 
+
 //Special Method Function
 CLOSE_METHOD : 'close()';
 OPEN_METHOD : 'open()';
+
 
 // TIMING
 SCHEDULE:   '@schedule';
@@ -58,6 +60,9 @@ TIME:      'Time';
 
 // Candle
 CANDLE:    'Candle';
+
+
+ORDER:     'Order';
 
 
 // Trade
