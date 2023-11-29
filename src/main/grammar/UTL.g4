@@ -212,7 +212,7 @@ statement :
 
 type
     :
-    INT | FLOAT | BOOLEAN | DOUBLE | STRING
+    INT | FLOAT | BOOL | DOUBLE | STRING
     ;
 
 comment
