@@ -35,8 +35,8 @@ Operator:*
 Operator:+
 Operator:>
 VarDec:profit_ratio
-Operator:=
 Operator:/
+Operator:=
 Loop:while
 Operator:>
 Conditional:if

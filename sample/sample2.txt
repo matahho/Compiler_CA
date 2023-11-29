@@ -8,8 +8,8 @@ Operator:+
 ErrorControl:4
 Operator:>
 VarDec:a
-Operator:=
 ErrorControl:2
+Operator:=
 ErrorControl:1
 FunctionCall
 VarDec:t1
