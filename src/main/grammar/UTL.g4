@@ -148,8 +148,7 @@ SEMICOLON : ';';
 
 // Other
 
-IDENTIFIER: [a-z][a-zA-Z0-9_]*;
-PREDICATE:  [A-Z][a-zA-Z0-9_]*;
+IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
 ARROW:      '=>';
 LINECOMMENT:'//' ~[\r\n]* -> skip;
 COMMENT:    '/*' .*? '*/' -> skip;
@@ -164,8 +163,7 @@ WS:         [ \t\r\n]+ -> skip;
 // Parser rules
 UTL
     :
-
-    globalAndSharedVars* (function | COMMENT | LINECOMMENT)* main (COMMENT | LINECOMMENT)*
+    (globalVars | sharedVars)* (function | COMMENT | LINECOMMENT)* main (COMMENT | LINECOMMENT)*
     ;
 
 
@@ -179,12 +177,15 @@ main
     RBRACE
     ;
 
-globalAndSharedVars
+globalVars
     :
-
+    STATIC type IDENTIFIER (ASSIGN IDENTIFIER)?
     ;
 
-
+sharedVars
+    :
+    SHARED type IDENTIFIER (ASSIGN IDENTIFIER)?
+    ;
 
 
 type
