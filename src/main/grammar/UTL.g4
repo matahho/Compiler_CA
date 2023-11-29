@@ -186,26 +186,42 @@ varDecName:
 
 globalVars
     :
-    STATIC type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON?
+    STATIC type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     ;
 
 sharedVars
     :
     comment*
-    SHARED type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON?
+    SHARED type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     comment*
     ;
 
 
 varDeclaration:
     comment*
-    type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON?
+    type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     comment*
     ;
 
+valueAccess :
+    IDENTIFIER (LBRACKET valueAccess RBRACKET)
+    | INT_VAL
+    ;
+
+assignment :
+    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.print("Operator:=\n";}
+    SEMICOLON
+    ;
+
+expression :
+    LPAR expression RPAR
+    //TO DO
+    ;
 
 
-
+statement :
+    //TO DO
+    ;
 
 type
     :
@@ -215,6 +231,17 @@ type
 comment
     :
     (MULTICOMMENT | LINECOMMENT)+
+    ;
+
+elseStatement :
+    ELSE { System.out.print("Conditional:else\n");} (((LPAR expression RPAR) | expression)
+    ((LBRACE (statement SEMICOLON)+ RBRACE) | statement SEMICOLON ))
+    | ifStatement
+    ;
+ifStatement
+    :
+    IF { System.out.print("Conditional:if\n");} ((LPAR expression RPAR) | expression)
+    ((LBRACE (statement SEMICOLON)+ RBRACE) | statement SEMICOLON ) (elseStatement | /*epsilon*/)
     ;
 
 
