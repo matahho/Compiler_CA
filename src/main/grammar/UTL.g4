@@ -181,8 +181,12 @@ main
 varDecName:
     var_dec=IDENTIFIER
     { System.out.print("VarDec:"+$var_dec.text+"\n");}
-;
+    ;
 
+arrDecName:
+    LBRACKET arr_size=INT_VAL RBRACKET arr_dec=IDENTIFIER
+    { System.out.print("ArrayDec:" + $arr_dec.text + ":"+ "$arr_size.text" + "\n");}
+    ;
 
 globalVars
     :
@@ -198,6 +202,12 @@ sharedVars
 
 
 varDeclaration:
+    comment*
+    type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
+    comment*
+    ;
+
+arrDeclaration :
     comment*
     type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     comment*
