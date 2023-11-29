@@ -16,7 +16,6 @@ SHARED:    'shared';
 STATIC:    'static';
 INT:       'int';
 FLOAT:     'float';
-BOOLEAN:   'bool';
 DOUBLE:    'double';
 STRING:    'string';
 BOOL:      'bool';
@@ -163,7 +162,38 @@ WS:         [ \t\r\n]+ -> skip;
 
 
 // Parser rules
-program : statement+;
+UTL
+    :
+
+    globalAndSharedVars* (function | COMMENT | LINECOMMENT)* main (COMMENT | LINECOMMENT)*
+    ;
+
+
+
+main
+    :
+    (type | VOID)
+    MAIN
+    LBRACE
+    body_function
+    RBRACE
+    ;
+
+globalAndSharedVars
+    :
+
+    ;
+
+
+
+
+type
+    :
+    INT | FLOAT | BOOLEAN | DOUBLE | STRING
+    ;
+
+
+//program : statement+;
 // TODO: Complete the parser rules
 /*Ex:
 statement : VarDeclaration {System.out.println("VarDec:"+...);}
