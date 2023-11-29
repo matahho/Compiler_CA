@@ -260,7 +260,7 @@ body_function
 
 print
     :
-    PRINT { System.out.println("Built-in:print"\n); }
+    PRINT { System.out.println("Built-in:print" + "\n"); }
     LPAR
     STRING_VAL
     RPAR
