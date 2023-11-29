@@ -278,6 +278,11 @@ function
     RBRACE
     ;
 
+body_function
+    :
+    (statement | COMMENT)*
+    ;
+
 
 print
     :
