@@ -151,7 +151,7 @@ main
     :
     (type | VOID)
     MAIN
-    LPAR (statement SEMICOLON) RPAR LBRACE
+    LPAR RPAR LBRACE
     body_function
     RBRACE
     ;
@@ -310,7 +310,7 @@ observe
     SEMICOLON
     ;
 
-refrechrate
+refreshrate
     :
     LPAR
     RPAR
