@@ -192,7 +192,7 @@ valueAccess :
     ;
 
 assignment :
-    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.print("Operator:=\n";}
+    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.print("Operator:=\n");}
     SEMICOLON
     ;
 
