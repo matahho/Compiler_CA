@@ -158,12 +158,12 @@ main
 
 varDecName:
     var_dec=IDENTIFIER
-    { System.out.print("VarDec:"+$var_dec.text+"\n");}
+    { System.out.print("VarDec:"+$var_dec.text);}
     ;
 
 arrDecName:
     LBRACKET arr_size=INT_VAL RBRACKET arr_dec=IDENTIFIER
-    { System.out.print("ArrayDec:" + $arr_dec.text + ":"+ "$arr_size.text" + "\n");}
+    { System.out.print("ArrayDec:" + $arr_dec.text + ":"+ "$arr_size.text");}
     ;
 
 globalVars
@@ -196,7 +196,7 @@ valueAccess :
     ;
 
 assignment :
-    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.print("Operator:=\n");}
+    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.print("Operator:=");}
     SEMICOLON
     ;
 
@@ -237,13 +237,13 @@ comment
     ;
 
 elseStatement :
-    ELSE { System.out.print("Conditional:else\n");} (((LPAR expression RPAR) | expression)
+    ELSE { System.out.print("Conditional:else");} (((LPAR expression RPAR) | expression)
     ((LBRACE (statement SEMICOLON)+ RBRACE) | statement SEMICOLON ))
     | ifStatement
     ;
 ifStatement
     :
-    IF { System.out.print("Conditional:if\n");} ((LPAR expression RPAR) | expression)
+    IF { System.out.print("Conditional:if");} ((LPAR expression RPAR) | expression)
     ((LBRACE (statement SEMICOLON)+ RBRACE) | statement SEMICOLON ) (elseStatement | /*epsilon*/)
     ;
 
@@ -268,7 +268,7 @@ oSoIfunction
 function
     :
     (type|VOID)
-    name=IDENTIFIER { System.out.println("MethodDec:" + $name.text + "\n"); }
+    name=IDENTIFIER { System.out.println("MethodDec:" + $name.text); }
     LPAR () RPAR
     LBRACE
     body_function
@@ -282,7 +282,7 @@ body_function
 
 print
     :
-    PRINT { System.out.println("Built-in:print" + "\n"); }
+    PRINT { System.out.println("Built-in:print"); }
     LPAR
     STRING_VAL
     RPAR
