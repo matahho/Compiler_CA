@@ -81,6 +81,7 @@ INT_VAL:     [1-9][0-9]*;
 FLOAT_VAL:   INT_VAL '.' [0-9]+ | '0.' [0-9]*;
 DOUBLE_VAL:  INT_VAL '.' [0-9]+ | '0.' [0-9]*;
 BOOLEAN_VAL: 'true' | 'false';
+STRING_VAL:  DOUBLEQUOTE [a-zA-Z][a-zA-Z0-9_]* DOUBLEQUOTE ;
 
 
 // Parenthesis
@@ -144,6 +145,7 @@ DOT:       '.';
 COLON:     ':';
 QUESTION:  '?';
 SEMICOLON : ';';
+DOUBLEQUOTE:'"';
 
 
 // Other
@@ -253,6 +255,34 @@ ifStatement
     IF { System.out.print("Conditional:if\n");} ((LPAR expression RPAR) | expression)
     ((LBRACE (statement SEMICOLON)+ RBRACE) | statement SEMICOLON ) (elseStatement | /*epsilon*/)
     ;
+
+forLoop
+    :
+    FOR LPAR (varDeclaration | assignment)? SEMICOLON expression? SEMICOLON expression? RPAR
+    ((LBRACE statement SEMICOLON RBRACE) | statement SEMICOLON)
+    ;
+
+whileLoop
+    :
+    WHILE ((LPAR expression RPAR) | expression)
+    ((LBRACE statement SEMICOLON RBRACE) | statement SEMICOLON)
+    ;
+
+
+
+
+print
+    :
+    PRINT { System.out.println("Built-in:print"\n); }
+    LPAR
+    STRING_VAL
+    RPAR
+    SEMICOLON
+    ;
+
+
+
+
 
 
 
