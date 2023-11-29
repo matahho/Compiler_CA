@@ -259,7 +259,11 @@ whileLoop
     ((LBRACE statement SEMICOLON RBRACE) | statement SEMICOLON)
     ;
 
-
+oSoIfunction
+    :
+    VOID ONSTART LPAR TRADE IDENTIFIER RPAR
+    LBRACE statement SEMICOLON RBRACE
+    ;
 
 function
     :
