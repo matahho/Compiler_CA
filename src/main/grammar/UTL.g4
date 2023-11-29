@@ -59,6 +59,10 @@ TIME:      'Time';
 // Candle
 CANDLE:    'Candle';
 
+
+// Trade
+TRADE:     'Trade';
+
 // Exeptions
 TRY:       'try';
 CATCH:     'catch';
@@ -280,6 +284,16 @@ print
     ;
 
 
+connect
+    :
+    CONNECT
+    LPAR
+    STRING_VAL
+    COMMA
+    STRING_VAL
+    RPAR
+    SEMICOLON
+    ;
 
 
 
