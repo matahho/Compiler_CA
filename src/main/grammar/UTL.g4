@@ -10,7 +10,6 @@ RETURN:   'return';
 IF:       'if';
 ELSE:     'else';
 
-
 // Basic Types
 SHARED:    'shared';
 STATIC:    'static';
@@ -21,13 +20,9 @@ STRING:    'string';
 BOOL:      'bool';
 VOID:      'void';
 
-
-
-
 // Controlers
 BREAK:     'break';
 CONTINUE:  'continue';
-
 
 // Special Functions
 ONSTART:    'OnStart';
@@ -40,7 +35,6 @@ PRINT:      'print';
 GETCANDLE:  'GetCandle';
 
 //Special Method Function
-
 CLOSE_METHOD : 'close()';
 OPEN_METHOD : 'open()';
 
@@ -48,9 +42,6 @@ OPEN_METHOD : 'open()';
 SCHEDULE:   '@schedule';
 PREORDER:   'Preorder';
 PARALLEL:   'parallel';
-
-
-
 
 // Special Valriabels
 TYPE:      'Type';
@@ -65,19 +56,14 @@ CLOSE:     'Close';
 OPEN:      'Open';
 TIME:      'Time';
 
-
 // Candle
 CANDLE:    'Candle';
-
-
 
 // Exeptions
 TRY:       'try';
 CATCH:     'catch';
 THROW:     'throw';
 EXCEPTION: 'Exception';
-
-
 
 // Type Values
 ZERO:        '0';
@@ -87,24 +73,19 @@ DOUBLE_VAL:  INT_VAL '.' [0-9]+ | '0.' [0-9]*;
 BOOLEAN_VAL: 'true' | 'false';
 STRING_VAL:  DOUBLEQUOTE [a-zA-Z][a-zA-Z0-9_]* DOUBLEQUOTE ;
 
-
 // Parenthesis
 LPAR: '(';
 RPAR: ')';
 
-
 // Brackets (array element access)
 LBRACKET: '[';
 RBRACKET: ']';
-
-
 
 // Relational Operators
 GTR: '>';
 LES: '<';
 EQL: '==';
 NEQ: '!=';
-
 
 // Arithmetic Operators
 PLUS:       '+';
@@ -114,7 +95,6 @@ MINUSMINUS: '--';
 MULT:       '*';
 DIV:        '/';
 MOD:        '%';
-
 
 // Logical Operators On bool
 AND: '&&';
@@ -129,9 +109,6 @@ ANDBITWISE: '&';
 ORBITWISE:  '|';
 XOR:        '^';
 
-
-
-
 // Assignment Operators
 ASSIGN:     '=';
 PLUSASIGN:  '+=';
@@ -139,7 +116,6 @@ MINUSASIGN: '-=';
 MULTASIGN:  '*=';
 DIVASIGN:   '/=';
 MODASIGN:   '%=';
-
 
 // Symbols
 LBRACE:    '{';
@@ -151,9 +127,7 @@ QUESTION:  '?';
 SEMICOLON : ';';
 DOUBLEQUOTE:'"';
 
-
 // Other
-
 IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
 ARROW:      '=>';
 LINECOMMENT:'//' ~[\r\n]* -> skip;
@@ -163,16 +137,11 @@ WS:         [ \t\r\n]+ -> skip;
 
 
 
-// TODO: Complete the lexer rules
-
-
 // Parser rules
-UTL
+program
     :
     (globalVars | sharedVars)* (function )* main (comment)*
     ;
-
-
 
 main
     :
@@ -182,7 +151,6 @@ main
     body_function
     RBRACE
     ;
-
 
 varDecName:
     var_dec=IDENTIFIER
@@ -205,7 +173,6 @@ sharedVars
     SHARED type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     comment*
     ;
-
 
 varDeclaration:
     comment*
@@ -234,13 +201,13 @@ expression :
     //TO DO
     ;
 
-
 statement :
-    assignment
-    | ifStatement
-    | whileLoop
-    | forLoop
-    | print
+    assignment statement
+    | ifStatement statement
+    | whileLoop statement
+    | forLoop statement
+    | print statement
+    | //epsilon
     ;
 
 type
@@ -282,15 +249,14 @@ function
     name=IDENTIFIER { System.out.println("MethodDec:"$name.text\n); }
     LPAR (statement) RPAR
     LBRACE
-    body_funtion
+    body_function
     RBRACE
     ;
 
 body_function
     :
-    (statement | COMMENT)*
+    statement
     ;
-
 
 print
     :
