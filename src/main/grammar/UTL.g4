@@ -3,7 +3,7 @@ grammar UTL;
 // ---Lexer rules---
 
 // Keywords
-MAIN:     'main';
+MAIN:     'Main';
 FOR:      'for';
 WHILE:    'while';
 RETURN:   'return';
