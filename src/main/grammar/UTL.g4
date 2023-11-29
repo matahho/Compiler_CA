@@ -39,6 +39,10 @@ OBSERVE:    'Observe';
 PRINT:      'print';
 GETCANDLE:  'GetCandle';
 
+//Special Method Function
+
+CLOSE_METHOD : 'close()';
+OPEN_METHOD : 'open()';
 
 // TIMING
 SCHEDULE:   '@schedule';
@@ -232,7 +236,11 @@ expression :
 
 
 statement :
-    //TO DO
+    assignment
+    | ifStatement
+    | whileLoop
+    | forLoop
+    | print
     ;
 
 type
