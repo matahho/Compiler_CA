@@ -197,8 +197,20 @@ assignment :
     ;
 
 expression :
-    LPAR expression RPAR
+    (LPAR expression RPAR)
+    | directValue
+//    | expression
+//    |
     //TO DO
+    ;
+
+directValue :
+    STRING_VAL
+    | DOUBLE_VAL
+    | FLOAT_VAL
+    | INT_VAL
+    | BOOLEAN_VAL
+    | ZERO
     ;
 
 statement :
