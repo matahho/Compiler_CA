@@ -298,6 +298,7 @@ directValue :
     | BOOLEAN_VAL
     | ZERO
     | orderConstructor
+    | exceptionConstructor
     | IDENTIFIER
     ;
 
