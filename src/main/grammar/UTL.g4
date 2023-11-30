@@ -191,8 +191,8 @@ sharedVars
 
 varDeclaration
     :
-    (type) varDecName (ASSIGN {System.out.println("Operator:=");} (expression | orderConstructor | exceptionConstructor /*| observe*/ ))?
-    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");}(expression | orderConstructor | exceptionConstructor /*| observe*/ ))?))*
+    (type) varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor /*| observe*/ ){System.out.println("Operator:=");})?
+    (COMMA (varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor /*| observe*/ ){System.out.println("Operator:=");})?))*
     SEMICOLON
     ;
 
