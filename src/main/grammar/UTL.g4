@@ -459,7 +459,11 @@ orderConstructor
 
 functionCall
     :
-    IDENTIFIER LPAR (expression | TYPE IDENTIFIER | functionCall)* RPAR
+    IDENTIFIER
+    LPAR
+    (expression | functionCall)?
+    (COMMA(expression | functionCall))*
+    RPAR
     ;
 
 trycatch
