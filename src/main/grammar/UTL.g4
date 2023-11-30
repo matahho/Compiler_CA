@@ -176,7 +176,7 @@ varDecName:
 
 arrDecName:
     LBRACKET arr_size=INT_VAL RBRACKET arr_dec=IDENTIFIER
-    { System.out.println("ArrayDec:" + ":" + $arr_dec.text + ":"+ $arr_size.text);}
+    { System.out.println("ArrayDec:" + $arr_dec.text + ":"+ $arr_size.text);}
     ;
 
 globalVars
@@ -334,10 +334,15 @@ statement :
 //    | connect statement
     | throwStatement statement
     | returnStatemnet statement
+    | unaryStatement statement
     | (IDENTIFIER | valueAccess) DOT functionCall SEMICOLON statement
     | BREAK SEMICOLON statement
     | CONTINUE SEMICOLON statement
     | //epsilon
+    ;
+
+unaryStatement :
+    (PLUSPLUS | MINUSMINUS)? (IDENTIFIER | valueAccess) (PLUSPLUS | MINUSMINUS)? SEMICOLON
     ;
 
 type
