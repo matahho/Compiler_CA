@@ -190,8 +190,8 @@ sharedVars
 
 varDeclaration
     :
-    (type) varDecName (ASSIGN {System.out.println("Operator:=");} (expression | orderConstructor | observe))?
-    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");}(expression | orderConstructor | observe))?))*
+    (type) varDecName (ASSIGN {System.out.println("Operator:=");} (expression | orderConstructor | exceptionConstructor | observe))?
+    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");}(expression | orderConstructor | exceptionConstructor | observe))?))*
     SEMICOLON
     ;
 
@@ -311,12 +311,13 @@ statement :
     | forLoop statement
     | print statement
     | trycatch statement
+    | refreshrate statement
     | //epsilon
     ;
 
 type
     :
-    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE | ORDER
+    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE | ORDER | EXCEPTION
     ;
 
 comment
@@ -426,6 +427,7 @@ refreshrate
     :
     LPAR
     RPAR
+    SEMICOLON
     ;
 
 orderConstructor
@@ -449,6 +451,16 @@ trycatch
     CATCH
     EXCEPTION IDENTIFIER
     (LBRACE (statement) RBRACE)
+    ;
+
+exceptionConstructor
+    :
+    EXCEPTION
+    LPAR
+    (INT_VAL | IDENTIFIER)
+    COMMA
+    (STRING_VAL | IDENTIFIER)
+    RPAR
     ;
 
 scheduling
