@@ -46,7 +46,7 @@ PREORDER:   'preorder';
 PARALLEL:   'parallel';
 
 // Special Valriabels
-TYPE:      'Type';
+//TYPE:      'Type';
 //ASK:       'Ask';
 //BID:       'Bid';
 SELL:      'SELL';
