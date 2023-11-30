@@ -190,13 +190,11 @@ sharedVars
 
 varDeclaration
     :
-    (ORDER | type) (varDecName (ASSIGN {System.out.print("Operator:=");} (expression | order | observe))?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
+    (ORDER | type) (varDecName (ASSIGN {System.out.print("Operator:=");} (expression | order | observe))?) (COMMA (varDecName (ASSIGN {System.out.print("Operator:=");}(expression | order | observe))?))* SEMICOLON
     ;
 
 arrDeclaration :
-    comment*
-    type (varDecName (ASSIGN {System.out.print("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
-    comment*
+    type (arrDecName (ASSIGN {System.out.print("Operator:=");} expression)?) (COMMA (arrDecName (ASSIGN expression)?))* SEMICOLON
     ;
 
 valueAccess :
