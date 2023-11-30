@@ -298,11 +298,12 @@ accessMemberExpression:
 
 parantheseExpression:
     (directValue (LPAR callArgs RPAR)* )
-    | LPAR expression RPAR
+    | LPAR (expression |               )
+    | RPAR
     ;
 
 callArgs:
-    (expression (COMMA expression)*)
+    (expression (COMMA expression)*) | //epsilon
     ;
 
 directValue :
@@ -363,7 +364,7 @@ ifStatement
 forLoop
     :
     FOR { System.out.println("Loop:for");}
-    LPAR ((varDeclaration | assignment)|SEMICOLON)  expression? SEMICOLON expression? RPAR
+    LPAR ((varDeclaration | assignment)|SEMICOLON)  (expression |    ) SEMICOLON (expression |    ) RPAR
     LBRACE forLoopBody RBRACE
     ;
 
@@ -378,9 +379,9 @@ forLoopBody
 
 whileLoop
     :
-    WHILE { System.out.println("Loop:while ");}
+    WHILE { System.out.println("Loop:while");}
     ((LPAR expression RPAR) | expression)
-    LBRACE whileLoopBody SEMICOLON RBRACE
+    LBRACE whileLoopBody RBRACE
     ;
 
 whileLoopBody
