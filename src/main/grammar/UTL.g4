@@ -27,11 +27,11 @@ CONTINUE:  'continue';
 // Special Functions
 ONSTART:    'OnStart';
 ONINIT:     'OnInit';
+PRINT:      'Print';
 //REFRESHRATE:'RefreshRate';
 //TERMINATE:  'Terminate';
 //CONNECT:    'Connect';
 //OBSERVE:    'Observe';
-PRINT:      'Print';
 //GETCANDLE:  'GetCandle';
 
 
@@ -46,11 +46,11 @@ PREORDER:   'preorder';
 PARALLEL:   'parallel';
 
 // Special Valriabels
+SELL:      'SELL';
+BUY:       'BUY';
 //TYPE:      'Type';
 //ASK:       'Ask';
 //BID:       'Bid';
-SELL:      'SELL';
-BUY:       'BUY';
 //VOLUME:    'Volume' ;
 //LOW:       'Low';
 //HIGH:      'High';
@@ -147,7 +147,7 @@ WS:         [ \t\r\n]+ -> skip;
 
 
 
-// Parser rules
+// ---Parser rules---
 program
     :
     (globalVars | sharedVars)* (oSoIfunction | function)* main (comment)*
@@ -181,27 +181,38 @@ arrDecName:
 
 globalVars
     :
-    STATIC type (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))* SEMICOLON
+    STATIC
+    type
+    (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?)
+    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))*
+    SEMICOLON
     ;
 
 sharedVars
     :
-    SHARED type (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))* SEMICOLON
+    SHARED type (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?)
+    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))*
+    SEMICOLON
     ;
 
 varDeclaration
     :
-    (type) varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor /*| observe*/ ){System.out.println("Operator:=");})?
+    (type)
+    varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor /*| observe*/ ){System.out.println("Operator:=");})?
     (COMMA (varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor /*| observe*/ ){System.out.println("Operator:=");})?))*
     SEMICOLON
     ;
 
 arrDeclaration :
-    type (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?))* SEMICOLON
+    type
+    (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?)
+    (COMMA (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?))*
+    SEMICOLON
     ;
 
 valueAccess :
-    expression (LBRACKET tempValueAccess RBRACKET)?
+    expression
+    (LBRACKET tempValueAccess RBRACKET)?
     ;
 
 tempValueAccess :
@@ -210,7 +221,7 @@ tempValueAccess :
     ;
 
 assignment :
-    IDENTIFIER (valueAccess |    )
+    IDENTIFIER (valueAccess | /*epsilon*/ )
     (ASSIGN         {System.out.println("Operator:=");}
     |PLUSASIGN      {System.out.println("Operator:+=");}
     |MINUSASIGN     {System.out.println("Operator:-=");}
@@ -227,7 +238,8 @@ expression:
     ;
 
 assignExpression:
-    logicalOrExpression ASSIGN { System.out.println("Operator:=");}assignExpression
+    logicalOrExpression
+    ASSIGN { System.out.println("Operator:=");}assignExpression
     | logicalOrExpression
     ;
 
@@ -333,8 +345,6 @@ statement :
     | forLoop statement
     | print statement
     | trycatch statement
-//    | refreshrate statement
-//    | connect statement
     | throwStatement statement
     | returnStatemnet statement
     | unaryStatement statement
@@ -342,15 +352,29 @@ statement :
     | BREAK { System.out.println("Control:break");} SEMICOLON statement
     | CONTINUE { System.out.println("Control:continue");} SEMICOLON statement
     | //epsilon
+    //    | refreshrate statement
+    //    | connect statement
+
+
     ;
 
 unaryStatement :
-    (PLUSPLUS {System.out.println("Operator:++");}| MINUSMINUS {System.out.println("Operator:--");})* (IDENTIFIER | arrayAccess) (PLUSPLUS {System.out.println("Operator:++");} | MINUSMINUS {System.out.println("Operator:--");})* SEMICOLON
+    (PLUSPLUS {System.out.println("Operator:++");}| MINUSMINUS {System.out.println("Operator:--");})*
+    (IDENTIFIER | arrayAccess) (PLUSPLUS {System.out.println("Operator:++");} | MINUSMINUS {System.out.println("Operator:--");})*
+    SEMICOLON
     ;
 
 type
     :
-    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE | ORDER | EXCEPTION | CANDLE
+    INT
+    | FLOAT
+    | BOOL
+    | DOUBLE
+    | STRING
+    | TRADE
+    | ORDER
+    | EXCEPTION
+    | CANDLE
     ;
 
 comment
@@ -393,6 +417,7 @@ whileLoop
     ((LPAR expression RPAR) | expression)
     LBRACE statement RBRACE
     ;
+
 //
 //whileLoopBody
 //    :
@@ -410,6 +435,7 @@ oSoIfunction
     LBRACE statement RBRACE
     ;
 
+
 function
     :
     (type|VOID)
@@ -423,14 +449,18 @@ function
     RBRACE
     ;
 
+
 body_function
     :
     statement
     ;
 
+
 returnStatemnet
     :
-    RETURN (expression | directValue) SEMICOLON
+    RETURN
+    (expression | directValue)
+    SEMICOLON
     ;
 
 
@@ -446,7 +476,7 @@ print
     SEMICOLON
     ;
 
-//
+
 //connect
 //    :
 //    CONNECT
@@ -457,7 +487,7 @@ print
 //    RPAR
 //    SEMICOLON
 //    ;
-//
+
 //observe
 //    :
 //    OBSERVE
@@ -465,7 +495,7 @@ print
 //    STRING_VAL
 //    RPAR
 //    ;
-//
+
 //refreshrate
 //    :
 //    REFRESHRATE
@@ -523,11 +553,14 @@ throwStatement
 
 scheduling
     :
-    (schedulingTerm PREORDER scheduling )| (schedulingTerm)
+    (schedulingTerm PREORDER scheduling )
+    |(schedulingTerm)
     ;
 schedulingTerm
     :
-    (IDENTIFIER PARALLEL IDENTIFIER )|(LPAR scheduling RPAR PARALLEL scheduling)|(LPAR scheduling RPAR)|(IDENTIFIER)
+    (IDENTIFIER PARALLEL IDENTIFIER )
+    |(LPAR scheduling RPAR PARALLEL scheduling)
+    |(LPAR scheduling RPAR)|(IDENTIFIER)
     ;
 
 
@@ -544,11 +577,3 @@ schedulingTerm
 
 
 
-//program : statement+;
-// TODO: Complete the parser rules
-/*Ex:
-statement : VarDeclaration {System.out.println("VarDec:"+...);}
-          | ArrayDeclaration ...
-          | ...
-          ;
-*/
