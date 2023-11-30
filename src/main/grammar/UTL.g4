@@ -178,15 +178,12 @@ globalVars
 
 sharedVars
     :
-    comment*
     SHARED type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
-    comment*
     ;
 
-varDeclaration:
-    comment*
-    type (varDecName (ASSIGN {System.out.print("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
-    comment*
+varDeclaration
+    :
+    (type | ORDER | TRADE) (varDecName (ASSIGN {System.out.print("Operator:=");} (expression | order | observe))?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     ;
 
 arrDeclaration :
@@ -223,7 +220,9 @@ directValue :
     ;
 
 statement :
-    assignment statement
+    arrDeclaration statement
+    |varDeclaration statement
+    |assignment statement
     | ifStatement statement
     | whileLoop statement
     | forLoop statement
@@ -329,7 +328,7 @@ order
     (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
     (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
     (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
-    RPAR 
+    RPAR
     SEMICOLON
     ;
 
