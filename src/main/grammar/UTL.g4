@@ -81,7 +81,7 @@ INT_VAL:     [1-9][0-9]*;
 FLOAT_VAL:   INT_VAL '.' [0-9]+ | '0.' [0-9]*;
 DOUBLE_VAL:  INT_VAL '.' [0-9]+ | '0.' [0-9]*;
 BOOLEAN_VAL: 'true' | 'false';
-STRING_VAL:  DOUBLEQUOTE [a-zA-Z0-9_]* DOUBLEQUOTE;
+STRING_VAL:  DOUBLEQUOTE (~["])* DOUBLEQUOTE;
 
 // Parenthesis
 LPAR: '(';
@@ -336,8 +336,8 @@ statement :
     | returnStatemnet statement
     | unaryStatement statement
     | (IDENTIFIER | valueAccess) DOT functionCall SEMICOLON statement
-    | BREAK SEMICOLON statement
-    | CONTINUE SEMICOLON statement
+    | BREAK { System.out.println("Control:break");} SEMICOLON statement
+    | CONTINUE { System.out.println("Control:continue");} SEMICOLON statement
     | //epsilon
     ;
 
