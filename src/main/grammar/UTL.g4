@@ -170,12 +170,12 @@ body_main
 
 varDecName:
     var_dec=IDENTIFIER
-    { System.out.print("VarDec:"+$var_dec.text);}
+    { System.out.println("VarDec:"+$var_dec.text);}
     ;
 
 arrDecName:
     LBRACKET arr_size=INT_VAL RBRACKET arr_dec=IDENTIFIER
-    { System.out.print("ArrayDec:" + $arr_dec.text + ":"+ "$arr_size.text");}
+    { System.out.println("ArrayDec:" + $arr_dec.text + ":"+ "$arr_size.text");}
     ;
 
 globalVars
@@ -190,13 +190,13 @@ sharedVars
 
 varDeclaration
     :
-    (type) varDecName (ASSIGN {System.out.print("Operator:=");} (expression | orderConstructor | observe))?
-    (COMMA (varDecName (ASSIGN {System.out.print("Operator:=");}(expression | orderConstructor | observe))?))*
+    (type) varDecName (ASSIGN {System.out.println("Operator:=");} (expression | orderConstructor | observe))?
+    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");}(expression | orderConstructor | observe))?))*
     SEMICOLON
     ;
 
 arrDeclaration :
-    type (arrDecName (ASSIGN {System.out.print("Operator:=");} expression)?) (COMMA (arrDecName (ASSIGN expression)?))* SEMICOLON
+    type (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (arrDecName (ASSIGN expression)?))* SEMICOLON
     ;
 
 valueAccess :
@@ -205,7 +205,7 @@ valueAccess :
     ;
 
 assignment :
-    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.print("Operator:=");}
+    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.println("Operator:=");}
     SEMICOLON
     ;
 
@@ -214,61 +214,61 @@ expression:
     ;
 
 assignExpression:
-    logicalOrExpression ASSIGN { System.out.print("Operator:=\n");}assignExpression
+    logicalOrExpression ASSIGN { System.out.println("Operator:=\n");}assignExpression
     | logicalOrExpression
     ;
 
 logicalOrExpression:
-    logicalAndExpression (OR logicalAndExpression { System.out.print("Operator : ||\n");})*
+    logicalAndExpression (OR logicalAndExpression { System.out.println("Operator : ||\n");})*
     ;
 
 logicalAndExpression:
-    logicalBitExpression (AND logicalBitExpression { System.out.print("Operator : &&\n");} )*
+    logicalBitExpression (AND logicalBitExpression { System.out.println("Operator : &&\n");} )*
     ;
 
 logicalBitExpression:
-    equalExpression ((ANDBITWISE) equalExpression { System.out.print("Operator : &\n");}
-    | (ORBITWISE) equalExpression { System.out.print("Operator : |\n");}
-    | (XOR) equalExpression { System.out.print("Operator : ^\n");})*
+    equalExpression ((ANDBITWISE) equalExpression { System.out.println("Operator : &\n");}
+    | (ORBITWISE) equalExpression { System.out.println("Operator : |\n");}
+    | (XOR) equalExpression { System.out.println("Operator : ^\n");})*
     ;
 
 equalExpression:
-    comparisonExpression ((EQL) comparisonExpression { System.out.print("Operator : ==\n");}
-    | (NEQ) comparisonExpression { System.out.print("Operator:!=\n");})*
+    comparisonExpression ((EQL) comparisonExpression { System.out.println("Operator : ==\n");}
+    | (NEQ) comparisonExpression { System.out.println("Operator:!=\n");})*
     ;
 
 comparisonExpression:
-    shiftExpression ((GTR) shiftExpression { System.out.print("Operator : >\n");}
-    | (LES) shiftExpression { System.out.print("Operator:<\n");})*
+    shiftExpression ((GTR) shiftExpression { System.out.println("Operator : >\n");}
+    | (LES) shiftExpression { System.out.println("Operator:<\n");})*
     ;
 
 shiftExpression:
-    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.print("Operator : >>\n");}
-    | (LSHIFT) plusMinusExpression { System.out.print("Operator : <<\n");})*
+    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.println("Operator : >>\n");}
+    | (LSHIFT) plusMinusExpression { System.out.println("Operator : <<\n");})*
     ;
 
 plusMinusExpression:
-    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.print("Operator : +\n");}
-    | (MINUS) multiplyDivideExpression { System.out.print("Operator : -\n");})*
+    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.println("Operator : +\n");}
+    | (MINUS) multiplyDivideExpression { System.out.println("Operator : -\n");})*
     ;
 
 multiplyDivideExpression:
-    unaryExpression ((MULT) unaryExpression { System.out.print("Operator : *\n");}
-    | (DIV) unaryExpression { System.out.print("Operator : /\n");})*
+    unaryExpression ((MULT) unaryExpression { System.out.println("Operator : *\n");}
+    | (DIV) unaryExpression { System.out.println("Operator : /\n");})*
     ;
 
 unaryExpression:
-    ((MINUS) unaryPostExpression { System.out.print("Operator : -\n");}
-    | (NOTBITWISE) unaryPostExpression { System.out.print("Operator : ~\n");}
-    | (NOT) unaryPostExpression { System.out.print("Operator : !\n");}
-    | (PLUSPLUS) unaryPostExpression { System.out.print("Operator : ++\n");}
-    | (MINUSMINUS) unaryPostExpression { System.out.print("Operator : --\n");})+
+    ((MINUS) unaryPostExpression { System.out.println("Operator : -\n");}
+    | (NOTBITWISE) unaryPostExpression { System.out.println("Operator : ~\n");}
+    | (NOT) unaryPostExpression { System.out.println("Operator : !\n");}
+    | (PLUSPLUS) unaryPostExpression { System.out.println("Operator : ++\n");}
+    | (MINUSMINUS) unaryPostExpression { System.out.println("Operator : --\n");})+
     | retrieveListExpression
     ;
 
 unaryPostExpression :
-    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.print("Operator : --\n");}
-    | (PLUSPLUS) retrieveListExpression { System.out.print("Operator : ++\n");})*
+    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.println("Operator : --\n");}
+    | (PLUSPLUS) retrieveListExpression { System.out.println("Operator : ++\n");})*
     ;
 
 retrieveListExpression:
@@ -304,7 +304,7 @@ directValue :
 statement :
     arrDeclaration statement
     | varDeclaration statement
-    | functionCall { System.out.print("FunctionCall");} statement
+    | functionCall { System.out.println("FunctionCall");} statement
     | assignment statement
     | ifStatement statement
     | whileLoop statement
@@ -326,13 +326,13 @@ comment
 
 elseStatement
     :
-    ELSE { System.out.print("Conditional:else");} (LPAR expression RPAR)
+    ELSE { System.out.println("Conditional:else");} (LPAR expression RPAR)
     (LBRACE statement SEMICOLON RBRACE)
     | ifStatement
     ;
 ifStatement
     :
-    IF { System.out.print("Conditional:if");} (LPAR expression RPAR)
+    IF { System.out.println("Conditional:if");} (LPAR expression RPAR)
     LBRACE statement SEMICOLON RBRACE (elseStatement | /*epsilon*/)
     ;
 
