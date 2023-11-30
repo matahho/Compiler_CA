@@ -316,6 +316,7 @@ statement :
     | refreshrate statement
     | connect statement
     | throwStatement statement
+    | returnStatemnet statement
     | //epsilon
     ;
 
@@ -397,6 +398,12 @@ body_function
     :
     statement
     ;
+
+returnStatemnet
+    :
+    RETURN (expression | IDENTIFIER | STRING_VAL | INT_VAL | DOUBLE_VAL | FLOAT_VAL | BOOLEAN_VAL) SEMICOLON
+    ;
+
 
 print
     :
