@@ -295,6 +295,7 @@ accessMemberExpression:
     (DOT IDENTIFIER)*
     ;
 
+
 parantheseExpression:
     (directValue (LPAR callArgs RPAR)* )
     | LPAR expression? RPAR
@@ -332,6 +333,7 @@ statement :
 //    | connect statement
     | throwStatement statement
     | returnStatemnet statement
+    | callArgs SEMICOLON
     | //epsilon
     ;
 
@@ -516,6 +518,7 @@ schedulingTerm
     :
     (IDENTIFIER PARALLEL IDENTIFIER )|(LPAR scheduling RPAR PARALLEL scheduling)|(LPAR scheduling RPAR)|(IDENTIFIER)
     ;
+
 
 
 //
