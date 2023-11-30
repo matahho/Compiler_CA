@@ -198,8 +198,8 @@ sharedVars
 varDeclaration
     :
     (type)
-    varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor /*| observe*/ ){System.out.println("Operator:=");})?
-    (COMMA (varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor /*| observe*/ ){System.out.println("Operator:=");})?))*
+    varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor | candleCostructor /*| observe*/ ){System.out.println("Operator:=");})?
+    (COMMA (varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor | candleCostructor/*| observe*/ ){System.out.println("Operator:=");})?))*
     SEMICOLON
     ;
 
@@ -327,6 +327,7 @@ directValue :
     | ZERO
     | orderConstructor
     | exceptionConstructor
+    | candleCostructor
     | IDENTIFIER
     ;
 
@@ -354,9 +355,8 @@ statement :
     | //epsilon
     //    | refreshrate statement
     //    | connect statement
-
-
     ;
+
 
 unaryStatement :
     (PLUSPLUS {System.out.println("Operator:++");}| MINUSMINUS {System.out.println("Operator:--");})*
@@ -514,6 +514,19 @@ orderConstructor
     RPAR
     ;
 
+candleCostructor
+    :
+    CANDLE
+    LPAR
+    (expression) COMMA
+    (expression) COMMA
+    (expression ) COMMA
+    (expression) COMMA
+    (expression ) COMMA
+    (expression)
+    RPAR
+    ;
+
 functionCall
     :
     IDENTIFIER
@@ -560,7 +573,8 @@ schedulingTerm
     :
     (IDENTIFIER PARALLEL IDENTIFIER )
     |(LPAR scheduling RPAR PARALLEL scheduling)
-    |(LPAR scheduling RPAR)|(IDENTIFIER)
+    |(LPAR scheduling RPAR)
+    |(IDENTIFIER)
     ;
 
 
