@@ -374,7 +374,7 @@ whileLoopBody
 
 oSoIfunction
     :
-    VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (throwStatement)?
+    VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (THROW EXCEPTION)?
     LBRACE statement RBRACE
     ;
 
@@ -386,7 +386,7 @@ function
     type IDENTIFIER
     (COMMA type IDENTIFIER)*
     RPAR
-    (throwStatement)?
+    (THROW EXCEPTION)?
     LBRACE
     body_function
     RBRACE
@@ -470,9 +470,8 @@ exceptionConstructor
 throwStatement
     :
     THROW
-    EXCEPTION
-    | exceptionConstructor
-    | IDENTIFIER
+    exceptionConstructor| IDENTIFIER
+    SEMICOLON
     ;
 
 scheduling
