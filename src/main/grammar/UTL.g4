@@ -335,6 +335,8 @@ statement :
     | throwStatement statement
     | returnStatemnet statement
     | (IDENTIFIER | valueAccess) DOT functionCall SEMICOLON statement
+    | BREAK SEMICOLON statement
+    | CONTINUE SEMICOLON statement
     | //epsilon
     ;
 
@@ -365,33 +367,33 @@ forLoop
     :
     FOR { System.out.println("Loop:for");}
     LPAR ((varDeclaration | assignment)|SEMICOLON)  (expression |    ) SEMICOLON (expression |    ) RPAR
-    LBRACE forLoopBody RBRACE
+    LBRACE statement RBRACE
     ;
 
-forLoopBody
-    :
-    statement
-    (BREAK SEMICOLON forLoopBody
-    | CONTINUE SEMICOLON forLoopBody
-    | /*epsilon*/
-    )
-    ;
+//forLoopBody
+//    :
+//    statement
+//    (BREAK SEMICOLON forLoopBody
+//    | CONTINUE SEMICOLON forLoopBody
+//    | /*epsilon*/
+//    )
+//    ;
 
 whileLoop
     :
     WHILE { System.out.println("Loop:while");}
     ((LPAR expression RPAR) | expression)
-    LBRACE whileLoopBody RBRACE
+    LBRACE statement RBRACE
     ;
-
-whileLoopBody
-    :
-    statement
-    (BREAK SEMICOLON whileLoopBody
-    | CONTINUE SEMICOLON whileLoopBody
-    | /*epsilon*/
-    )
-    ;
+//
+//whileLoopBody
+//    :
+//    statement
+//    (BREAK SEMICOLON whileLoopBody
+//    | CONTINUE SEMICOLON whileLoopBody
+//    | /*epsilon*/
+//    )
+//    ;
 
 
 oSoIfunction
