@@ -190,7 +190,9 @@ sharedVars
 
 varDeclaration
     :
-    (ORDER | type) (varDecName (ASSIGN {System.out.print("Operator:=");} (expression | order | observe))?) (COMMA (varDecName (ASSIGN {System.out.print("Operator:=");}(expression | order | observe))?))* SEMICOLON
+    (type) varDecName (ASSIGN {System.out.print("Operator:=");} (expression | orderConstructor | observe))?
+    (COMMA (varDecName (ASSIGN {System.out.print("Operator:=");}(expression | orderConstructor | observe))?))*
+    SEMICOLON
     ;
 
 arrDeclaration :
@@ -295,7 +297,7 @@ directValue :
     | INT_VAL
     | BOOLEAN_VAL
     | ZERO
-    | order
+    | orderConstructor
     | IDENTIFIER
     ;
 
@@ -314,7 +316,7 @@ statement :
 
 type
     :
-    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE
+    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE | ORDER
     ;
 
 comment
@@ -368,7 +370,7 @@ whileLoopBody
 oSoIfunction
     :
     VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (THROW EXCEPTION)?
-    LBRACE (statement SEMICOLON)? RBRACE
+    LBRACE statement RBRACE
     ;
 
 function
@@ -426,12 +428,12 @@ refreshrate
     RPAR
     ;
 
-order
+orderConstructor
     :
-    ORDER LPAR (BUY | SELL)
+    ORDER LPAR (BUY | SELL) COMMA
     (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
     (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
-    (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
+    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
     RPAR
     ;
 
