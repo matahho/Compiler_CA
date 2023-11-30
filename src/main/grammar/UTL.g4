@@ -255,7 +255,8 @@ plusMinusExpression:
 
 multiplyDivideExpression:
     unaryExpression ((MULT) unaryExpression { System.out.println("Operator:*");}
-    | (DIV) unaryExpression { System.out.println("Operator:/");})*
+    | (DIV) unaryExpression { System.out.println("Operator:/");}
+    | (MOD) unaryExpression { System.out.println("Operator:/");})*
     ;
 
 unaryExpression:
