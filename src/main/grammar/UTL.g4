@@ -27,17 +27,17 @@ CONTINUE:  'continue';
 // Special Functions
 ONSTART:    'OnStart';
 ONINIT:     'OnInit';
-REFRESHRATE:'RefreshRate';
-TERMINATE:  'Terminate';
-CONNECT:    'Connect';
-OBSERVE:    'Observe';
+//REFRESHRATE:'RefreshRate';
+//TERMINATE:  'Terminate';
+//CONNECT:    'Connect';
+//OBSERVE:    'Observe';
 PRINT:      'Print';
-GETCANDLE:  'GetCandle';
+//GETCANDLE:  'GetCandle';
 
 
 //Special Method Function
-CLOSE_METHOD : 'close()';
-OPEN_METHOD : 'open()';
+//CLOSE_METHOD : 'close()';
+//OPEN_METHOD : 'open()';
 
 
 // TIMING
@@ -47,16 +47,16 @@ PARALLEL:   'parallel';
 
 // Special Valriabels
 TYPE:      'Type';
-ASK:       'Ask';
-BID:       'Bid';
+//ASK:       'Ask';
+//BID:       'Bid';
 SELL:      'SELL';
 BUY:       'BUY';
-VOLUME:    'Volume' ;
-LOW:       'Low';
-HIGH:      'High';
-CLOSE:     'Close';
-OPEN:      'Open';
-TIME:      'Time';
+//VOLUME:    'Volume' ;
+//LOW:       'Low';
+//HIGH:      'High';
+//CLOSE:     'Close';
+//OPEN:      'Open';
+//TIME:      'Time';
 
 // Candle
 CANDLE:    'Candle';
@@ -191,8 +191,8 @@ sharedVars
 
 varDeclaration
     :
-    (type) varDecName (ASSIGN {System.out.println("Operator:=");} (expression | orderConstructor | exceptionConstructor | observe))?
-    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");}(expression | orderConstructor | exceptionConstructor | observe))?))*
+    (type) varDecName (ASSIGN {System.out.println("Operator:=");} (expression | orderConstructor | exceptionConstructor /*| observe*/ ))?
+    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");}(expression | orderConstructor | exceptionConstructor /*| observe*/ ))?))*
     SEMICOLON
     ;
 
@@ -303,6 +303,7 @@ directValue :
     | IDENTIFIER
     ;
 
+
 statement :
     arrDeclaration statement
     | varDeclaration statement
@@ -314,8 +315,8 @@ statement :
     | forLoop statement
     | print statement
     | trycatch statement
-    | refreshrate statement
-    | connect statement
+//    | refreshrate statement
+//    | connect statement
     | throwStatement statement
     | returnStatemnet statement
     | //epsilon
@@ -323,7 +324,7 @@ statement :
 
 type
     :
-    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE | ORDER | EXCEPTION
+    INT | FLOAT | BOOL | DOUBLE | STRING | TRADE | ORDER | EXCEPTION | CANDLE
     ;
 
 comment
@@ -401,7 +402,7 @@ body_function
 
 returnStatemnet
     :
-    RETURN (expression | IDENTIFIER | STRING_VAL | INT_VAL | DOUBLE_VAL | FLOAT_VAL | BOOLEAN_VAL) SEMICOLON
+    RETURN (expression | directValue) SEMICOLON
     ;
 
 
@@ -417,33 +418,33 @@ print
     SEMICOLON
     ;
 
-
-connect
-    :
-    CONNECT
-    LPAR
-    STRING_VAL
-    COMMA
-    STRING_VAL
-    RPAR
-    SEMICOLON
-    ;
-
-observe
-    :
-    OBSERVE
-    LPAR
-    STRING_VAL
-    RPAR
-    ;
-
-refreshrate
-    :
-    REFRESHRATE
-    LPAR
-    RPAR
-    SEMICOLON
-    ;
+//
+//connect
+//    :
+//    CONNECT
+//    LPAR
+//    STRING_VAL
+//    COMMA
+//    STRING_VAL
+//    RPAR
+//    SEMICOLON
+//    ;
+//
+//observe
+//    :
+//    OBSERVE
+//    LPAR
+//    STRING_VAL
+//    RPAR
+//    ;
+//
+//refreshrate
+//    :
+//    REFRESHRATE
+//    LPAR
+//    RPAR
+//    SEMICOLON
+//    ;
 
 orderConstructor
     :
@@ -496,6 +497,15 @@ schedulingTerm
     (IDENTIFIER PARALLEL IDENTIFIER )|(LPAR scheduling RPAR PARALLEL scheduling)|(LPAR scheduling RPAR)|(IDENTIFIER)
     ;
 
+
+//
+//candleVarsAccess
+//    :
+//    (valueAccess)
+//    DOT
+//    (TIME | OPEN | CLOSE | HIGH | LOW | VOLUME)
+//
+//    ;
 
 
 
