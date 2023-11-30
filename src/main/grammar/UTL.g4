@@ -220,56 +220,56 @@ assignExpression:
     ;
 
 logicalOrExpression:
-    logicalAndExpression (OR logicalAndExpression { System.out.println("Operator : ||");})*
+    logicalAndExpression (OR logicalAndExpression { System.out.println("Operator:||");})*
     ;
 
 logicalAndExpression:
-    logicalBitExpression (AND logicalBitExpression { System.out.println("Operator : &&");} )*
+    logicalBitExpression (AND logicalBitExpression { System.out.println("Operator:&&");} )*
     ;
 
 logicalBitExpression:
-    equalExpression ((ANDBITWISE) equalExpression { System.out.println("Operator : &");}
-    | (ORBITWISE) equalExpression { System.out.println("Operator : |");}
-    | (XOR) equalExpression { System.out.println("Operator : ^");})*
+    equalExpression ((ANDBITWISE) equalExpression { System.out.println("Operator:&");}
+    | (ORBITWISE) equalExpression { System.out.println("Operator:|");}
+    | (XOR) equalExpression { System.out.println("Operator:^");})*
     ;
 
 equalExpression:
-    comparisonExpression ((EQL) comparisonExpression { System.out.println("Operator : ==");}
+    comparisonExpression ((EQL) comparisonExpression { System.out.println("Operator:==");}
     | (NEQ) comparisonExpression { System.out.println("Operator:!=");})*
     ;
 
 comparisonExpression:
-    shiftExpression ((GTR) shiftExpression { System.out.println("Operator : >");}
+    shiftExpression ((GTR) shiftExpression { System.out.println("Operator:>");}
     | (LES) shiftExpression { System.out.println("Operator:<");})*
     ;
 
 shiftExpression:
-    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.println("Operator : >>");}
-    | (LSHIFT) plusMinusExpression { System.out.println("Operator : <<");})*
+    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.println("Operator:>>");}
+    | (LSHIFT) plusMinusExpression { System.out.println("Operator:<<");})*
     ;
 
 plusMinusExpression:
-    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.println("Operator : +");}
-    | (MINUS) multiplyDivideExpression { System.out.println("Operator : -");})*
+    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.println("Operator:+");}
+    | (MINUS) multiplyDivideExpression { System.out.println("Operator:-");})*
     ;
 
 multiplyDivideExpression:
-    unaryExpression ((MULT) unaryExpression { System.out.println("Operator : *");}
-    | (DIV) unaryExpression { System.out.println("Operator : /");})*
+    unaryExpression ((MULT) unaryExpression { System.out.println("Operator:*");}
+    | (DIV) unaryExpression { System.out.println("Operator:/");})*
     ;
 
 unaryExpression:
-    ((MINUS) unaryPostExpression { System.out.println("Operator : -");}
-    | (NOTBITWISE) unaryPostExpression { System.out.println("Operator : ~");}
-    | (NOT) unaryPostExpression { System.out.println("Operator : !");}
-    | (PLUSPLUS) unaryPostExpression { System.out.println("Operator : ++");}
-    | (MINUSMINUS) unaryPostExpression { System.out.println("Operator : --");})+
+    ((MINUS) unaryPostExpression { System.out.println("Operator:-");}
+    | (NOTBITWISE) unaryPostExpression { System.out.println("Operator:~");}
+    | (NOT) unaryPostExpression { System.out.println("Operator:!");}
+    | (PLUSPLUS) unaryPostExpression { System.out.println("Operator:++");}
+    | (MINUSMINUS) unaryPostExpression { System.out.println("Operator:--");})+
     | retrieveListExpression
     ;
 
 unaryPostExpression :
-    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.println("Operator : --");}
-    | (PLUSPLUS) retrieveListExpression { System.out.println("Operator : ++");})*
+    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.println("Operator:--");}
+    | (PLUSPLUS) retrieveListExpression { System.out.println("Operator:++");})*
     ;
 
 retrieveListExpression:
@@ -306,7 +306,7 @@ directValue :
 statement :
     arrDeclaration statement
     | varDeclaration statement
-    | functionCall { System.out.println("FunctionCall");} statement
+    | functionCall { System.out.println("FunctionCall");} SEMICOLON statement
     | assignment statement
     | ifStatement statement
     | whileLoop statement
@@ -411,7 +411,7 @@ print
     LPAR
     (
     STRING_VAL |
-    (IDENTIFIER LPAR (expression | TYPE IDENTIFIER | functionCall)* RPAR)
+    functionCall
     )
     RPAR
     SEMICOLON
@@ -455,7 +455,7 @@ orderConstructor
 
 functionCall
     :
-    IDENTIFIER LPAR (expression | TYPE IDENTIFIER | functionCall)* RPAR SEMICOLON
+    IDENTIFIER LPAR (expression | TYPE IDENTIFIER | functionCall)* RPAR
     ;
 
 trycatch
