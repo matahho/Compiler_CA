@@ -181,12 +181,12 @@ arrDecName:
 
 globalVars
     :
-    STATIC type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
+    STATIC type (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))* SEMICOLON
     ;
 
 sharedVars
     :
-    SHARED type (varDecName (ASSIGN expression)?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
+    SHARED type (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))* SEMICOLON
     ;
 
 varDeclaration
@@ -197,7 +197,7 @@ varDeclaration
     ;
 
 arrDeclaration :
-    type (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (arrDecName (ASSIGN expression)?))* SEMICOLON
+    type (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?) (COMMA (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?))* SEMICOLON
     ;
 
 valueAccess :
@@ -306,6 +306,7 @@ directValue :
 statement :
     arrDeclaration statement
     | varDeclaration statement
+    | function statement
     | functionCall { System.out.println("FunctionCall");} SEMICOLON statement
     | assignment statement
     | ifStatement statement
@@ -385,8 +386,7 @@ function
     (type|VOID)
     name=IDENTIFIER { System.out.println("MethodDec:" + $name.text); }
     LPAR
-    type IDENTIFIER
-    (COMMA type IDENTIFIER)*
+    (type IDENTIFIER (COMMA type IDENTIFIER)*)*
     RPAR
     (THROW EXCEPTION)?
     LBRACE
@@ -439,6 +439,7 @@ observe
 
 refreshrate
     :
+    REFRESHRATE
     LPAR
     RPAR
     SEMICOLON
