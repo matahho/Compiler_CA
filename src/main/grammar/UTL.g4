@@ -314,6 +314,7 @@ statement :
     | print statement
     | trycatch statement
     | refreshrate statement
+    | connect statement
     | throwStatement statement
     | //epsilon
     ;
@@ -423,7 +424,6 @@ observe
     LPAR
     STRING_VAL
     RPAR
-    SEMICOLON
     ;
 
 refreshrate
