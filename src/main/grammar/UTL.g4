@@ -342,7 +342,7 @@ statement :
     ;
 
 unaryStatement :
-    (PLUSPLUS | MINUSMINUS)? (IDENTIFIER | valueAccess) (PLUSPLUS | MINUSMINUS)? SEMICOLON
+    (PLUSPLUS {System.out.println("Operator:++");}| MINUSMINUS {System.out.println("Operator:--");})* (IDENTIFIER | valueAccess) (PLUSPLUS {System.out.println("Operator:++");} | MINUSMINUS {System.out.println("Operator:--");})* SEMICOLON
     ;
 
 type
