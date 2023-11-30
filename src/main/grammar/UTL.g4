@@ -210,7 +210,7 @@ tempValueAccess :
     ;
 
 assignment :
-    IDENTIFIER (valueAccess)?
+    IDENTIFIER (valueAccess |    )
     (ASSIGN         {System.out.println("Operator:=");}
     |PLUSASIGN      {System.out.println("Operator:+=");}
     |MINUSASIGN     {System.out.println("Operator:-=");}
@@ -480,7 +480,7 @@ functionCall
     :
     IDENTIFIER
     LPAR
-    (expression | functionCall)?
+    (expression | functionCall |    )
     (COMMA(expression | functionCall))*
     RPAR
     ;
