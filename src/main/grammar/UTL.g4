@@ -273,12 +273,12 @@ unaryExpression:
     | (NOT) unaryPostExpression { System.out.println("Operator:!");}
     | (PLUSPLUS) unaryPostExpression { System.out.println("Operator:++");}
     | (MINUSMINUS) unaryPostExpression { System.out.println("Operator:--");})+
-    | retrieveListExpression
+    | unaryPostExpression
     ;
 
 unaryPostExpression :
-    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.println("Operator:--");}
-    | (PLUSPLUS) retrieveListExpression { System.out.println("Operator:++");})*
+    (retrieveListExpression (MINUSMINUS) {System.out.println("Operator:--");}| retrieveListExpression (PLUSPLUS) {System.out.println("Operator:--");})*
+    | retrieveListExpression
     ;
 
 retrieveListExpression:
