@@ -42,7 +42,7 @@ OPEN_METHOD : 'open()';
 
 // TIMING
 SCHEDULE:   '@schedule';
-PREORDER:   'Preorder';
+PREORDER:   'preorder';
 PARALLEL:   'parallel';
 
 // Special Valriabels
@@ -80,7 +80,7 @@ INT_VAL:     [1-9][0-9]*;
 FLOAT_VAL:   INT_VAL '.' [0-9]+ | '0.' [0-9]*;
 DOUBLE_VAL:  INT_VAL '.' [0-9]+ | '0.' [0-9]*;
 BOOLEAN_VAL: 'true' | 'false';
-STRING_VAL:  DOUBLEQUOTE [a-zA-Z][a-zA-Z0-9_]* DOUBLEQUOTE ;
+STRING_VAL:  DOUBLEQUOTE [a-zA-Z0-9_]* DOUBLEQUOTE;
 
 // Parenthesis
 LPAR: '(';
@@ -164,7 +164,7 @@ main
 body_main
     :
     statement
-    (scheduling)?
+    (SCHEDULE{System.out.println("ConcurrencyControl:Schedule");} scheduling SEMICOLON)?
     statement
     ;
 
@@ -190,7 +190,7 @@ sharedVars
 
 varDeclaration
     :
-    (type | ORDER | TRADE) (varDecName (ASSIGN {System.out.print("Operator:=");} (expression | order | observe))?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
+    (ORDER | type) (varDecName (ASSIGN {System.out.print("Operator:=");} (expression | order | observe))?) (COMMA (varDecName (ASSIGN expression)?))* SEMICOLON
     ;
 
 arrDeclaration :
@@ -209,12 +209,85 @@ assignment :
     SEMICOLON
     ;
 
-expression :
-    (LPAR expression RPAR)
-    | directValue
-//    | expression
-//    |
-    //TO DO
+expression:
+    assignExpression
+    ;
+
+assignExpression:
+    logicalOrExpression ASSIGN { System.out.print("Operator:=\n");}assignExpression
+    | logicalOrExpression
+    ;
+
+logicalOrExpression:
+    logicalAndExpression (OR logicalAndExpression { System.out.print("Operator : ||\n");})*
+    ;
+
+logicalAndExpression:
+    logicalBitExpression (AND logicalBitExpression { System.out.print("Operator : &&\n");} )*
+    ;
+
+logicalBitExpression:
+    equalExpression ((ANDBITWISE) equalExpression { System.out.print("Operator : &\n");}
+    | (ORBITWISE) equalExpression { System.out.print("Operator : |\n");}
+    | (XOR) equalExpression { System.out.print("Operator : ^\n");})*
+    ;
+
+equalExpression:
+    comparisonExpression ((EQL) comparisonExpression { System.out.print("Operator : ==\n");}
+    | (NEQ) comparisonExpression { System.out.print("Operator:!=\n");})*
+    ;
+
+comparisonExpression:
+    shiftExpression ((GTR) shiftExpression { System.out.print("Operator : >\n");}
+    | (LES) shiftExpression { System.out.print("Operator:<\n");})*
+    ;
+
+shiftExpression:
+    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.print("Operator : >>\n");}
+    | (LSHIFT) plusMinusExpression { System.out.print("Operator : <<\n");})*
+    ;
+
+plusMinusExpression:
+    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.print("Operator : +\n");}
+    | (MINUS) multiplyDivideExpression { System.out.print("Operator : -\n");})*
+    ;
+
+multiplyDivideExpression:
+    unaryExpression ((MULT) unaryExpression { System.out.print("Operator : *\n");}
+    | (DIV) unaryExpression { System.out.print("Operator : /\n");})*
+    ;
+
+unaryExpression:
+    ((MINUS) unaryPostExpression { System.out.print("Operator : -\n");}
+    | (NOTBITWISE) unaryPostExpression { System.out.print("Operator : ~\n");}
+    | (NOT) unaryPostExpression { System.out.print("Operator : !\n");}
+    | (PLUSPLUS) unaryPostExpression { System.out.print("Operator : ++\n");}
+    | (MINUSMINUS) unaryPostExpression { System.out.print("Operator : --\n");})+
+    | retrieveListExpression
+    ;
+
+unaryPostExpression :
+    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.print("Operator : --\n");}
+    | (PLUSPLUS) retrieveListExpression { System.out.print("Operator : ++\n");})*
+    ;
+
+retrieveListExpression:
+    (accessMemberExpression
+    (LBRACKET expression RBRACKET)*) (DOT retrieveListExpression)*
+    ;
+
+accessMemberExpression:
+    parantheseExpression
+    (DOT IDENTIFIER)*
+    ;
+
+parantheseExpression:
+    (directValue (LPAR callArgs RPAR)* )
+    | LPAR expression? RPAR
+    ;
+
+callArgs:
+    (expression (COMMA expression)*)?
     ;
 
 directValue :
@@ -224,6 +297,8 @@ directValue :
     | INT_VAL
     | BOOLEAN_VAL
     | ZERO
+    | order
+    | IDENTIFIER
     ;
 
 statement :
@@ -276,7 +351,7 @@ whileLoop
 oSoIfunction
     :
     VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (THROW EXCEPTION)?
-    LBRACE statement SEMICOLON RBRACE
+    LBRACE (statement SEMICOLON)? RBRACE
     ;
 
 function
@@ -337,11 +412,10 @@ refreshrate
 order
     :
     ORDER LPAR (BUY | SELL)
-    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
-    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
-    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
+    (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
+    (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
+    (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
     RPAR
-    SEMICOLON
     ;
 
 functionCall
@@ -360,13 +434,13 @@ trycatch
 
 scheduling
     :
-    SCHEDULE
-    schedulingTerm PREORDER scheduling SEMICOLON | schedulingTerm SEMICOLON
+    (schedulingTerm PREORDER scheduling )| (schedulingTerm)
     ;
 schedulingTerm
     :
-    IDENTIFIER PARALLEL schedulingTerm | LPAR scheduling RPAR PARALLEL schedulingTerm | LPAR scheduling RPAR | IDENTIFIER
+    (IDENTIFIER PARALLEL IDENTIFIER )|(LPAR scheduling RPAR PARALLEL scheduling)|(LPAR scheduling RPAR)|(IDENTIFIER)
     ;
+
 
 
 
