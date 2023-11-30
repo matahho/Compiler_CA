@@ -176,7 +176,7 @@ varDecName:
 
 arrDecName:
     LBRACKET arr_size=INT_VAL RBRACKET arr_dec=IDENTIFIER
-    { System.out.println("ArrayDec:" + $arr_dec.text + ":"+ "$arr_size.text");}
+    { System.out.println("ArrayDec:" + ":" + $arr_dec.text + ":"+ $arr_size.text);}
     ;
 
 globalVars
