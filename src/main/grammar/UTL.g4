@@ -470,7 +470,7 @@ exceptionConstructor
 throwStatement
     :
     THROW
-    exceptionConstructor| IDENTIFIER
+    (exceptionConstructor| IDENTIFIER)
     SEMICOLON
     ;
 
