@@ -318,6 +318,9 @@ directValue :
     | IDENTIFIER
     ;
 
+arrayAccess :
+    IDENTIFIER LBRACKET valueAccess RBRACKET
+    ;
 
 statement :
     arrDeclaration statement
@@ -335,14 +338,14 @@ statement :
     | throwStatement statement
     | returnStatemnet statement
     | unaryStatement statement
-    | (IDENTIFIER | valueAccess) DOT functionCall SEMICOLON statement
+    | (IDENTIFIER | arrayAccess) DOT functionCall SEMICOLON statement
     | BREAK { System.out.println("Control:break");} SEMICOLON statement
     | CONTINUE { System.out.println("Control:continue");} SEMICOLON statement
     | //epsilon
     ;
 
 unaryStatement :
-    (PLUSPLUS {System.out.println("Operator:++");}| MINUSMINUS {System.out.println("Operator:--");})* (IDENTIFIER | valueAccess) (PLUSPLUS {System.out.println("Operator:++");} | MINUSMINUS {System.out.println("Operator:--");})* SEMICOLON
+    (PLUSPLUS {System.out.println("Operator:++");}| MINUSMINUS {System.out.println("Operator:--");})* (IDENTIFIER | arrayAccess) (PLUSPLUS {System.out.println("Operator:++");} | MINUSMINUS {System.out.println("Operator:--");})* SEMICOLON
     ;
 
 type
