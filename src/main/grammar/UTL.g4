@@ -201,8 +201,8 @@ arrDeclaration :
     ;
 
 valueAccess :
-    IDENTIFIER (LBRACKET valueAccess RBRACKET)
-    | INT_VAL
+    expression (LBRACKET valueAccess RBRACKET)?
+    | expression
     ;
 
 assignment :
