@@ -74,6 +74,7 @@ CATCH:     'catch';
 THROW:     'throw';
 EXCEPTION: 'Exception';
 
+
 // Type Values
 ZERO:        '0';
 INT_VAL:     [1-9][0-9]*;
@@ -313,6 +314,7 @@ statement :
     | print statement
     | trycatch statement
     | refreshrate statement
+    | throwStatement statement
     | //epsilon
     ;
 
@@ -371,7 +373,7 @@ whileLoopBody
 
 oSoIfunction
     :
-    VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (THROW EXCEPTION)?
+    VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (throwStatement)?
     LBRACE statement RBRACE
     ;
 
@@ -383,7 +385,7 @@ function
     type IDENTIFIER
     (COMMA type IDENTIFIER)*
     RPAR
-    (THROW EXCEPTION)?
+    (throwStatement)?
     LBRACE
     body_function
     RBRACE
@@ -462,6 +464,15 @@ exceptionConstructor
     COMMA
     (STRING_VAL | IDENTIFIER)
     RPAR
+    ;
+
+
+throwStatement
+    :
+    THROW
+    EXCEPTION
+    | exceptionConstructor
+    | IDENTIFIER
     ;
 
 scheduling
