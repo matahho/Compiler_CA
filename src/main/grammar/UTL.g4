@@ -347,7 +347,8 @@ ifStatement
 
 forLoop
     :
-    FOR LPAR (varDeclaration | assignment)? SEMICOLON expression? SEMICOLON expression? RPAR
+    FOR { System.out.println("Loop:for");}
+    LPAR (varDeclaration | assignment)? SEMICOLON expression? SEMICOLON expression? RPAR
     LBRACE forLoopBody RBRACE
     ;
 
@@ -362,7 +363,8 @@ forLoopBody
 
 whileLoop
     :
-    WHILE ((LPAR expression RPAR) | expression)
+    WHILE { System.out.println("Loop:while ");}
+    ((LPAR expression RPAR) | expression)
     LBRACE whileLoopBody SEMICOLON RBRACE
     ;
 
