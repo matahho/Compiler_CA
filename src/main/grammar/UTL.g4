@@ -201,7 +201,11 @@ arrDeclaration :
     ;
 
 valueAccess :
-    expression (LBRACKET valueAccess RBRACKET)?
+    expression (LBRACKET tempValueAccess RBRACKET)?
+    ;
+
+tempValueAccess :
+    (LBRACKET tempValueAccess RBRACKET)
     | expression
     ;
 
