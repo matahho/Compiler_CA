@@ -242,27 +242,28 @@ comment
     (MULTICOMMENT | LINECOMMENT)+
     ;
 
-elseStatement :
-    ELSE { System.out.print("Conditional:else");} (((LPAR expression RPAR) | expression)
-    ((LBRACE (statement SEMICOLON)+ RBRACE) | statement SEMICOLON ))
+elseStatement
+    :
+    ELSE { System.out.print("Conditional:else");} ((LPAR expression RPAR) | expression)
+    (LBRACE statement SEMICOLON RBRACE)
     | ifStatement
     ;
 ifStatement
     :
     IF { System.out.print("Conditional:if");} ((LPAR expression RPAR) | expression)
-    ((LBRACE (statement SEMICOLON)+ RBRACE) | statement SEMICOLON ) (elseStatement | /*epsilon*/)
+    LBRACE statement SEMICOLON RBRACE (elseStatement | /*epsilon*/)
     ;
 
 forLoop
     :
     FOR LPAR (varDeclaration | assignment)? SEMICOLON expression? SEMICOLON expression? RPAR
-    ((LBRACE statement SEMICOLON RBRACE) | statement SEMICOLON)
+    LBRACE statement SEMICOLON RBRACE
     ;
 
 whileLoop
     :
     WHILE ((LPAR expression RPAR) | expression)
-    ((LBRACE statement SEMICOLON RBRACE) | statement SEMICOLON)
+    LBRACE statement SEMICOLON RBRACE
     ;
 
 oSoIfunction
@@ -326,10 +327,10 @@ refreshrate
 trycatch
     :
     TRY
-    (LBRACE (statement) RBRACE) // TODO : CHECK if we need something without { - }
+    (LBRACE (statement) RBRACE)
     CATCH
     EXCEPTION IDENTIFIER
-    (LBRACE (statement) RBRACE) // TODO : CHECK if we need something without { - }
+    (LBRACE (statement) RBRACE)
     ;
 
 
