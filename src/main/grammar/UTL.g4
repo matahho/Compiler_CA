@@ -333,7 +333,7 @@ statement :
 //    | connect statement
     | throwStatement statement
     | returnStatemnet statement
-    | callArgs SEMICOLON
+    | IDENTIFIER DOT functionCall SEMICOLON statement
     | //epsilon
     ;
 
