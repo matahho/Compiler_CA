@@ -298,11 +298,11 @@ accessMemberExpression:
 
 parantheseExpression:
     (directValue (LPAR callArgs RPAR)* )
-    | LPAR expression? RPAR
+    | LPAR expression RPAR
     ;
 
 callArgs:
-    (expression (COMMA expression)*)?
+    (expression (COMMA expression)*)
     ;
 
 directValue :
@@ -333,7 +333,7 @@ statement :
 //    | connect statement
     | throwStatement statement
     | returnStatemnet statement
-    | IDENTIFIER DOT functionCall SEMICOLON statement
+    | (IDENTIFIER | valueAccess) DOT functionCall SEMICOLON statement
     | //epsilon
     ;
 
