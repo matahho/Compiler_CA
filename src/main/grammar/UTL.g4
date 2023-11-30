@@ -349,7 +349,7 @@ ifStatement
 forLoop
     :
     FOR { System.out.println("Loop:for");}
-    LPAR (varDeclaration | assignment)? SEMICOLON expression? SEMICOLON expression? RPAR
+    LPAR ((varDeclaration | assignment)|SEMICOLON)  expression? SEMICOLON expression? RPAR
     LBRACE forLoopBody RBRACE
     ;
 
