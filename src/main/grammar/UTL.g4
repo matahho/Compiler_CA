@@ -61,7 +61,7 @@ TIME:      'Time';
 // Candle
 CANDLE:    'Candle';
 
-
+// Order
 ORDER:     'Order';
 
 
@@ -323,6 +323,15 @@ refreshrate
     RPAR
     ;
 
+order
+    :
+    ORDER LPAR (BUY | SELL)
+    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
+    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
+    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
+    RPAR 
+    SEMICOLON
+    ;
 
 trycatch
     :
