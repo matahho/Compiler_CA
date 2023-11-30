@@ -384,15 +384,15 @@ comment
 
 elseStatement
     :
-    (ELSE { System.out.println("Conditional:else");}
-    (LBRACE statement RBRACE) | statement)
+    ELSE { System.out.println("Conditional:else");}
+    ((LBRACE statement RBRACE) | statement)
     | ifStatement
     ;
 
 ifStatement
     :
     IF { System.out.println("Conditional:if");} (LPAR expression RPAR)
-    ((LBRACE statement RBRACE) | statement) (elseStatement)?
+    ((LBRACE statement RBRACE) | statement) (elseStatement| /*epsilon*/)
     ;
 
 forLoop
