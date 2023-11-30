@@ -215,61 +215,61 @@ expression:
     ;
 
 assignExpression:
-    logicalOrExpression ASSIGN { System.out.println("Operator:=\n");}assignExpression
+    logicalOrExpression ASSIGN { System.out.println("Operator:=");}assignExpression
     | logicalOrExpression
     ;
 
 logicalOrExpression:
-    logicalAndExpression (OR logicalAndExpression { System.out.println("Operator : ||\n");})*
+    logicalAndExpression (OR logicalAndExpression { System.out.println("Operator : ||");})*
     ;
 
 logicalAndExpression:
-    logicalBitExpression (AND logicalBitExpression { System.out.println("Operator : &&\n");} )*
+    logicalBitExpression (AND logicalBitExpression { System.out.println("Operator : &&");} )*
     ;
 
 logicalBitExpression:
-    equalExpression ((ANDBITWISE) equalExpression { System.out.println("Operator : &\n");}
-    | (ORBITWISE) equalExpression { System.out.println("Operator : |\n");}
-    | (XOR) equalExpression { System.out.println("Operator : ^\n");})*
+    equalExpression ((ANDBITWISE) equalExpression { System.out.println("Operator : &");}
+    | (ORBITWISE) equalExpression { System.out.println("Operator : |");}
+    | (XOR) equalExpression { System.out.println("Operator : ^");})*
     ;
 
 equalExpression:
-    comparisonExpression ((EQL) comparisonExpression { System.out.println("Operator : ==\n");}
-    | (NEQ) comparisonExpression { System.out.println("Operator:!=\n");})*
+    comparisonExpression ((EQL) comparisonExpression { System.out.println("Operator : ==");}
+    | (NEQ) comparisonExpression { System.out.println("Operator:!=");})*
     ;
 
 comparisonExpression:
-    shiftExpression ((GTR) shiftExpression { System.out.println("Operator : >\n");}
-    | (LES) shiftExpression { System.out.println("Operator:<\n");})*
+    shiftExpression ((GTR) shiftExpression { System.out.println("Operator : >");}
+    | (LES) shiftExpression { System.out.println("Operator:<");})*
     ;
 
 shiftExpression:
-    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.println("Operator : >>\n");}
-    | (LSHIFT) plusMinusExpression { System.out.println("Operator : <<\n");})*
+    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.println("Operator : >>");}
+    | (LSHIFT) plusMinusExpression { System.out.println("Operator : <<");})*
     ;
 
 plusMinusExpression:
-    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.println("Operator : +\n");}
-    | (MINUS) multiplyDivideExpression { System.out.println("Operator : -\n");})*
+    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.println("Operator : +");}
+    | (MINUS) multiplyDivideExpression { System.out.println("Operator : -");})*
     ;
 
 multiplyDivideExpression:
-    unaryExpression ((MULT) unaryExpression { System.out.println("Operator : *\n");}
-    | (DIV) unaryExpression { System.out.println("Operator : /\n");})*
+    unaryExpression ((MULT) unaryExpression { System.out.println("Operator : *");}
+    | (DIV) unaryExpression { System.out.println("Operator : /");})*
     ;
 
 unaryExpression:
-    ((MINUS) unaryPostExpression { System.out.println("Operator : -\n");}
-    | (NOTBITWISE) unaryPostExpression { System.out.println("Operator : ~\n");}
-    | (NOT) unaryPostExpression { System.out.println("Operator : !\n");}
-    | (PLUSPLUS) unaryPostExpression { System.out.println("Operator : ++\n");}
-    | (MINUSMINUS) unaryPostExpression { System.out.println("Operator : --\n");})+
+    ((MINUS) unaryPostExpression { System.out.println("Operator : -");}
+    | (NOTBITWISE) unaryPostExpression { System.out.println("Operator : ~");}
+    | (NOT) unaryPostExpression { System.out.println("Operator : !");}
+    | (PLUSPLUS) unaryPostExpression { System.out.println("Operator : ++");}
+    | (MINUSMINUS) unaryPostExpression { System.out.println("Operator : --");})+
     | retrieveListExpression
     ;
 
 unaryPostExpression :
-    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.println("Operator : --\n");}
-    | (PLUSPLUS) retrieveListExpression { System.out.println("Operator : ++\n");})*
+    retrieveListExpression ((MINUSMINUS) retrieveListExpression {System.out.println("Operator : --");}
+    | (PLUSPLUS) retrieveListExpression { System.out.println("Operator : ++");})*
     ;
 
 retrieveListExpression:
