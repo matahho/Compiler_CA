@@ -385,7 +385,7 @@ comment
 elseStatement
     :
     (ELSE { System.out.println("Conditional:else");}
-    (LBRACE statement RBRACE))
+    (LBRACE statement RBRACE) | statement)
     | ifStatement
     ;
 
@@ -399,7 +399,7 @@ forLoop
     :
     FOR { System.out.println("Loop:for");}
     LPAR ((varDeclaration | assignment)|SEMICOLON)  (expression |    ) SEMICOLON (expression |    ) RPAR
-    LBRACE statement RBRACE
+    ((LBRACE statement RBRACE) | statement)
     ;
 
 //forLoopBody
@@ -415,7 +415,7 @@ whileLoop
     :
     WHILE { System.out.println("Loop:while");}
     ((LPAR expression RPAR) | expression)
-    LBRACE statement RBRACE
+    ((LBRACE statement RBRACE) | statement)
     ;
 
 //
