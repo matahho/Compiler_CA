@@ -157,8 +157,15 @@ main
     (type | VOID)
     MAIN
     LPAR RPAR LBRACE
-    body_function
+    body_main
     RBRACE
+    ;
+
+body_main
+    :
+    statement
+    (scheduling)?
+    statement
     ;
 
 varDecName:
@@ -349,6 +356,18 @@ trycatch
     EXCEPTION IDENTIFIER
     (LBRACE (statement) RBRACE)
     ;
+
+scheduling
+    :
+    SCHEDULE
+    schedulingTerm PREORDER scheduling SEMICOLON | schedulingTerm SEMICOLON
+    ;
+schedulingTerm
+    :
+    IDENTIFIER PARALLEL schedulingTerm | LPAR scheduling RPAR PARALLEL schedulingTerm | LPAR scheduling RPAR | IDENTIFIER
+    ;
+
+
 
 
 //program : statement+;
