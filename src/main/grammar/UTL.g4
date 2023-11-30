@@ -228,8 +228,9 @@ directValue :
 
 statement :
     arrDeclaration statement
-    |varDeclaration statement
-    |assignment statement
+    | varDeclaration statement
+    | functionCall { System.out.print("FunctionCall");} statement
+    | assignment statement
     | ifStatement statement
     | whileLoop statement
     | forLoop statement
