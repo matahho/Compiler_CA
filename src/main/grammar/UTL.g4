@@ -331,14 +331,15 @@ comment
 
 elseStatement
     :
-    ELSE { System.out.println("Conditional:else");} (LPAR expression RPAR)
-    (LBRACE statement RBRACE)
+    (ELSE { System.out.println("Conditional:else");}
+    (LBRACE statement RBRACE))
     | ifStatement
     ;
+
 ifStatement
     :
     IF { System.out.println("Conditional:if");} (LPAR expression RPAR)
-    LBRACE statement RBRACE (elseStatement | /*epsilon*/)
+    LBRACE statement RBRACE (elseStatement)?
     ;
 
 forLoop
@@ -401,7 +402,7 @@ print
     :
     PRINT { System.out.println("Built-in:print"); }
     LPAR
-    STRING_VAL
+    (STRING_VAL | functionCall)
     RPAR
     SEMICOLON
     ;
@@ -444,7 +445,7 @@ orderConstructor
 
 functionCall
     :
-    IDENTIFIER LPAR (expression | TYPE IDENTIFIER)* RPAR SEMICOLON
+    IDENTIFIER LPAR (expression | TYPE IDENTIFIER | functionCall)* RPAR SEMICOLON
     ;
 
 trycatch
