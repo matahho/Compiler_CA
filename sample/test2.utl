@@ -1,0 +1,51 @@
+/*
+commnet test
+*/
+
+static float mahdi =1000;
+shared int tick_counts = 0;
+shared double tick_countsi = 0;
+
+
+// TEST for comment
+
+
+void OnInit(Trade t3)throw Exception{
+    Order o3 = Order(SELL, 100, 100, 10);
+}
+
+
+void OnStart (Trade t1) throw Exception{
+    while (mahdi < 19399){
+        Print ("!@#$%^&*()");
+        if (ali++ < 10){
+            break;
+        }
+        else {
+            continue;
+        }
+    }
+
+}
+
+//    @schedule (t1 parallel t2) preorder (t3 parallel t4);
+
+void Main(){
+    /*    @schedule (t1 parallel t2) preorder (t3 parallel t4);*/
+    Exception xox = Exception(10 , "mahdi");
+    @schedule (t1 parallel t2) preorder (t3 parallel t4);
+    Print ("test for print");
+    for (;;){
+        if (--10 < 399)
+            continue;
+        x.open();
+        x.close();
+        int[100] arr;
+        float[300]thearr ;
+        arr[10] = getNumber();
+        Candle[100] xyz = ALL();
+
+
+    }
+    //    @schedule (t1 parallel t2) preorder (t3 parallel t4);
+}

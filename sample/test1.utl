@@ -4,10 +4,30 @@ void Main()
     try
     {
         Print("Mahdi");
+        int mahdi = 1000;
+        float alireza = 20.485;
+        alireza += mahdi;
+
+        if (mahdi < alireza){
+            int mahdifunciton(){
+                Print("hello");
+            }
+        }
+        else {
+            Excetion xx = Exception (19 , "test");
+        }
+
     }
     catch Exception e
     {
         Print("Mahdi");
+        for (int i = 100 ; i < 23009 ; i++){
+            void alirezaFucntion (int m1, string m2){
+                Print("+-=)(*&^%       $#@@@!   ");
+                Print("?><MNBVCXZASDFG          ");
+                Print("HJKL:}}}{POIUYTREWQ\n\t\r");
+            }
+        }
     }
 
 }
