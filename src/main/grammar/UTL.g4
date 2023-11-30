@@ -463,10 +463,11 @@ print
 
 orderConstructor
     :
-    ORDER LPAR (BUY | SELL) COMMA
-    (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
-    (DOUBLE_VAL | FLOAT_VAL | INT_VAL) COMMA
-    (DOUBLE_VAL | FLOAT_VAL | INT_VAL)
+    ORDER
+    LPAR (BUY | SELL) COMMA
+    (expression) COMMA
+    (expression ) COMMA
+    (expression)
     RPAR
     ;
 
