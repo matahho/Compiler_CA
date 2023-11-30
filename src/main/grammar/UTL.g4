@@ -402,7 +402,10 @@ print
     :
     PRINT { System.out.println("Built-in:print"); }
     LPAR
-    (STRING_VAL | functionCall)
+    (
+    STRING_VAL |
+    (IDENTIFIER LPAR (expression | TYPE IDENTIFIER | functionCall)* RPAR)
+    )
     RPAR
     SEMICOLON
     ;
