@@ -336,6 +336,11 @@ order
     SEMICOLON
     ;
 
+functionCall
+    :
+    IDENTIFIER LPAR (expression | TYPE IDENTIFIER)* RPAR SEMICOLON
+    ;
+
 trycatch
     :
     TRY
