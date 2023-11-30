@@ -365,7 +365,7 @@ elseStatement
 ifStatement
     :
     IF { System.out.println("Conditional:if");} (LPAR expression RPAR)
-    LBRACE statement RBRACE (elseStatement)?
+    ((LBRACE statement RBRACE) | statement) (elseStatement)?
     ;
 
 forLoop
