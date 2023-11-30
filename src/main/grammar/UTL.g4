@@ -281,7 +281,7 @@ unaryExpression:
     ;
 
 unaryPostExpression :
-    (retrieveListExpression (MINUSMINUS) {System.out.println("Operator:--");}| retrieveListExpression (PLUSPLUS) {System.out.println("Operator:--");})*
+    (retrieveListExpression (MINUSMINUS) {System.out.println("Operator:--");}| retrieveListExpression (PLUSPLUS) {System.out.println("Operator:++");})*
     | retrieveListExpression
     ;
 
