@@ -206,7 +206,15 @@ valueAccess :
     ;
 
 assignment :
-    IDENTIFIER (valueAccess)? ASSIGN expression {System.out.println("Operator:=");}
+    IDENTIFIER (valueAccess)?
+    (ASSIGN         {System.out.println("Operator:=");}
+    |PLUSASIGN      {System.out.println("Operator:+=");}
+    |MINUSASIGN     {System.out.println("Operator:-=");}
+    |MULTASIGN      {System.out.println("Operator:*=");}
+    |DIVASIGN       {System.out.println("Operator:/=");}
+    |MODASIGN       {System.out.println("Operator:%=");}
+    )
+    expression
     SEMICOLON
     ;
 
