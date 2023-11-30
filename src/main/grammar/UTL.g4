@@ -471,7 +471,8 @@ exceptionConstructor
     :
     EXCEPTION
     LPAR
-    (INT_VAL | IDENTIFIER)
+    (typeNumber=INT_VAL{ System.out.println("ErrorControl:" + $typeNumber.text); }
+     | IDENTIFIER)
     COMMA
     (STRING_VAL | IDENTIFIER)
     RPAR
