@@ -327,13 +327,13 @@ comment
 elseStatement
     :
     ELSE { System.out.println("Conditional:else");} (LPAR expression RPAR)
-    (LBRACE statement SEMICOLON RBRACE)
+    (LBRACE statement RBRACE)
     | ifStatement
     ;
 ifStatement
     :
     IF { System.out.println("Conditional:if");} (LPAR expression RPAR)
-    LBRACE statement SEMICOLON RBRACE (elseStatement | /*epsilon*/)
+    LBRACE statement RBRACE (elseStatement | /*epsilon*/)
     ;
 
 forLoop
