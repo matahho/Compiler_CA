@@ -339,14 +339,33 @@ ifStatement
 forLoop
     :
     FOR LPAR (varDeclaration | assignment)? SEMICOLON expression? SEMICOLON expression? RPAR
-    LBRACE statement SEMICOLON RBRACE
+    LBRACE forLoopBody RBRACE
+    ;
+
+forLoopBody
+    :
+    statement
+    (BREAK SEMICOLON forLoopBody
+    | CONTINUE SEMICOLON forLoopBody
+    | /*epsilon*/
+    )
     ;
 
 whileLoop
     :
     WHILE ((LPAR expression RPAR) | expression)
-    LBRACE statement SEMICOLON RBRACE
+    LBRACE whileLoopBody SEMICOLON RBRACE
     ;
+
+whileLoopBody
+    :
+    statement
+    (BREAK SEMICOLON whileLoopBody
+    | CONTINUE SEMICOLON whileLoopBody
+    | /*epsilon*/
+    )
+    ;
+
 
 oSoIfunction
     :
