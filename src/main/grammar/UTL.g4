@@ -275,7 +275,11 @@ function
     :
     (type|VOID)
     name=IDENTIFIER { System.out.println("MethodDec:" + $name.text); }
-    LPAR (/* TODO */) RPAR (THROW EXCEPTION)?
+    LPAR
+    type IDENTIFIER
+    (COMMA type IDENTIFIER)*
+    RPAR
+    (THROW EXCEPTION)?
     LBRACE
     body_function
     RBRACE
