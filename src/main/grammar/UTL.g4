@@ -188,12 +188,12 @@ expression returns [Expression exprRet] :
            | functionCall { $exprRet =  FunctionCall(); } //TODO : functionCall not defined yet
            | methodCall { $exprRet = MethodCall(); }; //TODO : MethodCall not defined yet
 
-value returns [Value val] :
-    INT_LITERAL  { $val = new IntValue($INT_LITERAL.text) }
-    | FLOAT_LITERAL { $val = new FloatValue($FLOAT_LITERAL.text) }
-    | STRING_LITERAL { $val = new StringValue($STRING_LITERAL.text) }
-    | SELL { $val = new StringValue($SELL.text) } //Might be broken
-    | BUY { $val = new StringValue($BUY.text) }; //Might be broken
+value returns [Value valueRet] :
+    INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.text) }
+    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text) }
+    | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text) }
+    | SELL { $valueRet = new StringValue($SELL.text) } //Might be broken
+    | BUY { $valueRet = new StringValue($BUY.text) }; //Might be broken
 
 primitiveType : FLOAT | DOUBLE | INT | BOOL | STRING | VOID;
 
