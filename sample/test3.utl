@@ -1,26 +1,4 @@
-
-static Candle xy = Candle (theTime , 10 , aaa , 10.3 , bbb , test);
-shared Order yz = Order(SELL , 10 , 3.9090 , mh);
-
-
-void Main(){
-    Candle x = Candle (theTime , 10 , aaa , 10.3 , bbb , test);
-    Order y = Order(SELL , 10 , 3.9090 , mh);
-
-    if (mahdi < 138)
-        Print("mahdi");
-    else
-        for (a = 100 ; i < 39 ; j ++)
-            Print("fafda");
-        Print("fdfa");
-
-
-
-    while (--m < 100)
-        int aaa = 1000;
-        float bbb = 39;
-
-    for (;;)
-        break;
+void Main() {
+int x = 2+u*7;
 
 }

@@ -1,593 +1,210 @@
 grammar UTL;
 
-// ---Lexer rules---
-
-// Keywords
-MAIN:     'Main';
-FOR:      'for';
-WHILE:    'while';
-RETURN:   'return';
-IF:       'if';
-ELSE:     'else';
-
-// Basic Types
-SHARED:    'shared';
-STATIC:    'static';
-INT:       'int';
-FLOAT:     'float';
-DOUBLE:    'double';
-STRING:    'string';
-BOOL:      'bool';
-VOID:      'void';
-
-// Controlers
-BREAK:     'break';
-CONTINUE:  'continue';
-
-// Special Functions
-ONSTART:    'OnStart';
-ONINIT:     'OnInit';
-PRINT:      'Print';
-//REFRESHRATE:'RefreshRate';
-//TERMINATE:  'Terminate';
-//CONNECT:    'Connect';
-//OBSERVE:    'Observe';
-//GETCANDLE:  'GetCandle';
+@header{
+    import main.ast.node.*;
+    import main.ast.node.declaration.*;
+    import main.ast.node.statement.*;
+    import main.ast.node.expression.*;
+    import main.ast.node.expression.operators.*;
+    import main.ast.node.expression.values.*;
+    import main.ast.type.primitiveType.*;
+    import main.ast.type.complexType.*;
+    import main.ast.type.*;
+}
+// Parser rules
+// do not change first rule (program) name
+program returns [Program pro] : {$pro = new Program(); $pro.setLine(0);}
+    ( varDeclaration { $pro.addVar($varDeclaration.varDecRet); }
+    | functionDeclaration { $pro.addFunction($functionDeclaration.funcDecRet); }
+    | initDeclaration { $pro.addInit($initDeclaration.initDecRet); }
+    | startDeclaration { $pro.addStart($startDeclaration.startDecRet); }
+    )* mainDeclaration { $pro.setMain($mainDeclaration.mainDecRet); }
+    ;
 
 
-//Special Method Function
-//CLOSE_METHOD : 'close()';
-//OPEN_METHOD : 'open()';
+statement returns [Statement statementRet] :
+          ( varDeclaration { $statementRet = $varDeclaration.varDecRet; }
+          | functionDeclaration { $statementRet = $functionDeclaration.funcDecRet; }
+          | assignStatement { $statementRet = $assignStatement.assignStmtRet; }
+          | continueBreakStatement { $statementRet = $continueBreakStatement.continueBreakStmtRet; }
+          | returnStatement { $statementRet = $returnStatement.returnStmtRet; }
+          | ifStatement { $statementRet = $ifStatement.ifStmtRet; }
+          | whileStatement { $statementRet = $whileStatement.whileStmtRet; }
+          | forStatement { $statementRet = $forStatement.forStmtRet; }
+          | tryCatchStatement { $statementRet = $tryCatchStatement.tryCatchStmtRet; }
+          | throwStatement { $statementRet = $throwStatement.throwStmtRet; }
+          | expression SEMICOLON { $statementRet = $expression.expressionRet; }
+          );
 
+varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclaration(); }
+    allType { $varDecRet.setType($allType.allTypeRet); }
+    (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.intLiteralRet); })?
+    ID (ASSIGN expression)? SEMICOLON { $varDecRet.setName($ID.text); $varDecRet.setLine($ID.line); };
 
-// TIMING
-SCHEDULE:   '@schedule';
-PREORDER:   'preorder';
-PARALLEL:   'parallel';
+functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
+    primitiveType { $funcDecRet.setReturnType($primitiveType.primitiveTypeRet); }
+    ID { $funcDecRet.setName($ID.text); $funcDecRet.setLine($ID.line); }
+    LPAREN (allType (LBRACK INT_LITERAL RBRACK)? ID { $funcDecRet.addArg($allType.allTypeRet, $ID.text); }
+    (COMMA allType (LBRACK INT_LITERAL RBRACK)? ID { $funcDecRet.addArg($allType.allTypeRet, $ID.text); })*)?
+    RPAREN (THROW EXCEPTION)? (LBRACE (statement { $funDecRet.addStatement($statement.statementRet); })* RBRACE | statement { $funDecRet.addStatement($statement.statementRet); });
 
-// Special Valriabels
-SELL:      'SELL';
-BUY:       'BUY';
-//TYPE:      'Type';
-//ASK:       'Ask';
-//BID:       'Bid';
-//VOLUME:    'Volume' ;
-//LOW:       'Low';
-//HIGH:      'High';
-//CLOSE:     'Close';
-//OPEN:      'Open';
-//TIME:      'Time';
+mainDeclaration : VOID MAIN LPAREN RPAREN (LBRACE statement* RBRACE | statement);
 
-// Candle
-CANDLE:    'Candle';
+initDeclaration : VOID ONINIT LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRACE statement* RBRACE | statement);
 
-// Order
-ORDER:     'Order';
+startDeclaration : VOID ONSTART LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRACE statement* RBRACE | statement);
 
+assignStatement : ID (LBRACK expression RBRACK)? assign expression SEMICOLON;
 
-// Trade
-TRADE:     'Trade';
+ifStatement : IF LPAREN expression RPAREN (LBRACE statement* RBRACE | statement) (ELSE (LBRACE statement* RBRACE | statement))?;
 
-// Exeptions
-TRY:       'try';
-CATCH:     'catch';
-THROW:     'throw';
-EXCEPTION: 'Exception';
+whileStatement : WHILE LPAREN expression RPAREN (LBRACE statement* RBRACE | statement);
 
+forStatement: FOR LPAREN statement expression SEMICOLON expression? RPAREN (LBRACE statement* RBRACE | statement);
 
-// Type Values
-ZERO:        '0';
-INT_VAL:     [1-9][0-9]*;
-FLOAT_VAL:   INT_VAL '.' [0-9]+ | '0.' [0-9]*;
-DOUBLE_VAL:  INT_VAL '.' [0-9]+ | '0.' [0-9]*;
-BOOLEAN_VAL: 'true' | 'false';
-STRING_VAL:  DOUBLEQUOTE (~["])* DOUBLEQUOTE;
+tryCatchStatement : TRY (LBRACE statement* RBRACE | statement) (CATCH EXCEPTION ID (LBRACE statement* RBRACE | statement))?;
 
-// Parenthesis
-LPAR: '(';
-RPAR: ')';
+continueBreakStatement : (BREAK | CONTINUE) SEMICOLON;
 
-// Brackets (array element access)
-LBRACKET: '[';
-RBRACKET: ']';
+returnStatement : RETURN expression SEMICOLON;
 
-// Relational Operators
-GTR: '>';
-LES: '<';
-EQL: '==';
-NEQ: '!=';
+throwStatement : THROW expression SEMICOLON;
 
-// Arithmetic Operators
-PLUS:       '+';
-MINUS:      '-';
-PLUSPLUS:   '++';
-MINUSMINUS: '--';
-MULT:       '*';
-DIV:        '/';
-MOD:        '%';
+functionCall : (espetialFunction | complexType | ID) LPAREN (expression (COMMA expression)*)? RPAREN;
 
-// Logical Operators On bool
-AND: '&&';
-OR:  '||';
+methodCall : ID (LBRACK expression RBRACK)? DOT espetialMethod LPAREN (expression (COMMA expression)*)? RPAREN;
+
+expression : value
+           | expression DOT espetialVariable
+           | expression opr=(INC | DEC)
+           | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression
+           | expression opr=(MULT | DIV | MOD) expression
+           | expression opr=(PLUS | MINUS) expression
+           | expression opr=(L_SHIFT | R_SHIFT) expression
+           | expression opr=(LT | GT) expression
+           | expression opr=(EQ | NEQ) expression
+           | expression opr=(BIT_AND | BIT_OR | BIT_XOR) expression
+           | expression AND expression
+           | expression OR expression
+           | ID (LBRACK expression RBRACK)?
+           | LPAREN expression RPAREN
+           | functionCall
+           | methodCall;
+
+value : INT_LITERAL | FLOAT_LITERAL | STRING_LITERAL | SELL | BUY;
+
+primitiveType : FLOAT | DOUBLE | INT | BOOL | STRING | VOID;
+
+complexType: ORDER | TRADE | CANDLE | EXCEPTION;
+
+allType: primitiveType | complexType;
+
+espetialFunction: REFRESH_RATE | CONNECT | OBSERVE | GET_CANDLE | TERMINATE | PRINT;
+
+espetialVariable: ASK | BID | TIME | HIGH | LOW | DIGITS | VOLUME | TYPE | TEXT | OPEN | CLOSE;
+
+espetialMethod: OPEN | CLOSE;
+
+assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
+
+// Lexer rules
+SPACES : [ \t\r\n]+ -> skip;
+SEMICOLON : ';';
+COMMA : ',';
+COLON : ':';
+DOT: '.';
+LPAREN : '(';
+RPAREN : ')';
+LBRACE : '{';
+RBRACE : '}';
+LBRACK : '[';
+RBRACK : ']';
+
+PLUS : '+';
+MINUS : '-';
+MULT : '*';
+DIV : '/';
+MOD : '%';
+
+AND : '&&';
+OR: '||';
 NOT: '!';
 
-// Logical Operators On number
-NOTBITWISE:     '~';
-RSHIFT:     '>>';
-LSHIFT:     '<<';
-ANDBITWISE: '&';
-ORBITWISE:  '|';
-XOR:        '^';
-
-// Assignment Operators
-ASSIGN:     '=';
-PLUSASIGN:  '+=';
-MINUSASIGN: '-=';
-MULTASIGN:  '*=';
-DIVASIGN:   '/=';
-MODASIGN:   '%=';
-
-// Symbols
-LBRACE:    '{';
-RBRACE:    '}';
-COMMA:     ',';
-DOT:       '.';
-COLON:     ':';
-QUESTION:  '?';
-SEMICOLON : ';';
-DOUBLEQUOTE:'"';
-
-// Other
-IDENTIFIER: [a-zA-Z][a-zA-Z0-9_]*;
-ARROW:      '=>';
-LINECOMMENT:'//' ~[\r\n]* -> skip;
-MULTICOMMENT:    '/*' .*? '*/' -> skip;
-WS:         [ \t\r\n]+ -> skip;
-
-
-
-
-// ---Parser rules---
-program
-    :
-    (globalVars | sharedVars)* (oSoIfunction | function)* main (comment)*
-    ;
-
-main
-    :
-    (type | VOID)
-    MAIN
-    LPAR RPAR LBRACE
-    body_main
-    RBRACE
-    ;
-
-body_main
-    :
-    statement
-    (SCHEDULE{System.out.println("ConcurrencyControl:Schedule");} scheduling SEMICOLON)?
-    statement
-    ;
-
-varDecName:
-    var_dec=IDENTIFIER
-    { System.out.println("VarDec:"+$var_dec.text);}
-    ;
-
-arrDecName:
-    LBRACKET arr_size=INT_VAL RBRACKET arr_dec=IDENTIFIER
-    { System.out.println("ArrayDec:" + $arr_dec.text + ":"+ $arr_size.text);}
-    ;
-
-globalVars
-    :
-    STATIC
-    type
-    (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?)
-    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))*
-    SEMICOLON
-    ;
-
-sharedVars
-    :
-    SHARED type (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?)
-    (COMMA (varDecName (ASSIGN {System.out.println("Operator:=");} expression)?))*
-    SEMICOLON
-    ;
-
-varDeclaration
-    :
-    (type)
-    varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor | candleCostructor /*| observe*/ ){System.out.println("Operator:=");})?
-    (COMMA (varDecName (ASSIGN (expression | orderConstructor | exceptionConstructor | candleCostructor/*| observe*/ ){System.out.println("Operator:=");})?))*
-    SEMICOLON
-    ;
-
-arrDeclaration :
-    type
-    (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?)
-    (COMMA (arrDecName (ASSIGN {System.out.println("Operator:=");} expression)?))*
-    SEMICOLON
-    ;
-
-valueAccess :
-    expression
-    (LBRACKET tempValueAccess RBRACKET)?
-    ;
-
-tempValueAccess :
-    (LBRACKET tempValueAccess RBRACKET)
-    | expression
-    ;
-
-assignment :
-    IDENTIFIER (valueAccess | /*epsilon*/ )
-    (ASSIGN         {System.out.println("Operator:=");}
-    |PLUSASIGN      {System.out.println("Operator:+=");}
-    |MINUSASIGN     {System.out.println("Operator:-=");}
-    |MULTASIGN      {System.out.println("Operator:*=");}
-    |DIVASIGN       {System.out.println("Operator:/=");}
-    |MODASIGN       {System.out.println("Operator:%=");}
-    )
-    expression
-    SEMICOLON
-    ;
-
-expression:
-    assignExpression
-    ;
-
-assignExpression:
-    logicalOrExpression
-    ASSIGN { System.out.println("Operator:=");}assignExpression
-    | logicalOrExpression
-    ;
-
-logicalOrExpression:
-    logicalAndExpression (OR logicalAndExpression { System.out.println("Operator:||");})*
-    ;
-
-logicalAndExpression:
-    logicalBitExpression (AND logicalBitExpression { System.out.println("Operator:&&");} )*
-    ;
-
-logicalBitExpression:
-    equalExpression ((ANDBITWISE) equalExpression { System.out.println("Operator:&");}
-    | (ORBITWISE) equalExpression { System.out.println("Operator:|");}
-    | (XOR) equalExpression { System.out.println("Operator:^");})*
-    ;
-
-equalExpression:
-    comparisonExpression ((EQL) comparisonExpression { System.out.println("Operator:==");}
-    | (NEQ) comparisonExpression { System.out.println("Operator:!=");})*
-    ;
-
-comparisonExpression:
-    shiftExpression ((GTR) shiftExpression { System.out.println("Operator:>");}
-    | (LES) shiftExpression { System.out.println("Operator:<");})*
-    ;
-
-shiftExpression:
-    plusMinusExpression ((RSHIFT) plusMinusExpression { System.out.println("Operator:>>");}
-    | (LSHIFT) plusMinusExpression { System.out.println("Operator:<<");})*
-    ;
-
-plusMinusExpression:
-    multiplyDivideExpression ((PLUS) multiplyDivideExpression {System.out.println("Operator:+");}
-    | (MINUS) multiplyDivideExpression { System.out.println("Operator:-");})*
-    ;
-
-multiplyDivideExpression:
-    unaryExpression ((MULT) unaryExpression { System.out.println("Operator:*");}
-    | (DIV) unaryExpression { System.out.println("Operator:/");}
-    | (MOD) unaryExpression { System.out.println("Operator:%");})*
-    ;
-
-unaryExpression:
-    ((MINUS) unaryPostExpression { System.out.println("Operator:-");}
-    | (NOTBITWISE) unaryPostExpression { System.out.println("Operator:~");}
-    | (NOT) unaryPostExpression { System.out.println("Operator:!");}
-    | (PLUSPLUS) unaryPostExpression { System.out.println("Operator:++");}
-    | (MINUSMINUS) unaryPostExpression { System.out.println("Operator:--");})+
-    | unaryPostExpression
-    ;
-
-unaryPostExpression :
-    (retrieveListExpression (MINUSMINUS) {System.out.println("Operator:--");}| retrieveListExpression (PLUSPLUS) {System.out.println("Operator:++");})*
-    | retrieveListExpression
-    ;
-
-retrieveListExpression:
-    (accessMemberExpression
-    (LBRACKET expression RBRACKET)*) (DOT retrieveListExpression)*
-    ;
-
-accessMemberExpression:
-    parantheseExpression
-    (DOT IDENTIFIER)*
-    ;
-
-
-parantheseExpression:
-    (directValue (LPAR callArgs RPAR)* )
-    | LPAR (expression |               )
-    | RPAR
-    ;
-
-callArgs:
-    (expression (COMMA expression)*) | //epsilon
-    ;
-
-directValue :
-    STRING_VAL
-    | DOUBLE_VAL
-    | FLOAT_VAL
-    | INT_VAL
-    | BOOLEAN_VAL
-    | ZERO
-    | orderConstructor
-    | exceptionConstructor
-    | candleCostructor
-    | IDENTIFIER
-    ;
-
-arrayAccess :
-    IDENTIFIER LBRACKET valueAccess RBRACKET
-    ;
-
-statement :
-    arrDeclaration statement
-    | varDeclaration statement
-    | function statement
-    | functionCall { System.out.println("FunctionCall");} SEMICOLON statement
-    | assignment statement
-    | ifStatement statement
-    | whileLoop statement
-    | forLoop statement
-    | print statement
-    | trycatch statement
-    | throwStatement statement
-    | returnStatemnet statement
-    | unaryStatement statement
-    | (IDENTIFIER | arrayAccess) DOT functionCall SEMICOLON statement
-    | BREAK { System.out.println("Control:break");} SEMICOLON statement
-    | CONTINUE { System.out.println("Control:continue");} SEMICOLON statement
-    | //epsilon
-    //    | refreshrate statement
-    //    | connect statement
-    ;
-
-
-unaryStatement :
-    (PLUSPLUS {System.out.println("Operator:++");}| MINUSMINUS {System.out.println("Operator:--");})*
-    (IDENTIFIER | arrayAccess) (PLUSPLUS {System.out.println("Operator:++");} | MINUSMINUS {System.out.println("Operator:--");})*
-    SEMICOLON
-    ;
-
-type
-    :
-    INT
-    | FLOAT
-    | BOOL
-    | DOUBLE
-    | STRING
-    | TRADE
-    | ORDER
-    | EXCEPTION
-    | CANDLE
-    ;
-
-comment
-    :
-    (MULTICOMMENT | LINECOMMENT)+
-    ;
-
-elseStatement
-    :
-    ELSE { System.out.println("Conditional:else");}
-    ((LBRACE statement RBRACE) | statement)
-    | ifStatement
-    ;
-
-ifStatement
-    :
-    IF { System.out.println("Conditional:if");} (LPAR expression RPAR)
-    ((LBRACE statement RBRACE) | statement) (elseStatement| /*epsilon*/)
-    ;
-
-forLoop
-    :
-    FOR { System.out.println("Loop:for");}
-    LPAR ((varDeclaration | assignment)|SEMICOLON)  (expression |    ) SEMICOLON (expression |    ) RPAR
-    ((LBRACE statement RBRACE) | statement)
-    ;
-
-//forLoopBody
-//    :
-//    statement
-//    (BREAK SEMICOLON forLoopBody
-//    | CONTINUE SEMICOLON forLoopBody
-//    | /*epsilon*/
-//    )
-//    ;
-
-whileLoop
-    :
-    WHILE { System.out.println("Loop:while");}
-    ((LPAR expression RPAR) | expression)
-    ((LBRACE statement RBRACE) | statement)
-    ;
-
-//
-//whileLoopBody
-//    :
-//    statement
-//    (BREAK SEMICOLON whileLoopBody
-//    | CONTINUE SEMICOLON whileLoopBody
-//    | /*epsilon*/
-//    )
-//    ;
-
-
-oSoIfunction
-    :
-    VOID (ONSTART | ONINIT) LPAR TRADE IDENTIFIER RPAR (THROW EXCEPTION)?
-    LBRACE statement RBRACE
-    ;
-
-
-function
-    :
-    (type|VOID)
-    name=IDENTIFIER { System.out.println("MethodDec:" + $name.text); }
-    LPAR
-    (type IDENTIFIER (COMMA type IDENTIFIER)*)*
-    RPAR
-    (THROW EXCEPTION)?
-    LBRACE
-    body_function
-    RBRACE
-    ;
-
-
-body_function
-    :
-    statement
-    ;
-
-
-returnStatemnet
-    :
-    RETURN
-    (expression | directValue)
-    SEMICOLON
-    ;
-
-
-print
-    :
-    PRINT { System.out.println("Built-in:print"); }
-    LPAR
-    (
-    STRING_VAL |
-    functionCall
-    )
-    RPAR
-    SEMICOLON
-    ;
-
-
-//connect
-//    :
-//    CONNECT
-//    LPAR
-//    STRING_VAL
-//    COMMA
-//    STRING_VAL
-//    RPAR
-//    SEMICOLON
-//    ;
-
-//observe
-//    :
-//    OBSERVE
-//    LPAR
-//    STRING_VAL
-//    RPAR
-//    ;
-
-//refreshrate
-//    :
-//    REFRESHRATE
-//    LPAR
-//    RPAR
-//    SEMICOLON
-//    ;
-
-orderConstructor
-    :
-    ORDER
-    LPAR (BUY | SELL) COMMA
-    (expression) COMMA
-    (expression ) COMMA
-    (expression)
-    RPAR
-    ;
-
-candleCostructor
-    :
-    CANDLE
-    LPAR
-    (expression) COMMA
-    (expression) COMMA
-    (expression ) COMMA
-    (expression) COMMA
-    (expression ) COMMA
-    (expression)
-    RPAR
-    ;
-
-functionCall
-    :
-    IDENTIFIER
-    LPAR
-    (expression | functionCall |    )
-    (COMMA(expression | functionCall))*
-    RPAR
-    ;
-
-trycatch
-    :
-    TRY
-    (LBRACE (statement) RBRACE)
-    CATCH
-    EXCEPTION IDENTIFIER
-    (LBRACE (statement) RBRACE)
-    ;
-
-exceptionConstructor
-    :
-    EXCEPTION
-    LPAR
-    (typeNumber=INT_VAL{ System.out.println("ErrorControl:" + $typeNumber.text); }
-     | IDENTIFIER)
-    COMMA
-    (STRING_VAL | IDENTIFIER)
-    RPAR
-    ;
-
-
-throwStatement
-    :
-    THROW
-    (exceptionConstructor| IDENTIFIER)
-    SEMICOLON
-    ;
-
-scheduling
-    :
-    (schedulingTerm PREORDER scheduling )
-    |(schedulingTerm)
-    ;
-schedulingTerm
-    :
-    (IDENTIFIER PARALLEL IDENTIFIER )
-    |(LPAR scheduling RPAR PARALLEL scheduling)
-    |(LPAR scheduling RPAR)
-    |(IDENTIFIER)
-    ;
-
-
-
-//
-//candleVarsAccess
-//    :
-//    (valueAccess)
-//    DOT
-//    (TIME | OPEN | CLOSE | HIGH | LOW | VOLUME)
-//
-//    ;
-
-
-
-
+BIT_AND : '&';
+BIT_OR : '|';
+BIT_XOR : '^';
+L_SHIFT : '<<';
+R_SHIFT : '>>';
+BIT_NOT : '~';
+
+LT : '<';
+GT : '>';
+EQ : '==';
+NEQ : '!=';
+
+INC : '++';
+DEC : '--';
+
+ASSIGN : '=';
+ADD_ASSIGN: '+=';
+SUB_ASSIGN: '-=';
+MUL_ASSIGN: '*=';
+DIV_ASSIGN: '/=';
+MOD_ASSIGN: '%=';
+
+TRY : 'try';
+THROW : 'throw';
+CATCH : 'catch';
+IF : 'if';
+ELSE : 'else';
+FOR: 'for';
+WHILE : 'while';
+BREAK : 'break';
+CONTINUE : 'continue';
+RETURN : 'return';
+
+MAIN : 'Main';
+ONINIT : 'OnInit';
+ONSTART : 'OnStart';
+
+FLOAT : 'float';
+DOUBLE : 'double';
+STRING: 'string';
+BOOL: 'bool';
+VOID: 'void';
+INT : 'int';
+
+BUY : 'BUY';
+SELL : 'SELL';
+
+ASK : 'Ask';
+BID : 'Bid';
+TIME : 'Time';
+HIGH : 'High';
+LOW : 'Low';
+DIGITS : 'Digits';
+VOLUME : 'Volume';
+TYPE: 'Type';
+TEXT: 'Text';
+OPEN : 'Open';
+CLOSE : 'Close';
+
+TRADE: 'Trade';
+ORDER: 'Order';
+CANDLE: 'Candle';
+EXCEPTION: 'Exception';
+
+REFRESH_RATE : 'RefreshRate';
+GET_CANDLE : 'GetCandle';
+TERMINATE : 'Terminate';
+CONNECT : 'Connect';
+OBSERVE : 'Observe';
+PRINT : 'Print';
+
+ID : [a-zA-Z_][a-zA-Z_0-9]*;
+
+INT_LITERAL : [1-9][0-9]* | '0';
+FLOAT_LITERAL : [0-9]* '.' [0-9]+;
+STRING_LITERAL : '"' (~["])* '"';
+
+COMMENT: (('//' ~('\r'|'\n')*) | ('/*' .*? '*/')) -> skip;
