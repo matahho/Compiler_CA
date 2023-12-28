@@ -120,7 +120,12 @@ expression : value
            | functionCall
            | methodCall;
 
-value : INT_LITERAL | FLOAT_LITERAL | STRING_LITERAL | SELL | BUY;
+value returns [Value val] :
+    INT_LITERAL  { $val = new IntValue($INT_LITERAL.text) }
+    | FLOAT_LITERAL { $val = new FloatValue($FLOAT_LITERAL.text) }
+    | STRING_LITERAL { $val = new StringValue($STRING_LITERAL.text) }
+    | SELL { $val = new StringValue($SELL.text) } //Might be broken
+    | BUY { $val = new StringValue($BUY.text) }; //Might be broken
 
 primitiveType : FLOAT | DOUBLE | INT | BOOL | STRING | VOID;
 
