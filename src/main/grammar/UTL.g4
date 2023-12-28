@@ -50,7 +50,19 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = n
 
 mainDeclaration : VOID MAIN LPAREN RPAREN (LBRACE statement* RBRACE | statement);
 
-initDeclaration : VOID ONINIT LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRACE statement* RBRACE | statement);
+initDeclaration returns [OnInitDeclaration initDecRet]:
+    VOID ONINIT LPAREN TRADE tradeName=ID RPAREN
+    (THROW EXCEPTION)?
+    (LBRACE initBody=statement* RBRACE | initBody=statement)
+
+    {
+    $initDecRet = new OnInitDeclaration();
+    $initDecRet.setTradeName($tradeName.text);
+    for (Statement stmt: $initBody){
+        $initDecRet.addStatement(stmt.statementRet);
+    }
+    }
+    ;
 
 startDeclaration : VOID ONSTART LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRACE statement* RBRACE | statement);
 
@@ -60,7 +72,7 @@ assignStatement returns [AssignStmt assignStmtRet]:
     rval=expression
     SEMICOLON
     {
-        $assignStmtRet = new AssignStmt($lval , $rval);
+        $assignStmtRet = new AssignStmt($lval.exprRet , $rval.exprRet);
     }
     ;
 
@@ -71,12 +83,12 @@ ifStatement returns [IfElseStmt ifStmtRet] :
         (LBRACE elseBody=statement* RBRACE | elseBody=statement)
     )?
     {
-        $ifStmtRet= new IfElseStmt($expression);
+        $ifStmtRet= new IfElseStmt($expression.exprRet);
             for (Statement stmt : $ifBody) {
-                $ifStmtRet.addThenStatement(stmt);
+                $ifStmtRet.addThenStatement(stmt.statementRet);
             }
             for (Statement stmt : $elseBody) {
-                $ifStmtRet.addElseStatement(stmt);
+                $ifStmtRet.addElseStatement(stmt.statementRet));
             }
     };
 
@@ -84,9 +96,9 @@ whileStatement returns [WhileStmt whileStmtRet]:
     WHILE LPAREN expression RPAREN
         (LBRACE whileBody=statement* RBRACE | whileBody=statement)
     {
-        $whileStmtRet = new WhileStmt($expression);
+        $whileStmtRet = new WhileStmt($expression.exprRet);
             for (Statement stmt : $whileBody){
-                $whileStmtRet.addBody(stmt);
+                $whileStmtRet.addBody(stmt.statementRet);
             }
     };
 
@@ -96,23 +108,23 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
     {
         if ($theInit != null){
             for (Statement stmt : $theInit){
-                $forStmtRet.addInit(stmt);
+                $forStmtRet.addInit(stmt.statementRet);
             }
         }
 
         if ($theCondition != null){
-            $forStmtRet.setCondition($theCondition);
+            $forStmtRet.setCondition($theCondition.exprRet);
         }
 
         if ($theUpdate != null){
             for (Statement stmt : $theUpdate){
-                $forStmtRet.addUpdate(stmt);
+                $forStmtRet.addUpdate(stmt.exprRet);
             }
         }
 
         if ($forBody != null){
             for (Statement stmt : $forBody){
-                $forStmtRet.addBody(stmt);
+                $forStmtRet.addBody(stmt.statementRet);
             }
         }
 
@@ -130,10 +142,10 @@ tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
         $tryCatchStmtRet = new TryCatchStmt();
 
         for (Statement stmt : $tryBody){
-            $tryCatchStmtRet.addThenStatement(stmt);
+            $tryCatchStmtRet.addThenStatement(stmt.statementRet);
         }
         for (Statement stmt : $catchBody){
-            $tryCatchStmtRet.addElseStatement(stmt);
+            $tryCatchStmtRet.addElseStatement(stmt.statementRet);
         }
     };
 
@@ -144,13 +156,13 @@ continueBreakStatement :
 returnStatement returns[ReturnStmt returnStmtRet]:
     RETURN returnExp=expression SEMICOLON
     {
-        $returnStmtRet = new ReturnStmt($returnExp);
+        $returnStmtRet = new ReturnStmt($returnExp.exprRet);
     };
 
 throwStatement returns[ThrowStmt throwStmtRet]:
     THROW throwed=expression SEMICOLON
     {
-        $throwStmtRet = new ThrowStmt($throwed);
+        $throwStmtRet = new ThrowStmt($throwed.exprRet);
     }
     ;
 
