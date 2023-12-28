@@ -56,7 +56,21 @@ startDeclaration : VOID ONSTART LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRAC
 
 assignStatement : ID (LBRACK expression RBRACK)? assign expression SEMICOLON;
 
-ifStatement : IF LPAREN expression RPAREN (LBRACE statement* RBRACE | statement) (ELSE (LBRACE statement* RBRACE | statement))?;
+ifStatement returns [IfElseStmt ifStmtRet] :
+    IF LPAREN expression RPAREN
+        (LBRACE ifBody=statement* RBRACE | ifBody=statement)
+    (ELSE
+        (LBRACE elseBody=statement* RBRACE | elseBody=statement)
+    )?
+    {
+        $ifElseStmtRet = new IfElseStmt($expression.expressionRet);
+            for (Statement stmt : $ifBody) {
+                $ifElseStmtRet.addThenStatement(stmt);
+            }
+            for (Statement stmt : $elseBody) {
+                $ifElseStmtRet.addElseStatement(stmt);
+            }
+    };
 
 whileStatement : WHILE LPAREN expression RPAREN (LBRACE statement* RBRACE | statement);
 
