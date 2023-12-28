@@ -112,7 +112,22 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
 
 
 
-tryCatchStatement : TRY (LBRACE statement* RBRACE | statement) (CATCH EXCEPTION ID (LBRACE statement* RBRACE | statement))?;
+tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
+    TRY
+        (LBRACE tryBody=statement* RBRACE | tryBody=statement)
+    (CATCH EXCEPTION ID
+        (LBRACE catchBody=statement* RBRACE | catchBody=statement))?
+    //TODO : Construncor TryCatchStmt gets a condition . MUST WRITE
+    {
+        $tryCatchStmtRet = new TryCatchStmt();
+
+        for (Statement stmt : $tryBody){
+            $tryCatchStmtRet.addThenStatement(stmt);
+        }
+        for (Statement stmt : $catchBody){
+            $tryCatchStmtRet.addElseStatement(stmt);
+        }
+    };
 
 continueBreakStatement : (BREAK | CONTINUE) SEMICOLON;
 
