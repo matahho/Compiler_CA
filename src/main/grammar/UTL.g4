@@ -176,13 +176,13 @@ expression returns [Expression exprRet] :
            | expression opr=(INC | DEC) { $exprRet = UnaryExpression($opr, $expression.exprRet); } //TODO : opr might be broken
            | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $exprRet = UnaryExpression($opr, $expression.exprRet); } //TODO : opr might be broken
            | lexpr=expression opr=(MULT | DIV | MOD) rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
-           | expression opr=(PLUS | MINUS) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken //
-           | expression opr=(L_SHIFT | R_SHIFT) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
-           | expression opr=(LT | GT) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
-           | expression opr=(EQ | NEQ) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
-           | expression opr=(BIT_AND | BIT_OR | BIT_XOR) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
-           | expression AND expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
-           | expression OR expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | lexpr=expression opr=(PLUS | MINUS) rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken //
+           | lexpr=expression opr=(L_SHIFT | R_SHIFT) rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | lexpr=expression opr=(LT | GT) rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | lexpr=expression opr=(EQ | NEQ) rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | lexpr=expression opr=(BIT_AND | BIT_OR | BIT_XOR) rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | lexpr=expression AND rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | lexpr=expression OR rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
            | ID (LBRACK expression RBRACK)? { $exprRet = ArrayIdentifier($ID.text, $expression.exprRet); } //TODO :
            | LPAREN expression RPAREN { $exprRet = $expression.exprRet; }
            | functionCall { $exprRet =  FunctionCall(); } //TODO : functionCall not defined yet
