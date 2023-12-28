@@ -48,7 +48,14 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = n
     (COMMA allType (LBRACK INT_LITERAL RBRACK)? ID { $funcDecRet.addArg($allType.allTypeRet, $ID.text); })*)?
     RPAREN (THROW EXCEPTION)? (LBRACE (statement { $funDecRet.addStatement($statement.statementRet); })* RBRACE | statement { $funDecRet.addStatement($statement.statementRet); });
 
-mainDeclaration : VOID MAIN LPAREN RPAREN (LBRACE statement* RBRACE | statement);
+mainDeclaration returns [MainDeclaration mainDecRet]:
+    VOID MAIN LPAREN RPAREN
+    (LBRACE statement* RBRACE | statement)
+    {
+        $mainDecRet = new MainDeclaration();
+
+    }
+    ;
 
 initDeclaration returns [OnInitDeclaration initDecRet]:
     VOID ONINIT LPAREN TRADE tradeName=ID RPAREN
