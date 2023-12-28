@@ -129,9 +129,15 @@ tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
         }
     };
 
-continueBreakStatement : (BREAK | CONTINUE) SEMICOLON;
+continueBreakStatement :
+    (BREAK | CONTINUE) SEMICOLON;
+    //TODO : What is the string token in their constructor
 
-returnStatement : RETURN expression SEMICOLON;
+returnStatement returns[ReturnStmt returnStmtRet]:
+    RETURN expression SEMICOLON
+    {
+
+    };
 
 throwStatement : THROW expression SEMICOLON;
 
