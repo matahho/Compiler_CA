@@ -76,11 +76,20 @@ whileStatement returns [WhileStmt whileStmtRet]:
     WHILE LPAREN expression RPAREN
         (LBRACE whileBody=statement* RBRACE | whileBody=statement)
     {
-        $whileStmtRet = new WhileStmt(expression);
-            $whileStmtRet.setBody(whileBody);
+        $whileStmtRet = new WhileStmt($expression);
+            for (Statement stmt : $whileBody){
+                $whileStmtRet.addBody(stmt);
+            }
     };
 
-forStatement: FOR LPAREN statement expression SEMICOLON expression? RPAREN (LBRACE statement* RBRACE | statement);
+forStatement returns [ForStmt forStmtRet]:
+    FOR LPAREN statement expression SEMICOLON expression? RPAREN
+        (LBRACE statement* RBRACE | statement)
+    {
+
+    };
+
+
 
 tryCatchStatement : TRY (LBRACE statement* RBRACE | statement) (CATCH EXCEPTION ID (LBRACE statement* RBRACE | statement))?;
 
