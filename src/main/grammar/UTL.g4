@@ -56,15 +56,27 @@ initDeclaration returns [OnInitDeclaration initDecRet]:
     (LBRACE initBody=statement* RBRACE | initBody=statement)
 
     {
-    $initDecRet = new OnInitDeclaration();
-    $initDecRet.setTradeName($tradeName.text);
-    for (Statement stmt: $initBody){
-        $initDecRet.addStatement(stmt.statementRet);
-    }
+        $initDecRet = new OnInitDeclaration();
+        $initDecRet.setTradeName($tradeName.text);
+        for (Statement stmt: $initBody){
+            $initDecRet.addStatement(stmt.statementRet);
+        }
     }
     ;
 
-startDeclaration : VOID ONSTART LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRACE statement* RBRACE | statement);
+startDeclaration returns [OnStartDeclaration startDecRet]:
+    VOID ONSTART LPAREN TRADE tradeName=ID RPAREN
+    (THROW EXCEPTION)?
+    (LBRACE startBody=statement* RBRACE | startBody=statement)
+
+    {
+        $startDecRet = new OnStartDeclaration();
+            $startDecRet.setTradeName($tradeName.text);
+            for (Statement stmt: $startBody){
+                $startDecRet.addStatement(stmt.statementRet);
+            }
+    }
+    ;
 
 assignStatement returns [AssignStmt assignStmtRet]:
     ID (LBRACK lval=expression RBRACK)?
