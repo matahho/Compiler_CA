@@ -134,9 +134,9 @@ continueBreakStatement :
     //TODO : What is the string token in their constructor
 
 returnStatement returns[ReturnStmt returnStmtRet]:
-    RETURN expression SEMICOLON
+    RETURN returnExp=expression SEMICOLON
     {
-
+        $returnStmtRet = new ReturnStmt(returnExp);
     };
 
 throwStatement : THROW expression SEMICOLON;
