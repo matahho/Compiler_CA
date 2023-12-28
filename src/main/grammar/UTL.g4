@@ -72,7 +72,13 @@ ifStatement returns [IfElseStmt ifStmtRet] :
             }
     };
 
-whileStatement : WHILE LPAREN expression RPAREN (LBRACE statement* RBRACE | statement);
+whileStatement returns [WhileStmt whileStmtRet]:
+    WHILE LPAREN expression RPAREN
+        (LBRACE whileBody=statement* RBRACE | whileBody=statement)
+    {
+        $whileStmtRet = new WhileStmt(expression);
+            $whileStmtRet.setBody(whileBody);
+    };
 
 forStatement: FOR LPAREN statement expression SEMICOLON expression? RPAREN (LBRACE statement* RBRACE | statement);
 
