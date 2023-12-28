@@ -139,7 +139,12 @@ returnStatement returns[ReturnStmt returnStmtRet]:
         $returnStmtRet = new ReturnStmt(returnExp);
     };
 
-throwStatement : THROW expression SEMICOLON;
+throwStatement returns[ThrowStmt throwStmtRet]:
+    THROW throwed=expression SEMICOLON
+    {
+        $throwStmtRet = new ThrowStmt(throwed);
+    }
+    ;
 
 functionCall : (espetialFunction | complexType | ID) LPAREN (expression (COMMA expression)*)? RPAREN;
 
