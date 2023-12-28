@@ -171,7 +171,7 @@ functionCall : (espetialFunction | complexType | ID) LPAREN (expression (COMMA e
 methodCall : ID (LBRACK expression RBRACK)? DOT espetialMethod LPAREN (expression (COMMA expression)*)? RPAREN;
 
 expression returns [Expression exprRet] :
-             value { $exprRet = $value.val }
+             value { $exprRet = $value.valueRet }
            | expression DOT espetialVariable { $exprRet = MethodCall($expression.exprRet, ); } //TODO : what is espetialVariable name?
            | expression opr=(INC | DEC) { $exprRet = UnaryExpression($opr, $expression.exprRet); } //TODO : opr might be broken
            | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $exprRet = UnaryExpression($opr, $expression.exprRet); } //TODO : opr might be broken
