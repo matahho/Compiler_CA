@@ -82,10 +82,31 @@ whileStatement returns [WhileStmt whileStmtRet]:
             }
     };
 
-forStatement returns [ForStmt forStmtRet]:
-    FOR LPAREN statement expression SEMICOLON expression? RPAREN
-        (LBRACE statement* RBRACE | statement)
+forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
+    FOR LPAREN theInit=statement theCondition=expression SEMICOLON theUpdate=expression? RPAREN
+        (LBRACE forBody=statement* RBRACE | forBody=statement)
     {
+        if ($theInit != null){
+            for (Statement stmt : $theInit){
+                $forStmtRet.addInit(stmt);
+            }
+        }
+
+        if ($theCondition != null){
+            $forStmtRet.setCondition($theCondition);
+        }
+
+        if ($theUpdate != null){
+            for (Statement stmt : $theUpdate){
+                $forStmtRet.addUpdate(stmt);
+            }
+        }
+
+        if ($forBody != null){
+            for (Statement stmt : $forBody){
+                $forStmtRet.addBody(stmt);
+            }
+        }
 
     };
 
