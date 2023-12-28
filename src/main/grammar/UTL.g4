@@ -170,22 +170,23 @@ functionCall : (espetialFunction | complexType | ID) LPAREN (expression (COMMA e
 
 methodCall : ID (LBRACK expression RBRACK)? DOT espetialMethod LPAREN (expression (COMMA expression)*)? RPAREN;
 
-expression : value
-           | expression DOT espetialVariable
-           | expression opr=(INC | DEC)
-           | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression
-           | expression opr=(MULT | DIV | MOD) expression
-           | expression opr=(PLUS | MINUS) expression
-           | expression opr=(L_SHIFT | R_SHIFT) expression
-           | expression opr=(LT | GT) expression
-           | expression opr=(EQ | NEQ) expression
-           | expression opr=(BIT_AND | BIT_OR | BIT_XOR) expression
-           | expression AND expression
-           | expression OR expression
-           | ID (LBRACK expression RBRACK)?
-           | LPAREN expression RPAREN
-           | functionCall
-           | methodCall;
+expression returns [Expression exprRet] :
+             value { $exprRet = $value.val }
+           | expression DOT espetialVariable { $exprRet = MethodCall($expression.exprRet, ); } //TODO : what is espetialVariable name?
+           | expression opr=(INC | DEC) { $exprRet = UnaryExpression($opr, $expression.exprRet); } //TODO : opr might be broken
+           | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $exprRet = UnaryExpression($opr, $expression.exprRet); } //TODO : opr might be broken
+           | lexpr=expression opr=(MULT | DIV | MOD) rexpr=expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | expression opr=(PLUS | MINUS) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken //
+           | expression opr=(L_SHIFT | R_SHIFT) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | expression opr=(LT | GT) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | expression opr=(EQ | NEQ) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | expression opr=(BIT_AND | BIT_OR | BIT_XOR) expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | expression AND expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | expression OR expression { $exprRet = BinaryExpression($lexpr.exprRet, $rexpr.exprRet, $opr);} //TODO : opr might be broken
+           | ID (LBRACK expression RBRACK)? { $exprRet = ArrayIdentifier($ID.text, $expression.exprRet); } //TODO :
+           | LPAREN expression RPAREN { $exprRet = $expression.exprRet; }
+           | functionCall { $exprRet =  FunctionCall(); } //TODO : functionCall not defined yet
+           | methodCall { $exprRet = MethodCall(); }; //TODO : MethodCall not defined yet
 
 value returns [Value val] :
     INT_LITERAL  { $val = new IntValue($INT_LITERAL.text) }
