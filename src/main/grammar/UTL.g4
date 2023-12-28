@@ -54,7 +54,15 @@ initDeclaration : VOID ONINIT LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRACE 
 
 startDeclaration : VOID ONSTART LPAREN TRADE ID RPAREN (THROW EXCEPTION)? (LBRACE statement* RBRACE | statement);
 
-assignStatement : ID (LBRACK expression RBRACK)? assign expression SEMICOLON;
+assignStatement returns [AssignStmt assignStmtRet]:
+    ID (LBRACK lval=expression RBRACK)?
+    assign
+    rval=expression
+    SEMICOLON
+    {
+        $assignStmtRet = new AssignStmt($lval , $rval);
+    }
+    ;
 
 ifStatement returns [IfElseStmt ifStmtRet] :
     IF LPAREN expression RPAREN
@@ -136,13 +144,13 @@ continueBreakStatement :
 returnStatement returns[ReturnStmt returnStmtRet]:
     RETURN returnExp=expression SEMICOLON
     {
-        $returnStmtRet = new ReturnStmt(returnExp);
+        $returnStmtRet = new ReturnStmt($returnExp);
     };
 
 throwStatement returns[ThrowStmt throwStmtRet]:
     THROW throwed=expression SEMICOLON
     {
-        $throwStmtRet = new ThrowStmt(throwed);
+        $throwStmtRet = new ThrowStmt($throwed);
     }
     ;
 
