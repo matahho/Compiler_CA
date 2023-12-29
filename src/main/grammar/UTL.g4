@@ -51,10 +51,24 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = n
 mainDeclaration returns [MainDeclaration mainDecRet]:
     VOID MAIN LPAREN RPAREN
     (LBRACE statement* RBRACE | statement)
+    //TODO : must be checked
     {
-        $mainDecRet = new MainDeclaration(); //TODO: incomplete
+        $mainDecRet = new MainDeclaration();
+        for (Statement stmt : mainBody){
+            if (stmt instanceof varDeclaration ){
+                if (stmt.getType() instanceof TradeType){
+                    $mainDecRet.addActorInstantiation(stmt);
+                }
+            }
+            else{
+                $mainDecRet.addStatement(stmt);
+            }
+        }
+
+
     }
     ;
+
 
 initDeclaration returns [OnInitDeclaration initDecRet]:
     VOID ONINIT LPAREN TRADE tradeName=ID RPAREN
