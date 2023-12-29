@@ -38,7 +38,7 @@ statement returns [Statement statementRet] :
 
 varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclaration(); }
     allType { $varDecRet.setType($allType.allTypeRet); }
-    (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.int); })? //TODO : what to do with INT_LITERAL ???
+    (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.int); })?
     ID (ASSIGN expression)? SEMICOLON { $varDecRet.setIdentifier(new Identifier($ID.text)); $varDecRet.setLine($ID.line); };
 
 functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
@@ -173,7 +173,6 @@ continueBreakStatement returns [ContinueBreakStmt continueBreakStmtRet]:
     (BREAK { $continueBreakStmtRet = new ContinueBreakStmt($BREAK.text); $continueBreakStmtRet.setLine($BREAK.line); }
     | CONTINUE { $continueBreakStmtRet = new ContinueBreakStmt($CONTINUE.text); $continueBreakStmtRet.setLine($CONTINUE.line); })
      SEMICOLON;
-    //TODO : NOT SURE
 
 returnStatement returns[ReturnStmt returnStmtRet]:
     RETURN returnExp=expression SEMICOLON
@@ -197,10 +196,9 @@ functionCall returns [FunctionCall funCallRet]:
      LPAREN
      (expression { $funCallRet.addArg($expression.expressionRet); }
      (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
-     RPAREN { $funCallRet.setLine($LPAREN.line); }; //TODO : Line might be wrong
+     RPAREN { $funCallRet.setLine($LPAREN.line); };
 
 methodCall returns [MethodCall methCallRet]:
-    //TODO : theInstance Must be checkd
     ID {boolean temp = false;}(LBRACK expression RBRACK {temp = true;})? DOT
     espetialMethod LPAREN {
         if(temp)
@@ -208,7 +206,7 @@ methodCall returns [MethodCall methCallRet]:
         else
             $methCallRet = new MethodCall(new Identifier($ID.text), $espetialMethod.espMethRet);
         $methCallRet.setLine($ID.line);
-    } //TODO : check first arg of MethodCall, Expression() is an empty class just in case
+    }
     (expression { $methCallRet.addArg($expression.expressionRet); }
     (COMMA expression { $methCallRet.addArg($expression.expressionRet); })*)?
     RPAREN;
