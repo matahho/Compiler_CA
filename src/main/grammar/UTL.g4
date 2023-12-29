@@ -65,7 +65,7 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
             }
         }
 
-
+        $mainDecRet.setLine($MAIN.line);
     }
     ;
 
@@ -81,6 +81,7 @@ initDeclaration returns [OnInitDeclaration initDecRet]:
         for (Statement stmt: initBody){
             $initDecRet.addStatement(stmt.statementRet);
         }
+        $initDecRet.setLine($ONINIT.line);
     }
     ;
 
@@ -95,6 +96,7 @@ startDeclaration returns [OnStartDeclaration startDecRet]:
             for (Statement stmt: startBody){
                 $startDecRet.addStatement(stmt.statementRet);
             }
+        $startDecRet.setLine($ONSTART.line);
     }
     ;
 
@@ -183,11 +185,13 @@ tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
         for (Statement stmt : catchBody){
             $tryCatchStmtRet.addElseStatement(stmt.statementRet);
         }
+
+        $tryCatchStmtRet.setLine($TRY.line);
     };
 
 continueBreakStatement returns [ContinueBreakStmt continueBreakStmtRet]:
-    (BREAK { $continueBreakStmtRet = new ContinueBreakStmt($BREAK.text); }
-    | CONTINUE { $continueBreakStmtRet = new ContinueBreakStmt($CONTINUE.text); })
+    (BREAK { $continueBreakStmtRet = new ContinueBreakStmt($BREAK.text); $continueBreakStmtRet.setLine($BREAK.line); }
+    | CONTINUE { $continueBreakStmtRet = new ContinueBreakStmt($CONTINUE.text); $continueBreakStmtRet.setLine($CONTINUE.line); })
      SEMICOLON;
     //TODO : NOT SURE
 
@@ -195,12 +199,14 @@ returnStatement returns[ReturnStmt returnStmtRet]:
     RETURN returnExp=expression SEMICOLON
     {
         $returnStmtRet = new ReturnStmt($returnExp.expressionRet);
+        $returnStmtRet.setLine($RETURN.line);
     };
 
 throwStatement returns[ThrowStmt throwStmtRet]:
     THROW throwed=expression SEMICOLON
     {
         $throwStmtRet = new ThrowStmt($throwed.expressionRet);
+        $throwStmtRet.setLine($THROW.line);
     }
     ;
 
@@ -211,7 +217,7 @@ functionCall returns [FunctionCall funCallRet]:
      LPAREN
      (expression { $funCallRet.addArg($expression.expressionRet); }
      (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
-     RPAREN;
+     RPAREN { $funCallRet.setLine($LPAREN.line); }; //TODO : Line might be wrong
 
 methodCall returns [MethodCall methCallRet]:
     //TODO : theInstance Must be checkd
@@ -222,6 +228,7 @@ methodCall returns [MethodCall methCallRet]:
         else
             Identifier theInstance = new Identifier($ID.text)
         $methCallRet = new MethodCall(theInstance, $espetialMethod.espMethRet);
+        $methCallRet.setLine($ID.line);
     } //TODO : check first arg of MethodCall, Expression() is an empty class just in case
     (expression { $methCallRet.addArg($expression.expressionRet); }
     (COMMA expression { $methCallRet.addArg($expression.expressionRet); })*)?
