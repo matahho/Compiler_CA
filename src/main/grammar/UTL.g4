@@ -149,7 +149,8 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
         }
 
         if ($theUpdate.expressionRet != null){
-            $forStmtRet.addUpdate($theUpdate.expressionRet);
+            Statement temp = new ExpressionStmt($theUpdate.expressionRet);
+            $forStmtRet.addUpdate(temp);
         }
 
         if ($forBody.statementRet != null){
