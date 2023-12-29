@@ -6,6 +6,8 @@ import main.ast.node.declaration.*;
 import main.ast.node.expression.Expression;
 import main.ast.node.expression.FunctionCall;
 import main.ast.node.expression.MethodCall;
+import main.ast.node.expression.values.IntValue;
+import main.ast.node.expression.values.Value;
 import main.ast.node.statement.*;
 import main.visitor.Visitor;
 
@@ -266,14 +268,27 @@ public class ASTPrinter extends Visitor<Void> {
                 expression.accept(this);
             }
         }
-        reutrn null;
+        return null;
     }
 
     //expression Rule
+    @Override
+    public Void visit (ExpressionStmt expressionStmt){
+        if (expressionStmt.getExpression() != null){
+            expressionStmt.getExpression().accept(this);
+        }
+        return  null;
+    }
 
 
     //
-    public Void visit ()
+    @Override
+    public Void visit (IntValue intValue){
+        if (intValue.getConstant() != null){
+            intValue.getConstant().accept(this);
+        }
+
+    }
 
 
 
