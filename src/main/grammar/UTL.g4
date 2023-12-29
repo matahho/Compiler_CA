@@ -192,8 +192,8 @@ throwStatement returns[ThrowStmt throwStmtRet]:
 
 functionCall returns [FunctionCall funCallRet]:
     (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet); }
-    | complexType { $funCallRet = new FunctionCall(Identifier($complexType.complexTypeRet.getName())); }
-    | ID { $funCallRet = new FunctionCall(Identifier($ID.text)); })
+    | complexType { $funCallRet = new FunctionCall(new Identifier($complexType.complexTypeRet.getName())); }
+    | ID { $funCallRet = new FunctionCall(new Identifier($ID.text)); })
      LPAREN
      (expression { $funCallRet.addArg($expression.expressionRet); }
      (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
