@@ -50,7 +50,7 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = n
 
 mainDeclaration returns [MainDeclaration mainDecRet]:
     VOID MAIN LPAREN RPAREN
-    (LBRACE statement* RBRACE | statement)
+    (LBRACE mainBody=statement* RBRACE |  mainBody=statement)
     //TODO : must be checked
     {
         $mainDecRet = new MainDeclaration();
