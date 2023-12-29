@@ -167,9 +167,11 @@ tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
         }
     };
 
-continueBreakStatement :
-    (BREAK | CONTINUE) SEMICOLON;
-    //TODO : What is the string token in their constructor
+continueBreakStatement returns [ContinueBreakStmt continueBreakStmtRet]:
+    (BREAK { $continueBreakStmtRet = new ContinueBreakStmt($BREAK.text); }
+    | CONTINUE { $continueBreakStmtRet = new ContinueBreakStmt($CONTINUE.text); })
+     SEMICOLON;
+    //TODO : NOT SURE
 
 returnStatement returns[ReturnStmt returnStmtRet]:
     RETURN returnExp=expression SEMICOLON
