@@ -13,4 +13,6 @@ Thumbs.db
 #######################
 # PARSER (ANTL output)
 parsers/
+../out/
 out/
+
