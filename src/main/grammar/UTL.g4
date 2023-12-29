@@ -85,33 +85,21 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     //TODO : must be checked
 
 
-initDeclaration returns [OnInitDeclaration initDecRet]:{$initDecRet = new OnInitDeclaration();}
+initDeclaration returns [OnInitDeclaration initDecRet]:
     VOID
-    ONINIT {$initDecRet.setLine($ONINIT.line);}
-    LPAREN TRADE tradeName=ID RPAREN
+    ONINIT {$initDecRet = new OnInitDeclaration(); $initDecRet.setLine($ONINIT.line);}
+    LPAREN TRADE ID { $initDecRet.setTradeName(new Identifier($ID.text)); }RPAREN
     (THROW EXCEPTION)?
     (LBRACE (statement{$initDecRet.addStatement($statement.statementRet);})* RBRACE
-    | statement{$initDecRet.addStatement($statement.statementRet);})
-    {
-        $initDecRet.setTradeName($tradeName.text);
-    }
-    ;
+    | statement{$initDecRet.addStatement($statement.statementRet);});
 
-startDeclaration returns [OnStartDeclaration startDecRet]:{$startDecRet = new OnStartDeclaration();}
+startDeclaration returns [OnStartDeclaration startDecRet]:
     VOID
-    ONSTART {$startDecRet.setLine($ONSTART.line);}
-    LPAREN TRADE tradeName=ID RPAREN
+    ONSTART { $startDecRet = new OnStartDeclaration(); $startDecRet.setLine($ONSTART.line);}
+    LPAREN TRADE ID {$startDecRet.setTradeName(new Identifier($ID.text));}RPAREN
     (THROW EXCEPTION)?
     (LBRACE (statement {$startDecRet.addStatement($statement.statementRet);})* RBRACE
-    | statement {$startDecRet.addStatement($statement.statementRet);})
-
-    {
-        if ($tradeName.text != null){
-            $startDecRet.setTradeName($tradeName.text);
-        }
-
-    }
-    ;
+    | statement {$startDecRet.addStatement($statement.statementRet);});
 
 assignStatement returns [AssignStmt assignStmtRet]: //TODO : check if is nessery to save (assign) in the AssignStmt class (= , -= , += , )
     ID (LBRACK lval=expression RBRACK)?
