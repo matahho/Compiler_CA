@@ -236,28 +236,28 @@ methodCall returns [MethodCall methCallRet]:
 
 expression returns [Expression expressionRet] :
              value { $expressionRet = $value.valueRet }
-           | expression DOT espetialVariable { $expressionRet = new MethodCall($expression.expressionRet, $espetialVariable.espVarRet); } //TODO : what is espetialVariable name?
-           | expression opr=(INC | DEC) { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); } //TODO : opr might be broken
-           | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); } //TODO : opr might be broken
-           | lexpr=expression opr=(MULT | DIV | MOD) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
-           | lexpr=expression opr=(PLUS | MINUS) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken //
-           | lexpr=expression opr=(L_SHIFT | R_SHIFT) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
-           | lexpr=expression opr=(LT | GT) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
-           | lexpr=expression opr=(EQ | NEQ) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
-           | lexpr=expression opr=(BIT_AND | BIT_OR | BIT_XOR) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
-           | lexpr=expression AND rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
-           | lexpr=expression OR rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
-           | ID (LBRACK expr=expression RBRACK)? { if(expr != null) $expressionRet = new ArrayIdentifier($ID.text, $expression.expressionRet); else $expressionRet = new Identifier($ID.text); } //TODO :
+           | expression DOT espetialVariable { $expressionRet = new MethodCall($expression.expressionRet, $espetialVariable.espVarRet); }
+           | expression opr=(INC | DEC) { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | lexpr=expression opr=(MULT | DIV | MOD) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | lexpr=expression opr=(PLUS | MINUS) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken //
+           | lexpr=expression opr=(L_SHIFT | R_SHIFT) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | lexpr=expression opr=(LT | GT) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | lexpr=expression opr=(EQ | NEQ) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | lexpr=expression opr=(BIT_AND | BIT_OR | BIT_XOR) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | lexpr=expression AND rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | lexpr=expression OR rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | ID (LBRACK expr=expression RBRACK)? { if(expr != null) $expressionRet = new ArrayIdentifier($ID.text, $expression.expressionRet); else $expressionRet = new Identifier($ID.text); $expressionRet.setLine($ID.line); }
            | LPAREN expression RPAREN { $expressionRet = $expression.expressionRet; }
            | functionCall { $expressionRet =  $functionCall.funCallRet; }
            | methodCall { $expressionRet = $methodCall.methCallRet; };
 
 value returns [Value valueRet] :
-    INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int); }
-    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text.float); } //TODO : correct cast to flaot?
-    | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text); }
-    | SELL { $valueRet = new StringValue($SELL.text); } //Might be broken
-    | BUY { $valueRet = new StringValue($BUY.text); }; //Might be broken
+    INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int); $valueRet.setLine($INT_LITERAL.line); }
+    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text.float); $valueRet.setLine($FLOAT_LITERAL.line); } //TODO : correct cast to flaot?
+    | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text); $valueRet.setLine($STRING_LITERAL.line); }
+    | SELL { $valueRet = new StringValue($SELL.text); $valueRet.setLine($SELL.line); } //Might be broken
+    | BUY { $valueRet = new StringValue($BUY.text); $valueRet.setLine($BUY.line); }; //Might be broken
 
 primitiveType returns [Type primitiveTypeRet]:
     FLOAT { $primitiveTypeRet = new FloatType(); }
