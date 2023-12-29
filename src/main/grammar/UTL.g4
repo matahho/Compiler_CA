@@ -43,9 +43,20 @@ varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclar
 
 functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
     primitiveType { $funcDecRet.setReturnType($primitiveType.primitiveTypeRet); }
-    ID { $funcDecRet.setName($ID.text); $funcDecRet.setLine($ID.line); }
-    LPAREN (allType (LBRACK INT_LITERAL RBRACK)? ID { $funcDecRet.addArg($allType.allTypeRet, $ID.text); }
-    (COMMA allType (LBRACK INT_LITERAL RBRACK)? ID { $funcDecRet.addArg($allType.allTypeRet, $ID.text); })*)?
+    ID { $funcDecRet.setName(new Identifier($ID.text)); $funcDecRet.setLine($ID.line); }
+    LPAREN (allType (LBRACK INT_LITERAL RBRACK)? ID {
+        VarDeclaration temp = new VarDeclaration();
+        temp.setIdentifier(new Identifier($ID.text));
+        temp.setLength($INT_LITERAL.int);
+        temp.setType($allType.allTypeRet);
+        $funcDecRet.addArg(temp);
+    }
+    (COMMA allType (LBRACK INT_LITERAL RBRACK)? ID {
+        temp.setIdentifier(new Identifier($ID.text));
+        temp.setLength($INT_LITERAL.int);
+        temp.setType($allType.allTypeRet);
+        $funcDecRet.addArg(temp);
+    })*)?
     RPAREN (THROW EXCEPTION)? (LBRACE (statement { $funcDecRet.addStatement($statement.statementRet); })* RBRACE | statement { $funcDecRet.addStatement($statement.statementRet); });
 
 mainDeclaration returns [MainDeclaration mainDecRet]:
