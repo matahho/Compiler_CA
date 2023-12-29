@@ -74,33 +74,31 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     //TODO : must be checked
 
 
-initDeclaration returns [OnInitDeclaration initDecRet]:
-    VOID ONINIT LPAREN TRADE tradeName=ID RPAREN
+initDeclaration returns [OnInitDeclaration initDecRet]:{$initDecRet = new OnInitDeclaration();}
+    VOID
+    ONINIT {$initDecRet.setLine($ONINIT.line);}
+    LPAREN TRADE tradeName=ID RPAREN
     (THROW EXCEPTION)?
-    (LBRACE initBody=statement* RBRACE | initBody=statement)
-
+    (LBRACE (statement{$initDecRet.addStatement($statement.statementRet);})* RBRACE
+    | statement{$initDecRet.addStatement($statement.statementRet);})
     {
-        $initDecRet = new OnInitDeclaration();
         $initDecRet.setTradeName($tradeName.text);
-        for (Statement stmt: initBody){
-            $initDecRet.addStatement(stmt.statementRet);
-        }
-        $initDecRet.setLine($ONINIT.line);
     }
     ;
 
-startDeclaration returns [OnStartDeclaration startDecRet]:
-    VOID ONSTART LPAREN TRADE tradeName=ID RPAREN
+startDeclaration returns [OnStartDeclaration startDecRet]:{$startDecRet = new OnStartDeclaration();}
+    VOID
+    ONSTART {$startDecRet.setLine($ONSTART.line);}
+    LPAREN TRADE tradeName=ID RPAREN
     (THROW EXCEPTION)?
-    (LBRACE startBody=statement* RBRACE | startBody=statement)
+    (LBRACE (statement {$startDecRet.addStatement($statement.statementRet);})* RBRACE
+    | statement {$startDecRet.addStatement($statement.statementRet);})
 
     {
-        $startDecRet = new OnStartDeclaration();
+        if ($tradeName.text != null){
             $startDecRet.setTradeName($tradeName.text);
-            for (Statement stmt: startBody){
-                $startDecRet.addStatement(stmt.statementRet);
-            }
-        $startDecRet.setLine($ONSTART.line);
+        }
+
     }
     ;
 
@@ -136,8 +134,12 @@ whileStatement returns [WhileStmt whileStmtRet]:
     ;
 
 forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
-    FOR LPAREN theInit=statement theCondition=expression SEMICOLON theUpdate=expression? RPAREN
-        (LBRACE forBody=statement* RBRACE | forBody=statement)
+    FOR {$forStmtRet.setLine($FOR.line);}
+    LPAREN theInit=statement theCondition=expression SEMICOLON theUpdate=expression? RPAREN
+        (LBRACE
+        (statement{$forStmtRet.addBody($statement.statementRet);})*
+        RBRACE
+        | statement{{$forStmtRet.addBody($statement.statementRet)};})
     {
         if ($theInit.statementRet != null){
             $forStmtRet.addInit($theInit.statementRet);
@@ -153,13 +155,6 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
             $forStmtRet.addUpdate(temp);
         }
 
-        if ($forBody.statementRet != null){
-            for (Statement stmt : $forBody.statementRet){
-                $forStmtRet.addBody(stmt);
-            }
-        }
-
-        $forStmtRet.setLine($FOR.line);
     };
 
 
