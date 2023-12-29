@@ -213,11 +213,11 @@ methodCall returns [MethodCall methCallRet]:
     (COMMA expression { $methCallRet.addArg($expression.expressionRet); })*)?
     RPAREN;
 
-expression returns [Expression expressionRet] :
+expression returns [Expression expressionRet] locals [UnaryOperator op1, BinaryOperator op2, int Line] :
              value { $expressionRet = $value.valueRet; }
            | expression DOT espetialVariable { $expressionRet = new MethodCall($expression.expressionRet, $espetialVariable.espVarRet); }
-           | expression opr=(INC | DEC) { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
-           | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
+           | expression (INC{$op1 = UnaryOperator.INC; $Line = $INC.line;} | DEC{$op1 = UnaryOperator.DEC; $Line = $DEC.line;}) { $expressionRet = new UnaryExpression(op1, $expression.expressionRet); $expressionRet.setLine($Line); } //TODO : opr might be broken
+           | (NOT {$op1 = UnaryOperator.NOT; $Line = $NOT.line;} | MINUS {$op1 = UnaryOperator.MINUS; $Line = $MINUS.line;} | BIT_NOT {$op1 = UnaryOperator.BIT_NOT; $Line = $BIT_NOT.line;} | INC {$op1 = UnaryOperator.INC; $Line = $INC.line;} | DEC{$op1 = UnaryOperator.DEC; $Line = $DEC.line;}) expression { $expressionRet = new UnaryExpression($op1, $expression.expressionRet); $expressionRet.setLine($Line); } //TODO : opr might be broken
            | lexpr=expression opr=(MULT | DIV | MOD) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
            | lexpr=expression opr=(PLUS | MINUS) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken //
            | lexpr=expression opr=(L_SHIFT | R_SHIFT) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
