@@ -211,7 +211,7 @@ throwStatement returns[ThrowStmt throwStmtRet]:
     ;
 
 functionCall returns [FunctionCall funCallRet]:
-    (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet)}
+    (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet); }
     | complexType { $funCallRet = new FunctionCall(Identifier($complexType.complexTypeRet.getName())); }
     | ID { $funCallRet = new FunctionCall(Identifier($ID.text)); })
      LPAREN
@@ -254,7 +254,7 @@ expression returns [Expression expressionRet] :
 
 value returns [Value valueRet] :
     INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int); $valueRet.setLine($INT_LITERAL.line); }
-    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text.float); $valueRet.setLine($FLOAT_LITERAL.line); } //TODO : correct cast to flaot?
+    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text); $valueRet.setLine($FLOAT_LITERAL.line); } //TODO : correct cast to flaot?
     | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text); $valueRet.setLine($STRING_LITERAL.line); }
     | SELL { $valueRet = new StringValue($SELL.text); $valueRet.setLine($SELL.line); } //Might be broken
     | BUY { $valueRet = new StringValue($BUY.text); $valueRet.setLine($BUY.line); }; //Might be broken
