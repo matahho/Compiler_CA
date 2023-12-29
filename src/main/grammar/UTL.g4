@@ -210,8 +210,10 @@ functionCall returns [FunctionCall funCallRet]:
      RPAREN;
 
 methodCall returns [MethodCall methCallRet]:
-    ID (LBRACK expression RBRACK)? DOT
-    espetialMethod LPAREN { $methCallRet = new MethodCall(Expression(), $espetialMethod.espMethRet); } //TODO : check first arg of MethodCall
+    //TODO : theInstance Must be checkd
+    ID (LBRACK expression RBRACK)? { $theInstance = new ArrayIdentifier($ID.text, $expression.expressionRet); }
+    DOT
+    espetialMethod LPAREN { $methCallRet = new MethodCall($theInstance.expressionRet, $espetialMethod.espMethRet); } //TODO : check first arg of MethodCall
     (expression { $methCallRet.addArg($expression.expressionRet); }
     (COMMA expression { $methCallRet.addArg($expression.expressionRet); })*)?
     RPAREN;
