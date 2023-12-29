@@ -64,7 +64,7 @@ initDeclaration returns [OnInitDeclaration initDecRet]:
     {
         $initDecRet = new OnInitDeclaration();
         $initDecRet.setTradeName($tradeName.text);
-        for (Statement stmt: $initBody){
+        for (Statement stmt: initBody){
             $initDecRet.addStatement(stmt.statementRet);
         }
     }
@@ -78,7 +78,7 @@ startDeclaration returns [OnStartDeclaration startDecRet]:
     {
         $startDecRet = new OnStartDeclaration();
             $startDecRet.setTradeName($tradeName.text);
-            for (Statement stmt: $startBody){
+            for (Statement stmt: startBody){
                 $startDecRet.addStatement(stmt.statementRet);
             }
     }
@@ -102,10 +102,10 @@ ifStatement returns [IfElseStmt ifStmtRet] :
     )?
     {
         $ifStmtRet= new IfElseStmt($expression.expressionRet);
-            for (Statement stmt : $ifBody) {
+            for (Statement stmt : ifBody) {
                 $ifStmtRet.addThenStatement(stmt.statementRet);
             }
-            for (Statement stmt : $elseBody) {
+            for (Statement stmt : elseBody) {
                 $ifStmtRet.addElseStatement(stmt.statementRet));
             }
     };
@@ -115,7 +115,7 @@ whileStatement returns [WhileStmt whileStmtRet]:
         (LBRACE whileBody=statement* RBRACE | whileBody=statement)
     {
         $whileStmtRet = new WhileStmt($expression.expressionRet);
-            for (Statement stmt : $whileBody){
+            for (Statement stmt : whileBody){
                 $whileStmtRet.addBody(stmt.statementRet);
             }
     };
@@ -124,24 +124,24 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
     FOR LPAREN theInit=statement theCondition=expression SEMICOLON theUpdate=expression? RPAREN
         (LBRACE forBody=statement* RBRACE | forBody=statement)
     {
-        if ($theInit != null){
-            for (Statement stmt : $theInit){
+        if (theInit != null){
+            for (Statement stmt : theInit){
                 $forStmtRet.addInit(stmt.statementRet);
             }
         }
 
-        if ($theCondition != null){
+        if (theCondition != null){
             $forStmtRet.setCondition($theCondition.expressionRet);
         }
 
-        if ($theUpdate != null){
-            for (Statement stmt : $theUpdate){
+        if (theUpdate != null){
+            for (Statement stmt : theUpdate){
                 $forStmtRet.addUpdate(stmt.expressionRet);
             }
         }
 
-        if ($forBody != null){
-            for (Statement stmt : $forBody){
+        if (forBody != null){
+            for (Statement stmt : forBody){
                 $forStmtRet.addBody(stmt.statementRet);
             }
         }
@@ -159,10 +159,10 @@ tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
     {
         $tryCatchStmtRet = new TryCatchStmt();
 
-        for (Statement stmt : $tryBody){
+        for (Statement stmt : tryBody){
             $tryCatchStmtRet.addThenStatement(stmt.statementRet);
         }
-        for (Statement stmt : $catchBody){
+        for (Statement stmt : catchBody){
             $tryCatchStmtRet.addElseStatement(stmt.statementRet);
         }
     };
