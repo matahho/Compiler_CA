@@ -201,12 +201,12 @@ functionCall returns [FunctionCall funCallRet]:
 
 methodCall returns [MethodCall methCallRet]:
     //TODO : theInstance Must be checkd
-    ID (LBRACK expr=expression RBRACK)? DOT
+    ID {boolean temp = false;}(LBRACK expression RBRACK {temp = true;})? DOT
     espetialMethod LPAREN {
-        if(expr != null)
-            $methCallRet = new MethodCall(ArrayIdentifier($ID.text , $expression.expressionRet), $espetialMethod.espMethRet);
+        if(temp)
+            $methCallRet = new MethodCall(new ArrayIdentifier($ID.text , $expression.expressionRet), $espetialMethod.espMethRet);
         else
-            $methCallRet = new MethodCall(Identifier($ID.text), $espetialMethod.espMethRet);
+            $methCallRet = new MethodCall(new Identifier($ID.text), $espetialMethod.espMethRet);
         $methCallRet.setLine($ID.line);
     } //TODO : check first arg of MethodCall, Expression() is an empty class just in case
     (expression { $methCallRet.addArg($expression.expressionRet); }
@@ -226,7 +226,7 @@ expression returns [Expression expressionRet] :
            | lexpr=expression opr=(BIT_AND | BIT_OR | BIT_XOR) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
            | lexpr=expression AND rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
            | lexpr=expression OR rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
-           | ID (LBRACK expr=expression RBRACK)? { if(expr != null) $expressionRet = new ArrayIdentifier($ID.text, $expression.expressionRet); else $expressionRet = new Identifier($ID.text); $expressionRet.setLine($ID.line); }
+           | ID {boolean temp = false;}(LBRACK expression RBRACK {temp = true;})? { if(temp) $expressionRet = new ArrayIdentifier($ID.text, $expression.expressionRet); else $expressionRet = new Identifier($ID.text); $expressionRet.setLine($ID.line); }
            | LPAREN expression RPAREN { $expressionRet = $expression.expressionRet; }
            | functionCall { $expressionRet =  $functionCall.funCallRet; }
            | methodCall { $expressionRet = $methodCall.methCallRet; };
