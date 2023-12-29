@@ -38,7 +38,7 @@ statement returns [Statement statementRet] :
 
 varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclaration(); }
     allType { $varDecRet.setType($allType.allTypeRet); }
-    (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.text); })? //TODO : what to do with INT_LITERAL ???
+    (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.int); })? //TODO : what to do with INT_LITERAL ???
     ID (ASSIGN expression)? SEMICOLON { $varDecRet.setIdentifier($ID.text); $varDecRet.setLine($ID.line); };
 
 functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
@@ -207,8 +207,8 @@ expression returns [Expression expressionRet] :
            | methodCall { $expressionRet = MethodCall(); }; //TODO : MethodCall not defined yet
 
 value returns [Value valueRet] :
-    INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.text) }
-    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text) }
+    INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int) }
+    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text.float) } //TODO : correct cast to flaot?
     | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text) }
     | SELL { $valueRet = new StringValue($SELL.text) } //Might be broken
     | BUY { $valueRet = new StringValue($BUY.text) }; //Might be broken
