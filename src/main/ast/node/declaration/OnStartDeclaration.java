@@ -10,7 +10,7 @@ public class OnStartDeclaration extends Declaration {
     private Identifier tradeName;
     private ArrayList<Statement> body = new ArrayList<>();
 
-    public OnStartDeclaration(Identifier name){
+    public OnStartDeclaration(){
     }
 
     public Identifier getTradeName() {
