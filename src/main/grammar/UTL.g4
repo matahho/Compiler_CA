@@ -207,11 +207,11 @@ expression returns [Expression expressionRet] :
            | methodCall { $expressionRet = MethodCall(); }; //TODO : MethodCall not defined yet
 
 value returns [Value valueRet] :
-    INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int) }
-    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text.float) } //TODO : correct cast to flaot?
-    | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text) }
-    | SELL { $valueRet = new StringValue($SELL.text) } //Might be broken
-    | BUY { $valueRet = new StringValue($BUY.text) }; //Might be broken
+    INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int); }
+    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text.float); } //TODO : correct cast to flaot?
+    | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text); }
+    | SELL { $valueRet = new StringValue($SELL.text); } //Might be broken
+    | BUY { $valueRet = new StringValue($BUY.text); }; //Might be broken
 
 primitiveType returns [Type primitiveTypeRet]:
     FLOAT { $primitiveTypeRet = new FloatType(); }
