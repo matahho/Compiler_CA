@@ -150,7 +150,7 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
         (LBRACE
         (statement{$forStmtRet.addBody($statement.statementRet);})*
         RBRACE
-        | statement{{$forStmtRet.addBody($statement.statementRet)};})
+        | statement{ $forStmtRet.addBody($statement.statementRet); })
     {
         if ($theInit.statementRet != null){
             $forStmtRet.addInit($theInit.statementRet);
