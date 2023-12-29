@@ -14,7 +14,7 @@ public class UTL {
         UTLLexer lexer = new UTLLexer(reader);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         UTLParser parser = new UTLParser(tokens);
-        Program program = parser.program().prog;
+        Program program = parser.program().pro;
 
         NameAnalyzer nameAnalyzer = new NameAnalyzer();
         nameAnalyzer.visit(program);
