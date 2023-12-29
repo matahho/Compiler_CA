@@ -192,7 +192,7 @@ methodCall : ID (LBRACK expression RBRACK)? DOT espetialMethod LPAREN (expressio
 
 expression returns [Expression expressionRet] :
              value { $expressionRet = $value.valueRet }
-           | expression DOT espetialVariable { $expressionRet = MethodCall($expression.expressionRet, ); } //TODO : what is espetialVariable name?
+           | expression DOT espetialVariable { $expressionRet = MethodCall($expression.expressionRet, $espetialVariable.espVarRet); } //TODO : what is espetialVariable name?
            | expression opr=(INC | DEC) { $expressionRet = UnaryExpression($opr, $expression.expressionRet); } //TODO : opr might be broken
            | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $expressionRet = UnaryExpression($opr, $expression.expressionRet); } //TODO : opr might be broken
            | lexpr=expression opr=(MULT | DIV | MOD) rexpr=expression { $expressionRet = BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
@@ -254,7 +254,9 @@ espetialVariable returns [String espVarRet]: //TODO : Not sure
     | OPEN { $espVarRet = new String($OPEN.text); }
     | CLOSE { $espVarRet = new String($CLOSE.text); };
 
-espetialMethod: OPEN | CLOSE;
+espetialMethod returns [String espMethRet]: //TODO : Not sure
+    OPEN { $espMethRet = new String($OPEN.text); }
+    | CLOSE { $espMethRet = new String($CLOSE.text); };
 
 assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
 
