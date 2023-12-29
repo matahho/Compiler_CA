@@ -317,6 +317,7 @@ public class ASTPrinter extends Visitor<Void> {
         if (boolValue != null){
             boolValue.accept(this);
         }
+        return null;
     }
 
 
