@@ -139,25 +139,22 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
     FOR LPAREN theInit=statement theCondition=expression SEMICOLON theUpdate=expression? RPAREN
         (LBRACE forBody=statement* RBRACE | forBody=statement)
     {
-        if (theInit != null){
-            for (Statement stmt : theInit){
-                $forStmtRet.addInit(stmt.statementRet);
-            }
+        if ($theInit.statementRet != null){
+            $forStmtRet.addInit($theInit.statementRet);
+
         }
 
-        if (theCondition != null){
+        if ($theCondition.expressionRet != null){
             $forStmtRet.setCondition($theCondition.expressionRet);
         }
 
-        if (theUpdate != null){
-            for (Statement stmt : theUpdate){
-                $forStmtRet.addUpdate(stmt.expressionRet);
-            }
+        if ($theUpdate.expressionRet != null){
+            $forStmtRet.addUpdate($theUpdate.expressionRet);
         }
 
-        if (forBody != null){
-            for (Statement stmt : forBody){
-                $forStmtRet.addBody(stmt.statementRet);
+        if ($forBody.statementRet != null){
+            for (Statement stmt : $forBody.statementRet){
+                $forStmtRet.addBody(stmt);
             }
         }
 
