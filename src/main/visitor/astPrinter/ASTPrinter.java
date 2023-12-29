@@ -29,6 +29,12 @@ public class ASTPrinter extends Visitor<Void> {
     }
 
     //TODO: implement other visit methods
+    @Override
+    public Void visit(Statement statement){
+        messagePrinter(statement.getLine(), statement.toString());
+        for (VarDeclaration varDeclaration : statement.)
+    }
+
 
 }
 
