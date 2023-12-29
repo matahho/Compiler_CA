@@ -209,7 +209,12 @@ functionCall returns [FunctionCall funCallRet]:
      (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
      RPAREN;
 
-methodCall : ID (LBRACK expression RBRACK)? DOT espetialMethod LPAREN (expression (COMMA expression)*)? RPAREN;
+methodCall returns [MethodCall methCallRet]:
+    ID (LBRACK expression RBRACK)? DOT
+    espetialMethod LPAREN { $methCallRet = new MethodCall(Expression(), $espetialMethod.espMethRet); }
+    (expression { $methCallRet.addArg($expression.expressionRet); }
+    (COMMA expression { $methCallRet.addArg($expression.expressionRet); })*)?
+    RPAREN;
 
 expression returns [Expression expressionRet] :
              value { $expressionRet = $value.valueRet }
