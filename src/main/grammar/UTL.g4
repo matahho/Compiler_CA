@@ -251,30 +251,30 @@ allType returns [Type allTypeRet]:
     primitiveType { $allTypeRet = $primitiveType.primitiveTypeRet; }
     | complexType { $allTypeRet = $complexType.complexTypeRet; };
 
-espetialFunction returns [String espFuncRet]: //TODO : Not sure
-    REFRESH_RATE { $espFuncRet = new String($REFRESH_RATE.text); }
-    | CONNECT { $espFuncRet = new String($CONNECT.text); }
-    | OBSERVE { $espFuncRet = new String($OBSERVE.text); }
-    | GET_CANDLE { $espFuncRet = new String($GET_CANDLE.text); }
-    | TERMINATE { $espFuncRet = new String($TERMINATE.text); }
-    | PRINT { $espFuncRet = new String($PRINT.text); };
+espetialFunction returns [Identifier espFuncRet]: //TODO : Not sure
+    REFRESH_RATE { $espFuncRet = new Identifier($REFRESH_RATE.text); }
+    | CONNECT { $espFuncRet = new Identifier($CONNECT.text); }
+    | OBSERVE { $espFuncRet = new Identifier($OBSERVE.text); }
+    | GET_CANDLE { $espFuncRet = new Identifier($GET_CANDLE.text); }
+    | TERMINATE { $espFuncRet = new Identifier($TERMINATE.text); }
+    | PRINT { $espFuncRet = new Identifier($PRINT.text); };
 
-espetialVariable returns [String espVarRet]: //TODO : Not sure
-    ASK { $espVarRet = new String($ASK.text); }
-    | BID { $espVarRet = new String($BID.text); }
-    | TIME { $espVarRet = new String($TIME.text); }
-    | HIGH { $espVarRet = new String($HIGH.text); }
-    | LOW { $espVarRet = new String($LOW.text); }
-    | DIGITS { $espVarRet = new String($DIGITS.text); }
-    | VOLUME { $espVarRet = new String($VOLUME.text); }
-    | TYPE { $espVarRet = new String($TYPE.text); }
-    | TEXT { $espVarRet = new String($TEXT.text); }
-    | OPEN { $espVarRet = new String($OPEN.text); }
-    | CLOSE { $espVarRet = new String($CLOSE.text); };
+espetialVariable returns [Identifier espVarRet]: //TODO : Not sure
+    ASK { $espVarRet = new Identifier($ASK.text); }
+    | BID { $espVarRet = new Identifier($BID.text); }
+    | TIME { $espVarRet = new Identifier($TIME.text); }
+    | HIGH { $espVarRet = new Identifier($HIGH.text); }
+    | LOW { $espVarRet = new Identifier($LOW.text); }
+    | DIGITS { $espVarRet = new Identifier($DIGITS.text); }
+    | VOLUME { $espVarRet = new Identifier($VOLUME.text); }
+    | TYPE { $espVarRet = new Identifier($TYPE.text); }
+    | TEXT { $espVarRet = new Identifier($TEXT.text); }
+    | OPEN { $espVarRet = new Identifier($OPEN.text); }
+    | CLOSE { $espVarRet = new Identifier($CLOSE.text); };
 
-espetialMethod returns [String espMethRet]: //TODO : Not sure
-    OPEN { $espMethRet = new String($OPEN.text); }
-    | CLOSE { $espMethRet = new String($CLOSE.text); };
+espetialMethod returns [Identifier espMethRet]: //TODO : Not sure
+    OPEN { $espMethRet = new Identifier($OPEN.text); }
+    | CLOSE { $espMethRet = new Identifier($CLOSE.text); };
 
 assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
 
