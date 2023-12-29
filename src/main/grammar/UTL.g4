@@ -105,6 +105,7 @@ assignStatement returns [AssignStmt assignStmtRet]: //TODO : check if is nessery
     SEMICOLON
     {
         $assignStmtRet = new AssignStmt($lval.expressionRet , $rval.expressionRet);
+        $assignStmtRet.setLine($ID.line);
     }
     ;
 
@@ -122,6 +123,7 @@ ifStatement returns [IfElseStmt ifStmtRet] :
             for (Statement stmt : elseBody) {
                 $ifStmtRet.addElseStatement(stmt.statementRet));
             }
+        $ifStmtRet.setLine($IF.line);
     };
 
 whileStatement returns [WhileStmt whileStmtRet]:
@@ -132,6 +134,7 @@ whileStatement returns [WhileStmt whileStmtRet]:
             for (Statement stmt : whileBody){
                 $whileStmtRet.addBody(stmt.statementRet);
             }
+        $whileStmtRet.setLine($WHILE.line);
     };
 
 forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
@@ -160,6 +163,7 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
             }
         }
 
+        $forStmtRet.setLine($FOR.line);
     };
 
 
