@@ -231,9 +231,9 @@ expression returns [Expression expressionRet] locals [UnaryOperator op1, BinaryO
            | functionCall { $expressionRet =  $functionCall.funCallRet; }
            | methodCall { $expressionRet = $methodCall.methCallRet; };
 
-value returns [Value valueRet] :
+value returns [Value valueRet] locals [float temp]:
     INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int); $valueRet.setLine($INT_LITERAL.line); }
-    | FLOAT_LITERAL { $valueRet = new FloatValue($FLOAT_LITERAL.text); $valueRet.setLine($FLOAT_LITERAL.line); } //TODO : correct cast to flaot?
+    | FLOAT_LITERAL { $valueRet = new FloatValue(Float.valueOf($FLOAT_LITERAL.text)); $valueRet.setLine($FLOAT_LITERAL.line); }
     | STRING_LITERAL { $valueRet = new StringValue($STRING_LITERAL.text); $valueRet.setLine($STRING_LITERAL.line); }
     | SELL { $valueRet = new StringValue($SELL.text); $valueRet.setLine($SELL.line); } //Might be broken
     | BUY { $valueRet = new StringValue($BUY.text); $valueRet.setLine($BUY.line); }; //Might be broken
