@@ -33,13 +33,13 @@ statement returns [Statement statementRet] :
           | forStatement { $statementRet = $forStatement.forStmtRet; }
           | tryCatchStatement { $statementRet = $tryCatchStatement.tryCatchStmtRet; }
           | throwStatement { $statementRet = $throwStatement.throwStmtRet; }
-          | expression { $statementRet = new ExpressionStmt($expression.expressionRet); } 
+          | expression { $statementRet = new ExpressionStmt($expression.expressionRet); }
           SEMICOLON);
 
 varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclaration(); }
     allType { $varDecRet.setType($allType.allTypeRet); }
     (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.int); })? //TODO : what to do with INT_LITERAL ???
-    ID (ASSIGN expression)? SEMICOLON { $varDecRet.setIdentifier($ID.text); $varDecRet.setLine($ID.line); };
+    ID (ASSIGN expression)? SEMICOLON { $varDecRet.setIdentifier(new Identifier($ID.text)); $varDecRet.setLine($ID.line); };
 
 functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
     primitiveType { $funcDecRet.setReturnType($primitiveType.primitiveTypeRet); }
