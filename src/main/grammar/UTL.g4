@@ -202,7 +202,7 @@ throwStatement returns[ThrowStmt throwStmtRet]:
 
 functionCall returns [FunctionCall funCallRet]:
     (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet)}
-    | complexType { $funCallRet = new FunctionCall(Identifier($complexType.complexTypeRet.toString())); }
+    | complexType { $funCallRet = new FunctionCall(Identifier($complexType.complexTypeRet.getName())); }
     | ID { $funCallRet = new FunctionCall(Identifier($ID.text)); })
      LPAREN
      (expression { $funCallRet.addArg($expression.expressionRet); }
