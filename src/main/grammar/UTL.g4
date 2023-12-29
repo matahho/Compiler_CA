@@ -214,9 +214,10 @@ methodCall returns [MethodCall methCallRet]:
     ID (LBRACK expr=expression RBRACK)? DOT
     espetialMethod LPAREN {
         if(expr != null)
-            $methCallRet = new MethodCall($expression.expressionRet, $espetialMethod.espMethRet);
+            ArrayIdentifier theInstance = new ArrayIdentifier($ID.text , $expression.expressionRet)
         else
-            $methCallRet = new MethodCall(Expression(), $espetialMethod.espMethRet);
+            Identifier theInstance = new Identifier($ID.text)
+        $methCallRet = new MethodCall(theInstance, $espetialMethod.espMethRet);
     } //TODO : check first arg of MethodCall, Expression() is an empty class just in case
     (expression { $methCallRet.addArg($expression.expressionRet); }
     (COMMA expression { $methCallRet.addArg($expression.expressionRet); })*)?
