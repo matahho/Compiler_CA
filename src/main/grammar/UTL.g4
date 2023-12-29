@@ -116,32 +116,24 @@ assignStatement returns [AssignStmt assignStmtRet]: //TODO : check if is nessery
     ;
 
 ifStatement returns [IfElseStmt ifStmtRet] :
-    IF LPAREN expression RPAREN
-        (LBRACE ifBody=statement* RBRACE | ifBody=statement)
+    IF {$ifStmtRet.setLine($IF.line);}
+    LPAREN
+    expression {$ifStmtRet= new IfElseStmt($expression.expressionRet);}
+    RPAREN
+        (LBRACE (statement{$ifStmtRet.addThenStatement($statement.statementRet);})* RBRACE
+        | statement{$ifStmtRet.addThenStatement($statement.statementRet);})
     (ELSE
-        (LBRACE elseBody=statement* RBRACE | elseBody=statement)
+        (LBRACE (statement{$ifStmtRet.addElseStatement($statement.statementRet);})* RBRACE
+        | statement{$ifStmtRet.addElseStatement($statement.statementRet);})
     )?
-    {
-        $ifStmtRet= new IfElseStmt($expression.expressionRet);
-            for (Statement stmt : ifBody) {
-                $ifStmtRet.addThenStatement(stmt.statementRet);
-            }
-            for (Statement stmt : elseBody) {
-                $ifStmtRet.addElseStatement(stmt.statementRet);
-            }
-        $ifStmtRet.setLine($IF.line);
-    };
+    ;
 
 whileStatement returns [WhileStmt whileStmtRet]:
-    WHILE LPAREN expression RPAREN
-        (LBRACE whileBody=statement* RBRACE | whileBody=statement)
-    {
-        $whileStmtRet = new WhileStmt($expression.expressionRet);
-            for (Statement stmt : whileBody){
-                $whileStmtRet.addBody(stmt.statementRet);
-            }
-        $whileStmtRet.setLine($WHILE.line);
-    };
+    WHILE {$whileStmtRet.setLine($WHILE.line);}
+    LPAREN expression {$whileStmtRet = new WhileStmt($expression.expressionRet);} RPAREN
+        (LBRACE (statement{$whileStmtRet.addBody($statement.statementRet);})*
+        RBRACE | statement{$whileStmtRet.addBody($statement.statementRet);})
+    ;
 
 forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
     FOR LPAREN theInit=statement theCondition=expression SEMICOLON theUpdate=expression? RPAREN
