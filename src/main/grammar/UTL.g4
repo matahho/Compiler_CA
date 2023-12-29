@@ -201,10 +201,13 @@ throwStatement returns[ThrowStmt throwStmtRet]:
     ;
 
 functionCall returns [FunctionCall funCallRet]:
-    (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet)} //TODO : functionCall gets an Identifier but Identifier class is inherited from Expressions ??
-    | complexType
-    | ID)
-     LPAREN (expression (COMMA expression)*)? RPAREN;
+    (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet)}
+    | complexType { $funCallRet = new FunctionCall(Identifier($complexType.complexTypeRet.toString())); }
+    | ID { $funCallRet = new FunctionCall(Identifier($ID.text)); })
+     LPAREN
+     (expression { $funCallRet.addArg($expression.expressionRet); }
+     (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
+     RPAREN;
 
 methodCall : ID (LBRACK expression RBRACK)? DOT espetialMethod LPAREN (expression (COMMA expression)*)? RPAREN;
 
@@ -223,7 +226,7 @@ expression returns [Expression expressionRet] :
            | lexpr=expression OR rexpr=expression { $expressionRet = BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $opr);} //TODO : opr might be broken
            | ID (LBRACK expression RBRACK)? { $expressionRet = ArrayIdentifier($ID.text, $expression.expressionRet); } //TODO :
            | LPAREN expression RPAREN { $expressionRet = $expression.expressionRet; }
-           | functionCall { $expressionRet =  FunctionCall(); } //TODO : functionCall not defined yet
+           | functionCall { $expressionRet =  $functionCall.funCallRet; }
            | methodCall { $expressionRet = MethodCall(); }; //TODO : MethodCall not defined yet
 
 value returns [Value valueRet] :
