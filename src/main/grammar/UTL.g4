@@ -171,23 +171,15 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
 
 
 tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
-    TRY
-        (LBRACE tryBody=statement* RBRACE | tryBody=statement)
+    TRY { $tryCatchStmtRet = new TryCatchStmt(); $tryCatchStmtRet.setLine($TRY.line); }
+        (LBRACE (statement {$tryCatchStmtRet.addThenStatement($statement.statementRet);})*
+        RBRACE
+        | statement {$tryCatchStmtRet.addThenStatement($statement.statementRet);} )
     (CATCH EXCEPTION ID
-        (LBRACE catchBody=statement* RBRACE | catchBody=statement))?
+        (LBRACE (statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); })*
+        RBRACE
+        | statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); }))? ;
     //TODO : Construncor TryCatchStmt gets a condition . MUST WRITE
-    {
-        $tryCatchStmtRet = new TryCatchStmt();
-
-        for (Statement stmt : tryBody){
-            $tryCatchStmtRet.addThenStatement(stmt.statementRet);
-        }
-        for (Statement stmt : catchBody){
-            $tryCatchStmtRet.addElseStatement(stmt.statementRet);
-        }
-
-        $tryCatchStmtRet.setLine($TRY.line);
-    };
 
 continueBreakStatement returns [ContinueBreakStmt continueBreakStmtRet]:
     (BREAK { $continueBreakStmtRet = new ContinueBreakStmt($BREAK.text); $continueBreakStmtRet.setLine($BREAK.line); }
