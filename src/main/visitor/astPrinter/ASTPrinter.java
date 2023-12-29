@@ -3,7 +3,9 @@ package main.visitor.astPrinter;
 import com.sun.jdi.event.StepEvent;
 import main.ast.node.Program;
 import main.ast.node.declaration.*;
+import main.ast.node.expression.Expression;
 import main.ast.node.expression.FunctionCall;
+import main.ast.node.expression.MethodCall;
 import main.ast.node.statement.*;
 import main.visitor.Visitor;
 
@@ -232,18 +234,46 @@ public class ASTPrinter extends Visitor<Void> {
     }
 
     //functionCall Rule
+    //TODO : check if the args need to be checked
     @Override
     public Void visit(FunctionCall functionCall){
         messagePrinter(functionCall.getLine() , functionCall.toString());
         if (functionCall.getFunctionName()!= null){
             functionCall.getFunctionName().accept(this);
         }
-        if (functionCall.getArgs() != null){
-            for(Exception exception: functionCall.getArgs()){
-                exception.
+        if (functionCall.getArgs() != null) {
+            for (Expression expression : functionCall.getArgs()) {
+                expression.accept(this);
             }
         }
+        return null;
     }
+
+
+    //methodCall Rule
+    //TODO : check if the args need to be checked
+    @Override
+    public Void visit(MethodCall methodCall) {
+        messagePrinter(methodCall.getLine(), methodCall.toString());
+        if (methodCall.getInstance() != null) {
+            methodCall.getInstance().accept(this);
+        }
+        if (methodCall.getFunctionName() != null) {
+            methodCall.getFunctionName().accept(this);
+        }
+        if (methodCall.getArgs() != null) {
+            for (Expression expression : methodCall.getArgs()) {
+                expression.accept(this);
+            }
+        }
+        reutrn null;
+    }
+
+    //expression Rule
+
+
+    //
+    public Void visit ()
 
 
 
