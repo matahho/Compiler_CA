@@ -3,11 +3,8 @@ package main.visitor.astPrinter;
 import com.sun.jdi.event.StepEvent;
 import main.ast.node.Program;
 import main.ast.node.declaration.*;
-import main.ast.node.expression.Expression;
-import main.ast.node.expression.FunctionCall;
-import main.ast.node.expression.MethodCall;
-import main.ast.node.expression.values.IntValue;
-import main.ast.node.expression.values.Value;
+import main.ast.node.expression.*;
+import main.ast.node.expression.values.*;
 import main.ast.node.statement.*;
 import main.visitor.Visitor;
 
@@ -274,6 +271,7 @@ public class ASTPrinter extends Visitor<Void> {
     //expression Rule
     @Override
     public Void visit (ExpressionStmt expressionStmt){
+        messagePrinter(expressionStmt.getLine() , expressionStmt.toString());
         if (expressionStmt.getExpression() != null){
             expressionStmt.getExpression().accept(this);
         }
@@ -281,14 +279,113 @@ public class ASTPrinter extends Visitor<Void> {
     }
 
 
-    //
+    //intValue Rule
     @Override
     public Void visit (IntValue intValue){
-        if (intValue.getConstant() != null){
-            intValue.getConstant().accept(this);
+        messagePrinter(intValue.getLine() , intValue.toString());
+        if (intValue != null){
+            intValue.accept(this);
         }
-
+        return null;
     }
+
+    //FLOAT_LITERAL Rule
+    @Override
+    public Void visit (FloatValue floatValue){
+        messagePrinter(floatValue.getLine() , floatValue.toString());
+        if (floatValue != null){
+            floatValue.accept(this);
+        }
+        return null;
+    }
+
+    //STRING_LITERAL Rule
+
+    @Override
+    public Void visit (StringValue stringValue){
+        messagePrinter(stringValue.getLine() , stringValue.toString());
+        if (stringValue != null){
+            stringValue.accept(this);
+        }
+        return null;
+    }
+
+    //BoolValue Rule
+    @Override
+    public Void visit (BoolValue boolValue){
+        messagePrinter(boolValue.getLine() , boolValue.toString());
+        if (boolValue != null){
+            boolValue.accept(this);
+        }
+    }
+
+
+
+    //UnaryExpression Rule
+    //TODO : MUST BE CHECK !!!
+    @Override
+    public Void visit(UnaryExpression unaryExpression){
+        messagePrinter(unaryExpression.getLine() , unaryExpression.toString());
+        if (unaryExpression.getOperand() != null){
+            unaryExpression.getOperand().accept(this);
+        }
+        return null;
+    }
+
+
+
+    //BinaryExpression Rule
+    //TODO : MUST BE CHECK !!!
+    @Override
+    public Void visit(BinaryExpression binaryExpression){
+        messagePrinter(binaryExpression.getLine() , binaryExpression.toString());
+        if (binaryExpression.getLeft() != null){
+            binaryExpression.getLeft().accept(this);
+        }
+        if (binaryExpression.getRight() != null){
+            binaryExpression.getRight().accept(this);
+        }
+        return null;
+    }
+
+    // VarAccess Rule
+    @Override
+    public Void visit(VarAccess varAccess){
+        messagePrinter(varAccess.getLine() , varAccess.toString());
+        if (varAccess.getInstance() != null ){
+            varAccess.getInstance().accept(this);
+        }
+        if (varAccess.getVariable() != null ){
+            varAccess.getVariable().accept(this);
+        }
+        return null;
+    }
+
+
+
+    //Identifier Rule
+    @Override
+    public Void visit(Identifier identifier){
+        messagePrinter(identifier.getLine() , identifier.toString());
+        if (identifier != null) {
+            identifier.accept(this);
+        }
+        return null;
+    }
+
+    //ArrayIdentifier Rule
+    @Override
+    public Void visit (ArrayIdentifier arrayIdentifier){
+        messagePrinter(arrayIdentifier.getLine() , arrayIdentifier.toString());
+        if (arrayIdentifier != null) {
+            arrayIdentifier.accept(this);
+        }
+        return null;
+    }
+
+
+
+
 
 
 
