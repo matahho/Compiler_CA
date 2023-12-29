@@ -3,6 +3,7 @@ package main.visitor.astPrinter;
 import com.sun.jdi.event.StepEvent;
 import main.ast.node.Program;
 import main.ast.node.declaration.*;
+import main.ast.node.expression.FunctionCall;
 import main.ast.node.statement.*;
 import main.visitor.Visitor;
 
@@ -219,7 +220,30 @@ public class ASTPrinter extends Visitor<Void> {
         return null;
     }
 
+    //throwStatement Rule
+    @Override
+    public Void visit(ThrowStmt throwStmt){
+        messagePrinter(throwStmt.getLine() , throwStmt.toString());
+        if (throwStmt.getReturnedExpr() != null){
+            throwStmt.getReturnedExpr().accept(this);
+        }
 
+        return null;
+    }
+
+    //functionCall Rule
+    @Override
+    public Void visit(FunctionCall functionCall){
+        messagePrinter(functionCall.getLine() , functionCall.toString());
+        if (functionCall.getFunctionName()!= null){
+            functionCall.getFunctionName().accept(this);
+        }
+        if (functionCall.getArgs() != null){
+            for(Exception exception: functionCall.getArgs()){
+                exception.
+            }
+        }
+    }
 
 
 
