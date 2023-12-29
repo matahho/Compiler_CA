@@ -38,7 +38,7 @@ statement returns [Statement statementRet] :
 
 varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclaration(); }
     allType { $varDecRet.setType($allType.allTypeRet); }
-    (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.intLiteralRet); })?
+    (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.text); })? //TODO : what to do with INT_LITERAL ???
     ID (ASSIGN expression)? SEMICOLON { $varDecRet.setIdentifier($ID.text); $varDecRet.setLine($ID.line); };
 
 functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
@@ -46,7 +46,7 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = n
     ID { $funcDecRet.setName($ID.text); $funcDecRet.setLine($ID.line); }
     LPAREN (allType (LBRACK INT_LITERAL RBRACK)? ID { $funcDecRet.addArg($allType.allTypeRet, $ID.text); }
     (COMMA allType (LBRACK INT_LITERAL RBRACK)? ID { $funcDecRet.addArg($allType.allTypeRet, $ID.text); })*)?
-    RPAREN (THROW EXCEPTION)? (LBRACE (statement { $funDecRet.addStatement($statement.statementRet); })* RBRACE | statement { $funDecRet.addStatement($statement.statementRet); });
+    RPAREN (THROW EXCEPTION)? (LBRACE (statement { $funcDecRet.addStatement($statement.statementRet); })* RBRACE | statement { $funcDecRet.addStatement($statement.statementRet); });
 
 mainDeclaration returns [MainDeclaration mainDecRet]:
     VOID MAIN LPAREN RPAREN
