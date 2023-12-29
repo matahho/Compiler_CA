@@ -49,25 +49,29 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = n
     RPAREN (THROW EXCEPTION)? (LBRACE (statement { $funcDecRet.addStatement($statement.statementRet); })* RBRACE | statement { $funcDecRet.addStatement($statement.statementRet); });
 
 mainDeclaration returns [MainDeclaration mainDecRet]:
-    VOID MAIN LPAREN RPAREN
-    (LBRACE mainBody=statement* RBRACE |  mainBody=statement)
-    //TODO : must be checked
-    {
-        $mainDecRet = new MainDeclaration();
-        for (Statement stmt : mainBody){
-            if (stmt instanceof varDeclaration ){
-                if (stmt.getType() instanceof TradeType){
-                    $mainDecRet.addActorInstantiation(stmt);
-                }
-            }
-            else{
-                $mainDecRet.addStatement(stmt);
+    VOID MAIN LPAREN RPAREN { $mainDecRet = new MainDeclaration(); $mainDecRet.setLine($MAIN.line); }
+    (LBRACE (statement {
+        if ($statement.statementRet instanceof VarDeclaration){
+            if ($statement.statementRet.getType() instanceof TradeType){
+                $mainDecRet.addActorInstantiation($statement.statementRet);
             }
         }
-
-        $mainDecRet.setLine($MAIN.line);
-    }
-    ;
+        else {
+            $mainDecRet.addStatement($statement.statementRet);
+        }
+    })*
+    RBRACE
+    |  statement {
+        if ($statement.statementRet instanceof VarDeclaration){
+            if ($statement.statementRet.getType() instanceof TradeType){
+                $mainDecRet.addActorInstantiation($statement.statementRet);
+            }
+        }
+        else {
+            $mainDecRet.addStatement($statement.statementRet);
+        }
+    });
+    //TODO : must be checked
 
 
 initDeclaration returns [OnInitDeclaration initDecRet]:
