@@ -186,7 +186,11 @@ throwStatement returns[ThrowStmt throwStmtRet]:
     }
     ;
 
-functionCall : (espetialFunction | complexType | ID) LPAREN (expression (COMMA expression)*)? RPAREN;
+functionCall returns [FunctionCall funCallRet]:
+    (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet)} //TODO : functionCall gets an Identifier but Identifier class is inherited from Expressions ??
+    | complexType
+    | ID)
+     LPAREN (expression (COMMA expression)*)? RPAREN;
 
 methodCall : ID (LBRACK expression RBRACK)? DOT espetialMethod LPAREN (expression (COMMA expression)*)? RPAREN;
 
