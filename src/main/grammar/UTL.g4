@@ -213,11 +213,23 @@ value returns [Value valueRet] :
     | SELL { $valueRet = new StringValue($SELL.text) } //Might be broken
     | BUY { $valueRet = new StringValue($BUY.text) }; //Might be broken
 
-primitiveType : FLOAT | DOUBLE | INT | BOOL | STRING | VOID;
+primitiveType returns [Type primitiveTypeRet]:
+    FLOAT { $primitiveTypeRet = new FloatType(); }
+    | DOUBLE { $primitiveTypeRet = new DoubleType(); }
+    | INT { $primitiveTypeRet = new IntType(); }
+    | BOOL { $primitiveTypeRet = new BoolType(); }
+    | STRING { $primitiveTypeRet = new StringType(); }
+    | VOID { $primitiveTypeRet = new VoidType(); };
 
-complexType: ORDER | TRADE | CANDLE | EXCEPTION;
+complexType returns [Type complexTypeRet]:
+    ORDER  { $complexTypeRet = new OrderType(); }
+    | TRADE { $complexTypeRet = new TradeType(); }
+    | CANDLE { $complexTypeRet = new CandleType(); }
+    | EXCEPTION { $complexTypeRet = new ExceptionType(); };
 
-allType: primitiveType | complexType;
+allType returns [Type allTypeRet]:
+    primitiveType { $allTypeRet = $primitiveType.primitiveTypeRet; }
+    | complexType { $allTypeRet = $complexType.complexTypeRet; };
 
 espetialFunction: REFRESH_RATE | CONNECT | OBSERVE | GET_CANDLE | TERMINATE | PRINT;
 
