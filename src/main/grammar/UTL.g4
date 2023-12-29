@@ -98,7 +98,7 @@ startDeclaration returns [OnStartDeclaration startDecRet]:
     }
     ;
 
-assignStatement returns [AssignStmt assignStmtRet]:
+assignStatement returns [AssignStmt assignStmtRet]: //TODO : check if is nessery to save (assign) in the AssignStmt class (= , -= , += , )
     ID (LBRACK lval=expression RBRACK)?
     assign
     rval=expression
