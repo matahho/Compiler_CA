@@ -233,9 +233,26 @@ allType returns [Type allTypeRet]:
     primitiveType { $allTypeRet = $primitiveType.primitiveTypeRet; }
     | complexType { $allTypeRet = $complexType.complexTypeRet; };
 
-espetialFunction: REFRESH_RATE | CONNECT | OBSERVE | GET_CANDLE | TERMINATE | PRINT;
+espetialFunction returns [String espFuncRet]: //TODO : Not sure
+    REFRESH_RATE { $espFuncRet = new String($REFRESH_RATE.text); }
+    | CONNECT { $espFuncRet = new String($CONNECT.text); }
+    | OBSERVE { $espFuncRet = new String($OBSERVE.text); }
+    | GET_CANDLE { $espFuncRet = new String($GET_CANDLE.text); }
+    | TERMINATE { $espFuncRet = new String($TERMINATE.text); }
+    | PRINT { $espFuncRet = new String($PRINT.text); };
 
-espetialVariable: ASK | BID | TIME | HIGH | LOW | DIGITS | VOLUME | TYPE | TEXT | OPEN | CLOSE;
+espetialVariable returns [String espVarRet]: //TODO : Not sure
+    ASK { $espVarRet = new String($ASK.text); }
+    | BID { $espVarRet = new String($BID.text); }
+    | TIME { $espVarRet = new String($TIME.text); }
+    | HIGH { $espVarRet = new String($HIGH.text); }
+    | LOW { $espVarRet = new String($LOW.text); }
+    | DIGITS { $espVarRet = new String($DIGITS.text); }
+    | VOLUME { $espVarRet = new String($VOLUME.text); }
+    | TYPE { $espVarRet = new String($TYPE.text); }
+    | TEXT { $espVarRet = new String($TEXT.text); }
+    | OPEN { $espVarRet = new String($OPEN.text); }
+    | CLOSE { $espVarRet = new String($CLOSE.text); };
 
 espetialMethod: OPEN | CLOSE;
 
