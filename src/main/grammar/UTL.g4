@@ -123,7 +123,7 @@ ifStatement returns [IfElseStmt ifStmtRet] :
                 $ifStmtRet.addThenStatement(stmt.statementRet);
             }
             for (Statement stmt : elseBody) {
-                $ifStmtRet.addElseStatement(stmt.statementRet));
+                $ifStmtRet.addElseStatement(stmt.statementRet);
             }
         $ifStmtRet.setLine($IF.line);
     };
@@ -224,9 +224,9 @@ methodCall returns [MethodCall methCallRet]:
     ID (LBRACK expr=expression RBRACK)? DOT
     espetialMethod LPAREN {
         if(expr != null)
-            ArrayIdentifier theInstance = new ArrayIdentifier($ID.text , $expression.expressionRet)
+            ArrayIdentifier theInstance = new ArrayIdentifier($ID.text , $expression.expressionRet);
         else
-            Identifier theInstance = new Identifier($ID.text)
+            Identifier theInstance = new Identifier($ID.text);
         $methCallRet = new MethodCall(theInstance, $espetialMethod.espMethRet);
         $methCallRet.setLine($ID.line);
     } //TODO : check first arg of MethodCall, Expression() is an empty class just in case
@@ -235,7 +235,7 @@ methodCall returns [MethodCall methCallRet]:
     RPAREN;
 
 expression returns [Expression expressionRet] :
-             value { $expressionRet = $value.valueRet }
+             value { $expressionRet = $value.valueRet; }
            | expression DOT espetialVariable { $expressionRet = new MethodCall($expression.expressionRet, $espetialVariable.espVarRet); }
            | expression opr=(INC | DEC) { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
            | opr=(NOT | MINUS | BIT_NOT | INC | DEC) expression { $expressionRet = new UnaryExpression($opr, $expression.expressionRet); $expressionRet.setLine($opr.line); } //TODO : opr might be broken
