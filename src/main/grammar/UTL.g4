@@ -33,8 +33,8 @@ statement returns [Statement statementRet] :
           | forStatement { $statementRet = $forStatement.forStmtRet; }
           | tryCatchStatement { $statementRet = $tryCatchStatement.tryCatchStmtRet; }
           | throwStatement { $statementRet = $throwStatement.throwStmtRet; }
-          | expression SEMICOLON { $statementRet = $expression.expressionRet; }
-          );
+          | expression { $statementRet = new ExpressionStmt($expression.expressionRet); } 
+          SEMICOLON);
 
 varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclaration(); }
     allType { $varDecRet.setType($allType.allTypeRet); }
