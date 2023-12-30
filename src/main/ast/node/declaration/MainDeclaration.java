@@ -21,7 +21,7 @@ public class MainDeclaration extends Declaration {
     }
 
     public void addActorInstantiation(VarDeclaration tradeInstantiation) {
-        mainTrades.add(tradeInstantiation);
+        this.mainTrades.add(tradeInstantiation);
     }
 
 

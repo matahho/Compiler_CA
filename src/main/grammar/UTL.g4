@@ -63,7 +63,7 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     VOID MAIN LPAREN RPAREN { $mainDecRet = new MainDeclaration(); $mainDecRet.setLine($MAIN.line); }
     (LBRACE (statement {
         if ($statement.statementRet instanceof VarDeclaration){
-            if ($statement.statementRet.getName() instanceof TradeType){
+            if ($statement.statementRet.getType() instanceof TradeType){
                 $mainDecRet.addActorInstantiation($statement.statementRet);
             }
         }
@@ -74,7 +74,7 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     RBRACE
     |  statement {
         if ($statement.statementRet instanceof VarDeclaration){
-            if ($statement.statementRet.getName() instanceof TradeType){
+            if ($statement.statementRet.getType() instanceof TradeType){
                 $mainDecRet.addActorInstantiation($statement.statementRet);
             }
         }

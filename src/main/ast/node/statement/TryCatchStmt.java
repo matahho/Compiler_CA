@@ -13,6 +13,9 @@ public class TryCatchStmt extends Statement {
     public TryCatchStmt(Expression condition) {
         this.condition = condition;
     }
+    public TryCatchStmt(){
+
+    }
 
     public Expression getCondition() {
         return condition;
