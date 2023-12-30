@@ -100,13 +100,13 @@ startDeclaration returns [OnStartDeclaration startDecRet]:
     (LBRACE (statement {$startDecRet.addStatement($statement.statementRet);})* RBRACE
     | statement {$startDecRet.addStatement($statement.statementRet);});
 
-assignStatement returns [AssignStmt assignStmtRet]: //TODO : check if is nessery to save (assign) in the AssignStmt class (= , -= , += , )
-    ID (LBRACK lval=expression RBRACK)?
+assignStatement returns [AssignStmt assignStmtRet] locals [Expression arrCall]: //TODO : check if is nessery to save (assign) in the AssignStmt class (= , -= , += , )
+    ID (LBRACK expression RBRACK {$arrCall = $expression.expressionRet;})? //TODO : what to do with expression?
     assign
     rval=expression
     SEMICOLON
     {
-        $assignStmtRet = new AssignStmt($lval.expressionRet , $rval.expressionRet);
+        $assignStmtRet = new AssignStmt(new Identifier($ID.text) , $rval.expressionRet);
         $assignStmtRet.setLine($ID.line);
     }
     ;
