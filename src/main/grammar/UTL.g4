@@ -33,7 +33,7 @@ statement returns [Statement statementRet] :
           | forStatement { $statementRet = $forStatement.forStmtRet; }
           | tryCatchStatement { $statementRet = $tryCatchStatement.tryCatchStmtRet; }
           | throwStatement { $statementRet = $throwStatement.throwStmtRet; }
-          | expression { $statementRet = new ExpressionStmt($expression.expressionRet); }
+          | expression { $statementRet = new ExpressionStmt($expression.expressionRet); $statementRet.setLine($expression.expressionRet.getLine()); }
           SEMICOLON);
 
 varDeclaration returns [VarDeclaration varDecRet] locals [Identifier id] :
