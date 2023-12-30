@@ -13,16 +13,16 @@ void OnStart (Trade t1) throw Exception
         tick_counts = 0;
     }
 
-    //float low = t1.Bid;
-    //double high = t1.Ask;
+    float low = t1.Bid;
+    double high = t1.Ask;
     float[2] predict;
     Candle [100] samples = GetCandle(100);
     float[100] maxSamples;
-    //for(int i=0; i==100; i++)
-    //{
-        //maxSamples[100-i] = samples[i].High;
-    //}
-    //linear regression algorithm
+    for(int i=0; i==100; i++)
+    {
+        maxSamples[100-i] = samples[i].High;
+    }
+    linear regression algorithm
     float Stoploss = 100;
     float TakeProfit = 250;
     float amount = 20;

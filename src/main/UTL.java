@@ -2,6 +2,7 @@ package main;
 
 import main.ast.node.Program;
 import main.compileError.CompileError;
+import main.visitor.astPrinter.ASTPrinter;
 import main.visitor.nameAnalyzer.NameAnalyzer;
 import org.antlr.v4.runtime.*;
 import parsers.*;
@@ -15,7 +16,8 @@ public class UTL {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         UTLParser parser = new UTLParser(tokens);
         Program program = parser.program().pro;
-
+        ASTPrinter printer = new ASTPrinter();
+        printer.visit(program);
         NameAnalyzer nameAnalyzer = new NameAnalyzer();
         nameAnalyzer.visit(program);
         if (!nameAnalyzer.nameErrors.isEmpty()){
