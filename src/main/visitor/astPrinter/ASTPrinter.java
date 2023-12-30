@@ -368,7 +368,7 @@ public class ASTPrinter extends Visitor<Void> {
     //ArrayIdentifier Rule
     @Override
     public Void visit (ArrayIdentifier arrayIdentifier){
-        messagePrinter(arrayIdentifier.getLine() , arrayIdentifier.toString());
+        messagePrinter(arrayIdentifier.getLine() , (arrayIdentifier.toString() +" "+ arrayIdentifier.getName()));
 
         return null;
     }
