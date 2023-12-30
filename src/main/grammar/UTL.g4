@@ -261,7 +261,7 @@ methodCall returns [MethodCall methCallRet] locals [boolean temp, Identifier id]
 
 expression returns [Expression expressionRet] locals [UnaryOperator op1, BinaryOperator op2, int Line] :
              value { $expressionRet = $value.valueRet; }
-           | lexpr=expression DOT espetialVariable { $expressionRet = new MethodCall($lexpr.expressionRet, $espetialVariable.espVarRet); }
+           | lexpr=expression DOT espetialVariable { $expressionRet = new MethodCall($lexpr.expressionRet, $espetialVariable.espVarRet); $expressionRet.setLine($DOT.line);}
            | lexpr=expression (INC{$op1 = UnaryOperator.INC; $Line = $INC.line;} | DEC{$op1 = UnaryOperator.DEC; $Line = $DEC.line;}) { $expressionRet = new UnaryExpression($op1, $lexpr.expressionRet); $expressionRet.setLine($Line); }
            | (NOT {$op1 = UnaryOperator.NOT; $Line = $NOT.line;} | MINUS {$op1 = UnaryOperator.MINUS; $Line = $MINUS.line;} | BIT_NOT {$op1 = UnaryOperator.BIT_NOT; $Line = $BIT_NOT.line;} | INC {$op1 = UnaryOperator.INC; $Line = $INC.line;} | DEC{$op1 = UnaryOperator.DEC; $Line = $DEC.line;}) lexpr=expression { $expressionRet = new UnaryExpression($op1, $lexpr.expressionRet); $expressionRet.setLine($Line); }
            | lexpr=expression (MULT {$op2 = BinaryOperator.MULT; $Line = $MULT.line;} | DIV {$op2 = BinaryOperator.DIV; $Line = $DIV.line;} | MOD {$op2 = BinaryOperator.MOD; $Line = $MOD.line;}) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $op2); $expressionRet.setLine($Line); }
@@ -273,9 +273,9 @@ expression returns [Expression expressionRet] locals [UnaryOperator op1, BinaryO
            | lexpr=expression AND {$op2 = BinaryOperator.AND; $Line = $AND.line;} rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $op2); $expressionRet.setLine($Line); }
            | lexpr=expression OR {$op2 = BinaryOperator.OR; $Line = $OR.line;} rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $op2); $expressionRet.setLine($Line); }
            | ID {boolean temp = false;}(LBRACK lexpr=expression RBRACK {temp = true;})? { if(temp) $expressionRet = new ArrayIdentifier($ID.text, $lexpr.expressionRet); else $expressionRet = new Identifier($ID.text); $expressionRet.setLine($ID.line); }
-           | LPAREN lexpr=expression RPAREN { $expressionRet = $lexpr.expressionRet; }
-           | functionCall { $expressionRet =  $functionCall.funCallRet; }
-           | methodCall { $expressionRet = $methodCall.methCallRet; };
+           | LPAREN lexpr=expression RPAREN { $expressionRet = $lexpr.expressionRet; $expressionRet.setLine($LPAREN.line); }
+           | functionCall { $expressionRet =  $functionCall.funCallRet; $expressionRet.setLine($functionCall.funCallRet.getLine()); }
+           | methodCall { $expressionRet = $methodCall.methCallRet; $expressionRet.setLine($methodCall.methCallRet.getLine());};
 
 value returns [Value valueRet] locals [float temp]:
     INT_LITERAL  { $valueRet = new IntValue($INT_LITERAL.int); $valueRet.setLine($INT_LITERAL.line); }
