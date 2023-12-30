@@ -35,9 +35,12 @@ public class ASTPrinter extends Visitor<Void> {
     //varDeclaration Rule
     @Override
     public Void visit(VarDeclaration varDeclaration){
-        messagePrinter(varDeclaration.getLine() , varDeclaration.toString());
-        if (varDeclaration.getIdentifier() != null){
-            varDeclaration.getIdentifier().accept(this);
+        messagePrinter(varDeclaration.getLine() , (varDeclaration.toString() + " " + varDeclaration.getIdentifier().getName()));
+        //if (varDeclaration.getIdentifier() != null){
+        //    varDeclaration.getIdentifier().accept(this);
+        //}
+        if(varDeclaration.getExpression() != null){
+            varDeclaration.getExpression().accept(this);
         }
         return null;
     }

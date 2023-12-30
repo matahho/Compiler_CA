@@ -40,7 +40,7 @@ varDeclaration returns [VarDeclaration varDecRet] locals [Identifier id] :
     { $varDecRet = new VarDeclaration(); }
     allType { $varDecRet.setType($allType.allTypeRet); }
     (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.int); })?
-    ID (ASSIGN expression)? SEMICOLON {
+    ID (ASSIGN expression {$varDecRet.setExpression($expression.expressionRet);})? SEMICOLON {
     $id = new Identifier($ID.text);
     $id.setLine($ID.line);
     $varDecRet.setIdentifier($id);
