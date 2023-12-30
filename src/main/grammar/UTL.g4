@@ -63,6 +63,7 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] locals [Identifier 
         $id = new Identifier($ID.text);
         $id.setLine($ID.line);
         $var.setIdentifier($id);
+        $var.setLine($ID.line);
         $funcDecRet.addArg($var);
     }
     (COMMA allType {$var.setType($allType.allTypeRet);}
