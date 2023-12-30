@@ -369,6 +369,9 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit (ArrayIdentifier arrayIdentifier){
         messagePrinter(arrayIdentifier.getLine() , (arrayIdentifier.toString() +" "+ arrayIdentifier.getName()));
+        if(arrayIdentifier.getIndex() != null){
+            arrayIdentifier.getIndex().accept(this);
+        }
 
         return null;
     }
