@@ -223,14 +223,21 @@ throwStatement returns[ThrowStmt throwStmtRet]:
     }
     ;
 
-functionCall returns [FunctionCall funCallRet]:
+functionCall returns [FunctionCall funCallRet] locals [Identifier id] :
     (espetialFunction { $funCallRet = new FunctionCall($espetialFunction.espFuncRet); }
-    | complexType { $funCallRet = new FunctionCall(new Identifier($complexType.complexTypeRet.getName())); }
-    | ID { $funCallRet = new FunctionCall(new Identifier($ID.text)); })
-     LPAREN
-     (expression { $funCallRet.addArg($expression.expressionRet); }
-     (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
-     RPAREN { $funCallRet.setLine($LPAREN.line); };
+    | complexType {
+    $id = new Identifier($complexType.complexTypeRet.getName());
+    $id.setLine($complexType.complexTypeRet.getLine());
+    $funCallRet = new FunctionCall($id);
+    }
+    | ID {
+    $id = new Identifier($ID.text);
+    $id.setLine($ID.line);
+    $funCallRet = new FunctionCall($id);} )
+    LPAREN
+    (expression { $funCallRet.addArg($expression.expressionRet); }
+    (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
+    RPAREN { $funCallRet.setLine($LPAREN.line); };
 
 methodCall returns [MethodCall methCallRet] locals [boolean temp]:
     ID {$temp = false;}(LBRACK expression RBRACK {$temp = true;})? DOT
@@ -279,10 +286,10 @@ primitiveType returns [Type primitiveTypeRet]:
     | VOID { $primitiveTypeRet = new VoidType(); };
 
 complexType returns [Type complexTypeRet]:
-    ORDER  { $complexTypeRet = new OrderType(); }
-    | TRADE { $complexTypeRet = new TradeType(); }
-    | CANDLE { $complexTypeRet = new CandleType(); }
-    | EXCEPTION { $complexTypeRet = new ExceptionType(); };
+    ORDER  { $complexTypeRet = new OrderType(); $complexTypeRet.setLine($ORDER.line);}
+    | TRADE { $complexTypeRet = new TradeType(); $complexTypeRet.setLine($TRADE.line);}
+    | CANDLE { $complexTypeRet = new CandleType(); $complexTypeRet.setLine($CANDLE.line);}
+    | EXCEPTION { $complexTypeRet = new ExceptionType(); $complexTypeRet.setLine($EXCEPTION.line);};
 
 allType returns [Type allTypeRet]:
     primitiveType { $allTypeRet = $primitiveType.primitiveTypeRet; }
