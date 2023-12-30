@@ -260,7 +260,7 @@ methodCall returns [MethodCall methCallRet] locals [boolean temp, Identifier id]
 
 expression returns [Expression expressionRet] locals [UnaryOperator op1, BinaryOperator op2, int Line] :
              value { $expressionRet = $value.valueRet; }
-           | lexpr=expression DOT espetialVariable { $expressionRet = new MethodCall($lexpr.expressionRet, $espetialVariable.espVarRet); $expressionRet.setLine($DOT.line);}
+           | lexpr=expression DOT espetialVariable { $expressionRet = new VarAccess($lexpr.expressionRet, $espetialVariable.espVarRet); $expressionRet.setLine($DOT.line);}
            | lexpr=expression (INC{$op1 = UnaryOperator.INC; $Line = $INC.line;} | DEC{$op1 = UnaryOperator.DEC; $Line = $DEC.line;}) { $expressionRet = new UnaryExpression($op1, $lexpr.expressionRet); $expressionRet.setLine($Line); }
            | (NOT {$op1 = UnaryOperator.NOT; $Line = $NOT.line;} | MINUS {$op1 = UnaryOperator.MINUS; $Line = $MINUS.line;} | BIT_NOT {$op1 = UnaryOperator.BIT_NOT; $Line = $BIT_NOT.line;} | INC {$op1 = UnaryOperator.INC; $Line = $INC.line;} | DEC{$op1 = UnaryOperator.DEC; $Line = $DEC.line;}) lexpr=expression { $expressionRet = new UnaryExpression($op1, $lexpr.expressionRet); $expressionRet.setLine($Line); }
            | lexpr=expression (MULT {$op2 = BinaryOperator.MULT; $Line = $MULT.line;} | DIV {$op2 = BinaryOperator.DIV; $Line = $DIV.line;} | MOD {$op2 = BinaryOperator.MOD; $Line = $MOD.line;}) rexpr=expression { $expressionRet = new BinaryExpression($lexpr.expressionRet, $rexpr.expressionRet, $op2); $expressionRet.setLine($Line); }
