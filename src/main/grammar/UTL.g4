@@ -202,7 +202,6 @@ tryCatchStatement returns [TryCatchStmt tryCatchStmtRet] locals [Expression id]:
     (LBRACE (statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); })*
     RBRACE
     | statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); }))? ;
-    //TODO : Construncor TryCatchStmt gets a condition . MUST WRITE (Mahdi : I have added a new construnctor to TryCatchStmt)
 
 continueBreakStatement returns [ContinueBreakStmt continueBreakStmtRet]:
     (BREAK { $continueBreakStmtRet = new ContinueBreakStmt($BREAK.text); $continueBreakStmtRet.setLine($BREAK.line); }
@@ -302,7 +301,7 @@ allType returns [Type allTypeRet]:
     primitiveType { $allTypeRet = $primitiveType.primitiveTypeRet; }
     | complexType { $allTypeRet = $complexType.complexTypeRet; };
 
-espetialFunction returns [Identifier espFuncRet]: //TODO : Not sure
+espetialFunction returns [Identifier espFuncRet]:
     REFRESH_RATE { $espFuncRet = new Identifier($REFRESH_RATE.text); $espFuncRet.setLine($REFRESH_RATE.line);}
     | CONNECT { $espFuncRet = new Identifier($CONNECT.text); $espFuncRet.setLine($CONNECT.line);}
     | OBSERVE { $espFuncRet = new Identifier($OBSERVE.text); $espFuncRet.setLine($OBSERVE.line);}
@@ -310,7 +309,7 @@ espetialFunction returns [Identifier espFuncRet]: //TODO : Not sure
     | TERMINATE { $espFuncRet = new Identifier($TERMINATE.text); $espFuncRet.setLine($TERMINATE.line);}
     | PRINT { $espFuncRet = new Identifier($PRINT.text); $espFuncRet.setLine($PRINT.line);};
 
-espetialVariable returns [Identifier espVarRet]: //TODO : Not sure
+espetialVariable returns [Identifier espVarRet]:
     ASK { $espVarRet = new Identifier($ASK.text); $espVarRet.setLine($ASK.line);}
     | BID { $espVarRet = new Identifier($BID.text); $espVarRet.setLine($BID.line);}
     | TIME { $espVarRet = new Identifier($TIME.text); $espVarRet.setLine($TIME.line);}
