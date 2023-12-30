@@ -239,13 +239,19 @@ functionCall returns [FunctionCall funCallRet] locals [Identifier id] :
     (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
     RPAREN { $funCallRet.setLine($LPAREN.line); };
 
-methodCall returns [MethodCall methCallRet] locals [boolean temp]:
+methodCall returns [MethodCall methCallRet] locals [boolean temp, Identifier id]:
     ID {$temp = false;}(LBRACK expression RBRACK {$temp = true;})? DOT
     espetialMethod LPAREN {
-        if($temp)
-            $methCallRet = new MethodCall(new ArrayIdentifier($ID.text , $expression.expressionRet), $espetialMethod.espMethRet);
-        else
-            $methCallRet = new MethodCall(new Identifier($ID.text), $espetialMethod.espMethRet);
+        if($temp){
+            $id = new ArrayIdentifier($ID.text , $expression.expressionRet);
+            $id.setLine($ID.line);
+            $methCallRet = new MethodCall($id, $espetialMethod.espMethRet);
+        }
+        else {
+            $id = new Identifier($ID.text);
+            $id.setLine($ID.line);
+            $methCallRet = new MethodCall($id, $espetialMethod.espMethRet);
+        }
         $methCallRet.setLine($ID.line);
     }
     (expression { $methCallRet.addArg($expression.expressionRet); }
