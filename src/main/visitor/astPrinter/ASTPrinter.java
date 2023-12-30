@@ -16,14 +16,14 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit(Program program) {
         messagePrinter(program.getLine(), program.toString());
-        for (OnInitDeclaration onInitDeclaration : program.getInits())
-            onInitDeclaration.accept(this);
-        for (OnStartDeclaration onStartDeclaration : program.getStarts())
-            onStartDeclaration.accept(this);
         for (VarDeclaration varDeclaration : program.getVars())
             varDeclaration.accept(this);
         for (FunctionDeclaration functionDeclaration : program.getFunctions())
             functionDeclaration.accept(this);
+        for (OnInitDeclaration onInitDeclaration : program.getInits())
+            onInitDeclaration.accept(this);
+        for (OnStartDeclaration onStartDeclaration : program.getStarts())
+            onStartDeclaration.accept(this);
         if (program.getMain() != null) {
             program.getMain().accept(this);
         }
