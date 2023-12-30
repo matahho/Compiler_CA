@@ -113,8 +113,8 @@ assignStatement returns [AssignStmt assignStmtRet]: //TODO : check if is nessery
 
 ifStatement returns [IfElseStmt ifStmtRet] :
     IF
-    LPAREN {$ifStmtRet.setLine($IF.line);}
-    expression {$ifStmtRet= new IfElseStmt($expression.expressionRet);}
+    LPAREN
+    expression {$ifStmtRet= new IfElseStmt($expression.expressionRet); $ifStmtRet.setLine($IF.line);}
     RPAREN
         (LBRACE (statement{$ifStmtRet.addThenStatement($statement.statementRet);})* RBRACE
         | statement{$ifStmtRet.addThenStatement($statement.statementRet);})
