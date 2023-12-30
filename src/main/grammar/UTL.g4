@@ -41,12 +41,15 @@ varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclar
     (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.int); })?
     ID (ASSIGN expression)? SEMICOLON { $varDecRet.setIdentifier(new Identifier($ID.text)); $varDecRet.setLine($ID.line); };
 
-functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
+functionDeclaration returns [FunctionDeclaration funcDecRet] locals [Identifier id]:
+    { $funcDecRet = new FunctionDeclaration(); }
     primitiveType { $funcDecRet.setReturnType($primitiveType.primitiveTypeRet); }
-    ID {Identifier idetifier= new Identifier($ID.text);
-    $funcDecRet.setName(idetifier);
+    ID {
+    $id = new Identifier($ID.text);
+    $id.setLine($ID.line);
+    $funcDecRet.setName($id);
     $funcDecRet.setLine($ID.line);
-    idetifier.setLine($ID.line); }
+    }
     LPAREN { VarDeclaration temp = new VarDeclaration(); }
     (allType { temp.setType($allType.allTypeRet); }
     (LBRACK INT_LITERAL RBRACK { temp.setLength($INT_LITERAL.int); })?
