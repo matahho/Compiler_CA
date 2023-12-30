@@ -1,3 +1,6 @@
+int balance;
+int tick_counts = 0;
+
 void OnInit(Trade t3)
 {
     // Just set some variables
@@ -22,6 +25,7 @@ void OnStart (Trade t1) throw Exception
     {
         maxSamples[100-i] = samples[i].High;
     }
+    //linear regression algorithm
     float Stoploss = 100;
     float TakeProfit = 250;
     float amount = 20;
@@ -66,5 +70,5 @@ void Main()
         if (e.Type == 1)
             Print("Login Failure!");
     }
+    //@schedule (t1 parallel t2) preorder (t3 parallel t4);
 }
-
