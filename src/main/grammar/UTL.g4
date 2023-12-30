@@ -100,10 +100,14 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     });
 
 
-initDeclaration returns [OnInitDeclaration initDecRet]:
+initDeclaration returns [OnInitDeclaration initDecRet] locals [Identifier id]:
     VOID
     ONINIT {$initDecRet = new OnInitDeclaration(); $initDecRet.setLine($ONINIT.line);}
-    LPAREN TRADE ID { $initDecRet.setTradeName(new Identifier($ID.text)); }RPAREN
+    LPAREN TRADE ID {
+    $id = new Identifier($ID.text);
+    $id.setLine($ID.line);
+    $initDecRet.setTradeName($id);
+    } RPAREN
     (THROW EXCEPTION)?
     (LBRACE (statement{$initDecRet.addStatement($statement.statementRet);})* RBRACE
     | statement{$initDecRet.addStatement($statement.statementRet);});
