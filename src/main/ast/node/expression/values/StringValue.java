@@ -20,7 +20,10 @@ public class StringValue extends Value {
     }
 
     @Override
-    public String toString(){ return "StringValue"; }
+    public String toString(){
+        if(this.constant.equals("SELL") || this.constant.equals("BUY"))
+            return "TradeValue";
+        return "StringValue"; }
     @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
