@@ -188,15 +188,19 @@ forStatement returns [ForStmt forStmtRet]: {$forStmtRet = new ForStmt();}
 
 
 
-tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
+tryCatchStatement returns [TryCatchStmt tryCatchStmtRet] locals [Expression id]:
     TRY { $tryCatchStmtRet = new TryCatchStmt(); $tryCatchStmtRet.setLine($TRY.line); }
-        (LBRACE (statement {$tryCatchStmtRet.addThenStatement($statement.statementRet);})*
-        RBRACE
-        | statement {$tryCatchStmtRet.addThenStatement($statement.statementRet);} )
-    (CATCH EXCEPTION ID
-        (LBRACE (statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); })*
-        RBRACE
-        | statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); }))? ;
+    (LBRACE (statement {$tryCatchStmtRet.addThenStatement($statement.statementRet);})*
+    RBRACE
+    | statement {$tryCatchStmtRet.addThenStatement($statement.statementRet);} )
+    (CATCH EXCEPTION ID {
+    $id = new Identifier($ID.text);
+    $id.setLine($ID.line);
+    $tryCatchStmtRet.setCondition($id);
+    }  //TODO : Used ID as the condition, still unclear!
+    (LBRACE (statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); })*
+    RBRACE
+    | statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); }))? ;
     //TODO : Construncor TryCatchStmt gets a condition . MUST WRITE (Mahdi : I have added a new construnctor to TryCatchStmt)
 
 continueBreakStatement returns [ContinueBreakStmt continueBreakStmtRet]:
