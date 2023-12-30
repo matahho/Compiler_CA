@@ -197,10 +197,10 @@ functionCall returns [FunctionCall funCallRet]:
      (COMMA expression { $funCallRet.addArg($expression.expressionRet); })*)?
      RPAREN { $funCallRet.setLine($LPAREN.line); };
 
-methodCall returns [MethodCall methCallRet]:
-    ID {boolean temp = false;}(LBRACK expression RBRACK {temp = true;})? DOT
+methodCall returns [MethodCall methCallRet] locals [boolean temp]:
+    ID {$temp = false;}(LBRACK expression RBRACK {$temp = true;})? DOT
     espetialMethod LPAREN {
-        if(temp)
+        if($temp)
             $methCallRet = new MethodCall(new ArrayIdentifier($ID.text , $expression.expressionRet), $espetialMethod.espMethRet);
         else
             $methCallRet = new MethodCall(new Identifier($ID.text), $espetialMethod.espMethRet);
