@@ -124,13 +124,20 @@ startDeclaration returns [OnStartDeclaration startDecRet] locals [Identifier id]
     (LBRACE (statement {$startDecRet.addStatement($statement.statementRet);})* RBRACE
     | statement {$startDecRet.addStatement($statement.statementRet);});
 
-assignStatement returns [AssignStmt assignStmtRet] locals [Expression arrCall]: //TODO : check if is nessery to save (assign) in the AssignStmt class (= , -= , += , )
+assignStatement returns [AssignStmt assignStmtRet] locals [Expression arrCall, Identifier id]: //TODO : check if is nessery to save (assign) in the AssignStmt class (= , -= , += , )
     ID (LBRACK expression RBRACK {$arrCall = $expression.expressionRet;})? //TODO : what to do with expression?
     assign
     rval=expression
     SEMICOLON
     {
-        $assignStmtRet = new AssignStmt(new Identifier($ID.text) , $rval.expressionRet);
+        if( $arrCall == null){
+            $id = new Identifier($ID.text);
+        }
+        else {
+            $id = new ArrayIdentifier($ID.text, $arrCall);
+        }
+        $id.setLine($ID.line);
+        $assignStmtRet = new AssignStmt($id , $rval.expressionRet);
         $assignStmtRet.setLine($ID.line);
     }
     ;
