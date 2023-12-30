@@ -323,8 +323,8 @@ espetialVariable returns [Identifier espVarRet]:
     | CLOSE { $espVarRet = new Identifier($CLOSE.text); $espVarRet.setLine($CLOSE.line);};
 
 espetialMethod returns [Identifier espMethRet]: //TODO : Not sure
-    OPEN { $espMethRet = new Identifier($OPEN.text); }
-    | CLOSE { $espMethRet = new Identifier($CLOSE.text); };
+    OPEN { $espMethRet = new Identifier($OPEN.text); $espMethRet.setLine($OPEN.line);}
+    | CLOSE { $espMethRet = new Identifier($CLOSE.text); $espMethRet.setLine($CLOSE.line);};
 
 assign: ASSIGN | ADD_ASSIGN | SUB_ASSIGN | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN;
 
