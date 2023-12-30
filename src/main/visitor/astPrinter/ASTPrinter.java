@@ -24,8 +24,9 @@ public class ASTPrinter extends Visitor<Void> {
             varDeclaration.accept(this);
         for (FunctionDeclaration functionDeclaration : program.getFunctions())
             functionDeclaration.accept(this);
-
-        program.getMain().accept(this);
+        if (program.getMain() != null) {
+            program.getMain().accept(this);
+        }
         return null;
     }
 
