@@ -239,7 +239,7 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit(FunctionCall functionCall){
         messagePrinter(functionCall.getLine() , functionCall.toString());
-        if (functionCall.getFunctionName()!= null){
+        if (functionCall.getFunctionName() != null){
             functionCall.getFunctionName().accept(this);
         }
         if (functionCall.getArgs() != null) {
@@ -285,9 +285,6 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit (IntValue intValue){
         messagePrinter(intValue.getLine() , intValue.toString());
-        if (intValue != null){
-            intValue.accept(this);
-        }
         return null;
     }
 
@@ -295,9 +292,6 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit (FloatValue floatValue){
         messagePrinter(floatValue.getLine() , floatValue.toString());
-        if (floatValue != null){
-            floatValue.accept(this);
-        }
         return null;
     }
 
@@ -306,9 +300,6 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit (StringValue stringValue){
         messagePrinter(stringValue.getLine() , stringValue.toString());
-        if (stringValue != null){
-            stringValue.accept(this);
-        }
         return null;
     }
 
@@ -316,9 +307,6 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit (BoolValue boolValue){
         messagePrinter(boolValue.getLine() , boolValue.toString());
-        if (boolValue != null){
-            boolValue.accept(this);
-        }
         return null;
     }
 
@@ -370,9 +358,6 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit(Identifier identifier){
         messagePrinter(identifier.getLine() , identifier.toString());
-        if (identifier != null) {
-            identifier.accept(this);
-        }
         return null;
     }
 
@@ -380,9 +365,7 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit (ArrayIdentifier arrayIdentifier){
         messagePrinter(arrayIdentifier.getLine() , arrayIdentifier.toString());
-        if (arrayIdentifier != null) {
-            arrayIdentifier.accept(this);
-        }
+
         return null;
     }
 
