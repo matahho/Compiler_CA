@@ -47,6 +47,8 @@ public class TryCatchStmt extends Statement {
     }
 
     @Override
+    public String toString(){ return "TryCatchStmt"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

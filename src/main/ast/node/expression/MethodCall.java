@@ -43,6 +43,8 @@ public class MethodCall extends Expression {
     }
 
     @Override
+    public String toString(){ return "MethodCall"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

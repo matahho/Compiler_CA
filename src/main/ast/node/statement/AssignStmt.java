@@ -31,6 +31,8 @@ public class AssignStmt extends Statement {
     }
 
     @Override
+    public String toString(){ return "AssignStmt"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

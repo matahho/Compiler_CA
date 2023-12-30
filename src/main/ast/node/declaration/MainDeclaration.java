@@ -38,6 +38,8 @@ public class MainDeclaration extends Declaration {
     }
 
     @Override
+    public String toString(){ return "MainDeclaration"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

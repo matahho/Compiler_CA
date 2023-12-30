@@ -34,6 +34,8 @@ public class OnStartDeclaration extends Declaration {
     }
 
     @Override
+    public String toString(){ return "OnStartDeclaration"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

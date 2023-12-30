@@ -19,6 +19,8 @@ public class ThrowStmt extends Statement {
     }
 
     @Override
+    public String toString(){ return "ThrowStmt"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

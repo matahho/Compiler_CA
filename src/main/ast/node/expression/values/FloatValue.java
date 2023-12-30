@@ -18,6 +18,8 @@ public class FloatValue extends Value {
     }
 
     @Override
+    public String toString(){ return "FloatValue"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

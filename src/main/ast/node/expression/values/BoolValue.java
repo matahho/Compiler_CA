@@ -18,6 +18,8 @@ public class BoolValue extends Value {
     }
 
     @Override
+    public String toString(){ return "BoolValue"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

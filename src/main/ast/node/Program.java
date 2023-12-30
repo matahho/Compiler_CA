@@ -69,6 +69,8 @@ public class Program extends Node{
     }
 
     @Override
+    public String toString(){ return "Program"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

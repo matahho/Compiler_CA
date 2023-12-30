@@ -20,6 +20,8 @@ public class StringValue extends Value {
     }
 
     @Override
+    public String toString(){ return "StringValue"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

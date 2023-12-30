@@ -59,6 +59,8 @@ public class ForStmt extends Statement {
     }
 
     @Override
+    public String toString(){ return "ForStmt"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

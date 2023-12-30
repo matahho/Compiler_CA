@@ -20,6 +20,8 @@ public class IntValue extends Value {
     }
 
     @Override
+    public String toString(){ return "IntValue"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

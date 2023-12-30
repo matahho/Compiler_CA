@@ -42,6 +42,8 @@ public class VarDeclaration extends Declaration {
     }
 
     @Override
+    public String toString(){ return "VarDeclaration"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

@@ -44,6 +44,8 @@ public class IfElseStmt extends Statement {
     }
 
     @Override
+    public String toString(){ return "IfElseStmt"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

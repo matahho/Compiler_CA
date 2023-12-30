@@ -35,6 +35,8 @@ public class WhileStmt extends Statement {
     }
 
     @Override
+    public String toString(){ return "WhileStmt"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }

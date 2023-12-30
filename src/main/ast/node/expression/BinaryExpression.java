@@ -42,6 +42,8 @@ public class BinaryExpression extends Expression {
     }
 
     @Override
+    public String toString(){ return "BinaryExpression"; }
+    @Override
     public <T> T accept(IVisitor<T> visitor) {
         return visitor.visit(this);
     }
