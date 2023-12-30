@@ -125,8 +125,8 @@ ifStatement returns [IfElseStmt ifStmtRet] :
     ;
 
 whileStatement returns [WhileStmt whileStmtRet]:
-    WHILE {$whileStmtRet.setLine($WHILE.line);}
-    LPAREN expression {$whileStmtRet = new WhileStmt($expression.expressionRet);} RPAREN
+    WHILE
+    LPAREN expression {$whileStmtRet = new WhileStmt($expression.expressionRet); $whileStmtRet.setLine($WHILE.line);} RPAREN
         (LBRACE (statement{$whileStmtRet.addBody($statement.statementRet);})*
         RBRACE | statement{$whileStmtRet.addBody($statement.statementRet);})
     ;
