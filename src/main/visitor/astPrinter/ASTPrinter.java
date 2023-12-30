@@ -277,7 +277,7 @@ public class ASTPrinter extends Visitor<Void> {
     //expression Rule
     @Override
     public Void visit (ExpressionStmt expressionStmt){
-        messagePrinter(expressionStmt.getLine() , expressionStmt.toString());
+        //messagePrinter(expressionStmt.getLine() , expressionStmt.toString()); //TODO : shoudln't be printed according to samples
         if (expressionStmt.getExpression() != null){
             expressionStmt.getExpression().accept(this);
         }
