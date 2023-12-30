@@ -1,6 +1,3 @@
-static int balance;
-shared int tick_counts = 0;
-
 void OnInit(Trade t3)
 {
     // Just set some variables
