@@ -361,7 +361,7 @@ public class ASTPrinter extends Visitor<Void> {
     //Identifier Rule
     @Override
     public Void visit(Identifier identifier){
-        messagePrinter(identifier.getLine() , identifier.toString());
+        messagePrinter(identifier.getLine() , (identifier.toString() +" "+ identifier.getName()));
         return null;
     }
 
