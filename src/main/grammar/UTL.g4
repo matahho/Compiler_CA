@@ -311,17 +311,17 @@ espetialFunction returns [Identifier espFuncRet]: //TODO : Not sure
     | PRINT { $espFuncRet = new Identifier($PRINT.text); $espFuncRet.setLine($PRINT.line);};
 
 espetialVariable returns [Identifier espVarRet]: //TODO : Not sure
-    ASK { $espVarRet = new Identifier($ASK.text); }
-    | BID { $espVarRet = new Identifier($BID.text); }
-    | TIME { $espVarRet = new Identifier($TIME.text); }
-    | HIGH { $espVarRet = new Identifier($HIGH.text); }
-    | LOW { $espVarRet = new Identifier($LOW.text); }
-    | DIGITS { $espVarRet = new Identifier($DIGITS.text); }
-    | VOLUME { $espVarRet = new Identifier($VOLUME.text); }
-    | TYPE { $espVarRet = new Identifier($TYPE.text); }
-    | TEXT { $espVarRet = new Identifier($TEXT.text); }
-    | OPEN { $espVarRet = new Identifier($OPEN.text); }
-    | CLOSE { $espVarRet = new Identifier($CLOSE.text); };
+    ASK { $espVarRet = new Identifier($ASK.text); $espVarRet.setLine($ASK.line);}
+    | BID { $espVarRet = new Identifier($BID.text); $espVarRet.setLine($BID.line);}
+    | TIME { $espVarRet = new Identifier($TIME.text); $espVarRet.setLine($TIME.line);}
+    | HIGH { $espVarRet = new Identifier($HIGH.text); $espVarRet.setLine($HIGH.line);}
+    | LOW { $espVarRet = new Identifier($LOW.text); $espVarRet.setLine($LOW.line);}
+    | DIGITS { $espVarRet = new Identifier($DIGITS.text); $espVarRet.setLine($DIGITS.line);}
+    | VOLUME { $espVarRet = new Identifier($VOLUME.text); $espVarRet.setLine($VOLUME.line);}
+    | TYPE { $espVarRet = new Identifier($TYPE.text); $espVarRet.setLine($TYPE.line);}
+    | TEXT { $espVarRet = new Identifier($TEXT.text); $espVarRet.setLine($TEXT.line);}
+    | OPEN { $espVarRet = new Identifier($OPEN.text); $espVarRet.setLine($OPEN.line);}
+    | CLOSE { $espVarRet = new Identifier($CLOSE.text); $espVarRet.setLine($CLOSE.line);};
 
 espetialMethod returns [Identifier espMethRet]: //TODO : Not sure
     OPEN { $espMethRet = new Identifier($OPEN.text); }
