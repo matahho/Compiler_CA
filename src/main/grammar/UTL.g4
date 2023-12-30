@@ -36,10 +36,16 @@ statement returns [Statement statementRet] :
           | expression { $statementRet = new ExpressionStmt($expression.expressionRet); }
           SEMICOLON);
 
-varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclaration(); }
+varDeclaration returns [VarDeclaration varDecRet] locals [Identifier id] :
+    { $varDecRet = new VarDeclaration(); }
     allType { $varDecRet.setType($allType.allTypeRet); }
     (LBRACK INT_LITERAL RBRACK { $varDecRet.setLength($INT_LITERAL.int); })?
-    ID (ASSIGN expression)? SEMICOLON { $varDecRet.setIdentifier(new Identifier($ID.text)); $varDecRet.setLine($ID.line); };
+    ID (ASSIGN expression)? SEMICOLON {
+    $id = new Identifier($ID.text);
+    $id.setLine($ID.line);
+    $varDecRet.setIdentifier($id);
+    $varDecRet.setLine($ID.line);
+    };
 
 functionDeclaration returns [FunctionDeclaration funcDecRet] locals [Identifier id]:
     { $funcDecRet = new FunctionDeclaration(); }
