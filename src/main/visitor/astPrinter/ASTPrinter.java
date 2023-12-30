@@ -320,7 +320,7 @@ public class ASTPrinter extends Visitor<Void> {
     //TODO : MUST BE CHECK !!!
     @Override
     public Void visit(UnaryExpression unaryExpression){
-        messagePrinter(unaryExpression.getLine() , unaryExpression.toString());
+        messagePrinter(unaryExpression.getLine() , (unaryExpression.toString() +" "+ unaryExpression.getUnaryOperator()));
         if (unaryExpression.getOperand() != null){
             unaryExpression.getOperand().accept(this);
         }
