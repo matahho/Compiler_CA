@@ -13,15 +13,16 @@ public class VarDeclaration extends Declaration {
     }
 
     public Identifier getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public void setIdentifier(Identifier identifier) {
         this.identifier = identifier;
     }
 
+    @Override
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(Type type) {
