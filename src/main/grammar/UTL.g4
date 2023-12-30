@@ -82,7 +82,6 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
             $mainDecRet.addStatement($statement.statementRet);
         }
     });
-    //TODO : must be checked
 
 
 initDeclaration returns [OnInitDeclaration initDecRet]:
@@ -113,8 +112,8 @@ assignStatement returns [AssignStmt assignStmtRet]: //TODO : check if is nessery
     ;
 
 ifStatement returns [IfElseStmt ifStmtRet] :
-    IF {$ifStmtRet.setLine($IF.line);}
-    LPAREN
+    IF
+    LPAREN {$ifStmtRet.setLine($IF.line);}
     expression {$ifStmtRet= new IfElseStmt($expression.expressionRet);}
     RPAREN
         (LBRACE (statement{$ifStmtRet.addThenStatement($statement.statementRet);})* RBRACE
