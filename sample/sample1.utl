@@ -22,7 +22,6 @@ void OnStart (Trade t1) throw Exception
     {
         maxSamples[100-i] = samples[i].High;
     }
-    linear regression algorithm
     float Stoploss = 100;
     float TakeProfit = 250;
     float amount = 20;
