@@ -63,7 +63,7 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     VOID MAIN LPAREN RPAREN { $mainDecRet = new MainDeclaration(); $mainDecRet.setLine($MAIN.line); }
     (LBRACE (statement {
         if ($statement.statementRet instanceof VarDeclaration){
-            if ($statement.statementRet.getType() instanceof TradeType){
+            if ($statement.statementRet.getName() instanceof TradeType){
                 $mainDecRet.addActorInstantiation($statement.statementRet);
             }
         }
@@ -74,7 +74,7 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     RBRACE
     |  statement {
         if ($statement.statementRet instanceof VarDeclaration){
-            if ($statement.statementRet.getType() instanceof TradeType){
+            if ($statement.statementRet.getName() instanceof TradeType){
                 $mainDecRet.addActorInstantiation($statement.statementRet);
             }
         }
@@ -167,7 +167,7 @@ tryCatchStatement returns [TryCatchStmt tryCatchStmtRet]:
         (LBRACE (statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); })*
         RBRACE
         | statement { $tryCatchStmtRet.addElseStatement($statement.statementRet); }))? ;
-    //TODO : Construncor TryCatchStmt gets a condition . MUST WRITE
+    //TODO : Construncor TryCatchStmt gets a condition . MUST WRITE (Mahdi : I have added a new construnctor to TryCatchStmt)
 
 continueBreakStatement returns [ContinueBreakStmt continueBreakStmtRet]:
     (BREAK { $continueBreakStmtRet = new ContinueBreakStmt($BREAK.text); $continueBreakStmtRet.setLine($BREAK.line); }
