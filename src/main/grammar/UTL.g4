@@ -303,12 +303,12 @@ allType returns [Type allTypeRet]:
     | complexType { $allTypeRet = $complexType.complexTypeRet; };
 
 espetialFunction returns [Identifier espFuncRet]: //TODO : Not sure
-    REFRESH_RATE { $espFuncRet = new Identifier($REFRESH_RATE.text); }
-    | CONNECT { $espFuncRet = new Identifier($CONNECT.text); }
-    | OBSERVE { $espFuncRet = new Identifier($OBSERVE.text); }
-    | GET_CANDLE { $espFuncRet = new Identifier($GET_CANDLE.text); }
-    | TERMINATE { $espFuncRet = new Identifier($TERMINATE.text); }
-    | PRINT { $espFuncRet = new Identifier($PRINT.text); };
+    REFRESH_RATE { $espFuncRet = new Identifier($REFRESH_RATE.text); $espFuncRet.setLine($REFRESH_RATE.line);}
+    | CONNECT { $espFuncRet = new Identifier($CONNECT.text); $espFuncRet.setLine($CONNECT.line);}
+    | OBSERVE { $espFuncRet = new Identifier($OBSERVE.text); $espFuncRet.setLine($OBSERVE.line);}
+    | GET_CANDLE { $espFuncRet = new Identifier($GET_CANDLE.text); $espFuncRet.setLine($GET_CANDLE.line);}
+    | TERMINATE { $espFuncRet = new Identifier($TERMINATE.text); $espFuncRet.setLine($TERMINATE.line);}
+    | PRINT { $espFuncRet = new Identifier($PRINT.text); $espFuncRet.setLine($PRINT.line);};
 
 espetialVariable returns [Identifier espVarRet]: //TODO : Not sure
     ASK { $espVarRet = new Identifier($ASK.text); }
