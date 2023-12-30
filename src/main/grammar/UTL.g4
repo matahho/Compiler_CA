@@ -47,7 +47,7 @@ varDeclaration returns [VarDeclaration varDecRet] locals [Identifier id] :
     $varDecRet.setLine($ID.line);
     };
 
-functionDeclaration returns [FunctionDeclaration funcDecRet] locals [Identifier id]:
+functionDeclaration returns [FunctionDeclaration funcDecRet] locals [Identifier id, VarDeclaration var]:
     { $funcDecRet = new FunctionDeclaration(); }
     primitiveType { $funcDecRet.setReturnType($primitiveType.primitiveTypeRet); }
     ID {
@@ -56,18 +56,22 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] locals [Identifier 
     $funcDecRet.setName($id);
     $funcDecRet.setLine($ID.line);
     }
-    LPAREN { VarDeclaration temp = new VarDeclaration(); }
-    (allType { temp.setType($allType.allTypeRet); }
-    (LBRACK INT_LITERAL RBRACK { temp.setLength($INT_LITERAL.int); })?
+    LPAREN { $var = new VarDeclaration(); }
+    (allType { $var.setType($allType.allTypeRet); }
+    (LBRACK INT_LITERAL RBRACK { $var.setLength($INT_LITERAL.int); })?
     ID {
-        temp.setIdentifier(new Identifier($ID.text));
-        $funcDecRet.addArg(temp);
+        $id = new Identifier($ID.text);
+        $id.setLine($ID.line);
+        $var.setIdentifier($id);
+        $funcDecRet.addArg($var);
     }
-    (COMMA allType {temp.setType($allType.allTypeRet);}
-    (LBRACK INT_LITERAL RBRACK {temp.setLength($INT_LITERAL.int);})?
+    (COMMA allType {$var.setType($allType.allTypeRet);}
+    (LBRACK INT_LITERAL RBRACK {$var.setLength($INT_LITERAL.int);})?
     ID {
-        temp.setIdentifier(new Identifier($ID.text));
-        $funcDecRet.addArg(temp);
+        $id = new Identifier($ID.text);
+        $id.setLine($ID.line);
+        $var.setIdentifier($id);
+        $funcDecRet.addArg($var);
     })*)?
     RPAREN (THROW EXCEPTION)? (LBRACE (statement { $funcDecRet.addStatement($statement.statementRet); })* RBRACE | statement { $funcDecRet.addStatement($statement.statementRet); });
 
