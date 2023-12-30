@@ -43,7 +43,10 @@ varDeclaration returns [VarDeclaration varDecRet] : { $varDecRet = new VarDeclar
 
 functionDeclaration returns [FunctionDeclaration funcDecRet] : { $funcDecRet = new FunctionDeclaration(); }
     primitiveType { $funcDecRet.setReturnType($primitiveType.primitiveTypeRet); }
-    ID { $funcDecRet.setName(new Identifier($ID.text)); $funcDecRet.setLine($ID.line); }
+    ID {Identifier idetifier= new Identifier($ID.text);
+    $funcDecRet.setName(idetifier);
+    $funcDecRet.setLine($ID.line);
+    idetifier.setLine($ID.line); }
     LPAREN { VarDeclaration temp = new VarDeclaration(); }
     (allType { temp.setType($allType.allTypeRet); }
     (LBRACK INT_LITERAL RBRACK { temp.setLength($INT_LITERAL.int); })?
