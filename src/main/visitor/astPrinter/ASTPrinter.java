@@ -208,11 +208,7 @@ public class ASTPrinter extends Visitor<Void> {
     //TODO : There is a string token in continueBreakStatement Constuctur
     @Override
     public Void visit(ContinueBreakStmt continueBreakStmt){
-        messagePrinter(continueBreakStmt.getLine() , continueBreakStmt.toString());
-//        if (continueBreakStmt.getToken() != null){
-//
-//        }
-//        return null;
+        messagePrinter(continueBreakStmt.getLine() , (continueBreakStmt.toString() +" "+ continueBreakStmt.getToken()));
         return null;
     }
 

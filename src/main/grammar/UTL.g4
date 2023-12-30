@@ -322,7 +322,7 @@ espetialVariable returns [Identifier espVarRet]:
     | OPEN { $espVarRet = new Identifier($OPEN.text); $espVarRet.setLine($OPEN.line);}
     | CLOSE { $espVarRet = new Identifier($CLOSE.text); $espVarRet.setLine($CLOSE.line);};
 
-espetialMethod returns [Identifier espMethRet]: //TODO : Not sure
+espetialMethod returns [Identifier espMethRet]:
     OPEN { $espMethRet = new Identifier($OPEN.text); $espMethRet.setLine($OPEN.line);}
     | CLOSE { $espMethRet = new Identifier($CLOSE.text); $espMethRet.setLine($CLOSE.line);};
 
