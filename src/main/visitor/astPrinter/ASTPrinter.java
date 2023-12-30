@@ -333,7 +333,7 @@ public class ASTPrinter extends Visitor<Void> {
     //TODO : MUST BE CHECK !!!
     @Override
     public Void visit(BinaryExpression binaryExpression){
-        messagePrinter(binaryExpression.getLine() , binaryExpression.toString());
+        messagePrinter(binaryExpression.getLine() , (binaryExpression.toString() +" "+ binaryExpression.getBinaryOperator()));
         if (binaryExpression.getLeft() != null){
             binaryExpression.getLeft().accept(this);
         }
