@@ -4,8 +4,15 @@ import main.ast.node.Program;
 import main.ast.node.declaration.*;
 import main.ast.node.statement.Statement;
 import main.compileError.CompileError;
+import main.compileError.name.GlobalVariableRedefinition;
+import main.compileError.name.IrregularDefenition;
+import main.compileError.name.PrimitiveFunctionRedefinition;
+import main.compileError.name.VariableRedefinition;
 import main.symbolTable.SymbolTable;
+import main.symbolTable.itemException.ItemAlreadyExistsException;
+import main.symbolTable.itemException.ItemNotFoundException;
 import main.symbolTable.symbolTableItems.OnInitItem;
+import main.symbolTable.symbolTableItems.VariableItem;
 import main.visitor.Visitor;
 
 import java.util.ArrayList;
@@ -38,12 +45,26 @@ public class NameAnalyzer extends Visitor<Void> {
         onInitItem.setOnInitSymbolTable(onInitSymbolTable);
 
         // TODO check the onInit name is redundant or not , if it is redundant change its name and put it
+        try {
+            SymbolTable.root.put(onInitItem);
+        } catch (ItemAlreadyExistsException ex) {
+            nameErrors.add(new PrimitiveFunctionRedefinition(onInitDeclaration.getLine(), onInitDeclaration.getTradeName().getName()));
+        }
 
         // TODO push onInit symbol table
+        SymbolTable.push(onInitSymbolTable);
 
         // TODO visit statements
+        if(onInitDeclaration.getBody() != null){
+            for(Statement stmt : onInitDeclaration.getBody()){
+                if(stmt instanceof VarDeclaration){
+                    stmt.accept(this);
+                }
+            }
+        }
 
         // TODO pop onInit symbol table
+        SymbolTable.pop();
 
         return null;
     }
@@ -71,8 +92,30 @@ public class NameAnalyzer extends Visitor<Void> {
 
     @Override
     public Void visit(VarDeclaration varDeclaration) {
-        // TODO
+        VariableItem varItem = new VariableItem(varDeclaration);
 
+        if(SymbolTable.top.equals(SymbolTable.root)){
+            try {
+                SymbolTable.root.put(varItem);
+            } catch (ItemAlreadyExistsException ex){
+                nameErrors.add(new GlobalVariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+            }
+        }
+        else {
+            try {
+                SymbolTable.root.get(varDeclaration.getIdentifier().getName());
+                nameErrors.add(new GlobalVariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+            } catch (ItemNotFoundException ex){
+                try {
+                    SymbolTable.top.put(varItem);
+                } catch (ItemAlreadyExistsException exx) {
+                    nameErrors.add(new VariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+                }
+            }
+        }
+        //if(preDefinedVar.contains(varDeclaration.getIdentifier().getName())){
+        //   nameErrors.add(new IrregularDefenition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+        //}
         return null;
     }
 }
