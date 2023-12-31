@@ -8,10 +8,7 @@ import main.compileError.name.*;
 import main.symbolTable.SymbolTable;
 import main.symbolTable.itemException.ItemAlreadyExistsException;
 import main.symbolTable.itemException.ItemNotFoundException;
-import main.symbolTable.symbolTableItems.FunctionItem;
-import main.symbolTable.symbolTableItems.OnInitItem;
-import main.symbolTable.symbolTableItems.OnStartItem;
-import main.symbolTable.symbolTableItems.VariableItem;
+import main.symbolTable.symbolTableItems.*;
 import main.visitor.Visitor;
 
 import javax.swing.plaf.synth.SynthButtonUI;
@@ -102,7 +99,27 @@ public class NameAnalyzer extends Visitor<Void> {
 
     @Override
     public Void visit(MainDeclaration mainDeclaration) {
-        // TODO
+        MainItem mainItem = new MainItem(mainDeclaration);
+        SymbolTable mainSymbolTable = new SymbolTable(SymbolTable.top, "Main");
+        mainItem.setMainSymbolTable(mainSymbolTable);
+
+        // TODO check the onInit name is redundant or not , if it is redundant change its name and put it
+        //TODO : NO CHECK FOR MAiN BEING UNIQUE
+
+        // TODO push onInit symbol table
+        SymbolTable.push(mainSymbolTable);
+
+        // TODO visit statements
+        if(mainDeclaration.getBody() != null){
+            for(Statement stmt : mainDeclaration.getBody()){
+                if(stmt instanceof VarDeclaration || stmt instanceof FunctionDeclaration){
+                    stmt.accept(this);
+                }
+            }
+        }
+
+        // TODO pop onInit symbol table
+        SymbolTable.pop();
 
         return null;
     }
