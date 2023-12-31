@@ -1,18 +1,20 @@
 package main.symbolTable.symbolTableItems;
 
+import com.sun.tools.javac.Main;
+import main.ast.node.declaration.MainDeclaration;
 import main.ast.node.declaration.OnInitDeclaration;
 import main.symbolTable.SymbolTable;
 
 public class MainItem extends SymbolTableItem {
 
     protected SymbolTable mainSymbolTable;
-    protected OnInitDeclaration onInitDeclaration;
+    protected MainDeclaration mainDeclaration;
     public static final String START_KEY = "Main_";
 
-    public MainItem(OnInitDeclaration onInitDeclaration)
+    public MainItem(MainDeclaration mainDeclaration)
     {
-        this.name = onInitDeclaration.getTradeName().getName();
-        this.onInitDeclaration = onInitDeclaration;
+        this.name = "Main";
+        this.mainDeclaration = mainDeclaration;
     }
     
     public void setMainSymbolTable(SymbolTable mainSymbolTable)
@@ -25,20 +27,16 @@ public class MainItem extends SymbolTableItem {
         return mainSymbolTable;
     }
 
-    public void setName(String name)
+    public String getName(){ return this.name; }
+
+    public void setActorDeclaration(MainDeclaration mainDeclaration)
     {
-        this.name = name;
-        this.onInitDeclaration.getTradeName().setName(name);
+        this.mainDeclaration = mainDeclaration;
     }
 
-    public void setActorDeclaration(OnInitDeclaration onInitDeclaration)
+    public MainDeclaration getActorDeclaration()
     {
-        this.onInitDeclaration = onInitDeclaration;
-    }
-
-    public OnInitDeclaration getActorDeclaration()
-    {
-        return onInitDeclaration;
+        return mainDeclaration;
     }
 
     @Override
