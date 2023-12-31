@@ -144,17 +144,41 @@ public class NameAnalyzer extends Visitor<Void> {
             nameErrors.add(new MethodRedefinition(functionDeclaration.getLine(), functionDeclaration.getName().getName()));
         }
 
+
+
+        /*This Part was not supposed to be handled in Project but was handled in samples!*/
+        VarDeclaration temp = new VarDeclaration();
+        temp.setIdentifier(functionDeclaration.getName());
+        VariableItem tempItem = new VariableItem(temp);
+        try {
+            SymbolTable.root.get(tempItem.getKey());
+            nameErrors.add(new FunctionVariableConflict(functionDeclaration.getLine(), functionDeclaration.getName().getName()));
+        } catch (ItemNotFoundException ex) {}
+        /*-------------------------------------------------------------------------------*/
         SymbolTable.push(funcSymbolTable);
 
         if(functionDeclaration.getArgs() != null) {
             for (VarDeclaration var : functionDeclaration.getArgs()) {
+                /*Checks that function's name and it's arguments are not the same.
+                (Extra condition, wasnt in the Project Description)*/
+                if(var.getIdentifier().getName().equals(functionDeclaration.getName().getName())){
+                    nameErrors.add(new FunctionVariableConflict(functionDeclaration.getLine(), functionDeclaration.getName().getName()));
+                }
+                /*-------------------------------------------------------------------------------------------------------*/
                 var.accept(this);
             }
         }
 
         if(functionDeclaration.getBody() != null) {
             for (Statement stmt : functionDeclaration.getBody()) {
-                if (stmt instanceof VarDeclaration || stmt instanceof FunctionDeclaration) {
+                if (stmt instanceof VarDeclaration) {
+                    /*This Part was supposed to be handled in Project Description but is unknown after samples were released?*/
+                    if(((VarDeclaration) stmt).getIdentifier().getName().equals(functionDeclaration.getName().getName())){
+                        nameErrors.add(new FunctionVariableConflict(functionDeclaration.getLine(), functionDeclaration.getName().getName()));
+                    }
+                    /*-------------------------------------------------------------------------------------------------------*/
+                    stmt.accept(this);
+                } else if (stmt instanceof FunctionDeclaration) {
                     stmt.accept(this);
                 }
             }
