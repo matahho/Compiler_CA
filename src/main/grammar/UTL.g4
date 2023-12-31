@@ -79,10 +79,8 @@ functionDeclaration returns [FunctionDeclaration funcDecRet] locals [Identifier 
 mainDeclaration returns [MainDeclaration mainDecRet]:
     VOID MAIN LPAREN RPAREN { $mainDecRet = new MainDeclaration(); $mainDecRet.setLine($MAIN.line); }
     (LBRACE (statement {
-        if ($statement.statementRet instanceof VarDeclaration){
-            if ($statement.statementRet.getType() instanceof TradeType){
-                $mainDecRet.addActorInstantiation( (VarDeclaration)$statement.statementRet );
-            }
+        if ($statement.statementRet instanceof VarDeclaration && $statement.statementRet.getType() instanceof TradeType){
+            $mainDecRet.addActorInstantiation( (VarDeclaration)$statement.statementRet );
         }
         else {
             $mainDecRet.addStatement($statement.statementRet);
@@ -90,10 +88,8 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     })*
     RBRACE
     |  statement {
-        if ($statement.statementRet instanceof VarDeclaration){
-            if ($statement.statementRet.getType() instanceof TradeType){
-                $mainDecRet.addActorInstantiation( (VarDeclaration)$statement.statementRet );
-            }
+        if ($statement.statementRet instanceof VarDeclaration && $statement.statementRet.getType() instanceof TradeType){
+            $mainDecRet.addActorInstantiation( (VarDeclaration)$statement.statementRet );
         }
         else {
             $mainDecRet.addStatement($statement.statementRet);
