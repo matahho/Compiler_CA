@@ -10,6 +10,7 @@ import main.symbolTable.itemException.ItemAlreadyExistsException;
 import main.symbolTable.itemException.ItemNotFoundException;
 import main.symbolTable.symbolTableItems.FunctionItem;
 import main.symbolTable.symbolTableItems.OnInitItem;
+import main.symbolTable.symbolTableItems.OnStartItem;
 import main.symbolTable.symbolTableItems.VariableItem;
 import main.visitor.Visitor;
 
@@ -70,7 +71,31 @@ public class NameAnalyzer extends Visitor<Void> {
 
     @Override
     public Void visit(OnStartDeclaration onStartDeclaration) {
-        // TODO
+        OnStartItem onStartItem = new OnStartItem(onStartDeclaration);
+        SymbolTable onStartSymbolTable = new SymbolTable(SymbolTable.top, onStartDeclaration.getTradeName().getName());
+        onStartItem.setOnStartSymbolTable(onStartSymbolTable);
+
+        // TODO check the onInit name is redundant or not , if it is redundant change its name and put it
+        try {
+            SymbolTable.root.put(onStartItem); //TODO : top or root??
+        } catch (ItemAlreadyExistsException ex) {
+            nameErrors.add(new PrimitiveFunctionRedefinition(onStartDeclaration.getLine(), onStartDeclaration.getTradeName().getName()));
+        }
+
+        // TODO push onInit symbol table
+        SymbolTable.push(onStartSymbolTable);
+
+        // TODO visit statements
+        if(onStartDeclaration.getBody() != null){
+            for(Statement stmt : onStartDeclaration.getBody()){
+                if(stmt instanceof VarDeclaration || stmt instanceof FunctionDeclaration){
+                    stmt.accept(this);
+                }
+            }
+        }
+
+        // TODO pop onInit symbol table
+        SymbolTable.pop();
 
         return null;
     }
