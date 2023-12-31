@@ -4,17 +4,16 @@ import main.ast.node.Program;
 import main.ast.node.declaration.*;
 import main.ast.node.statement.Statement;
 import main.compileError.CompileError;
-import main.compileError.name.GlobalVariableRedefinition;
-import main.compileError.name.IrregularDefenition;
-import main.compileError.name.PrimitiveFunctionRedefinition;
-import main.compileError.name.VariableRedefinition;
+import main.compileError.name.*;
 import main.symbolTable.SymbolTable;
 import main.symbolTable.itemException.ItemAlreadyExistsException;
 import main.symbolTable.itemException.ItemNotFoundException;
+import main.symbolTable.symbolTableItems.FunctionItem;
 import main.symbolTable.symbolTableItems.OnInitItem;
 import main.symbolTable.symbolTableItems.VariableItem;
 import main.visitor.Visitor;
 
+import javax.swing.plaf.synth.SynthButtonUI;
 import java.util.ArrayList;
 
 public class NameAnalyzer extends Visitor<Void> {
@@ -46,7 +45,7 @@ public class NameAnalyzer extends Visitor<Void> {
 
         // TODO check the onInit name is redundant or not , if it is redundant change its name and put it
         try {
-            SymbolTable.root.put(onInitItem);
+            SymbolTable.root.put(onInitItem); //TODO : top or root??
         } catch (ItemAlreadyExistsException ex) {
             nameErrors.add(new PrimitiveFunctionRedefinition(onInitDeclaration.getLine(), onInitDeclaration.getTradeName().getName()));
         }
@@ -57,7 +56,7 @@ public class NameAnalyzer extends Visitor<Void> {
         // TODO visit statements
         if(onInitDeclaration.getBody() != null){
             for(Statement stmt : onInitDeclaration.getBody()){
-                if(stmt instanceof VarDeclaration){
+                if(stmt instanceof VarDeclaration || stmt instanceof FunctionDeclaration){
                     stmt.accept(this);
                 }
             }
@@ -85,8 +84,25 @@ public class NameAnalyzer extends Visitor<Void> {
 
     @Override
     public Void visit(FunctionDeclaration functionDeclaration) {
-        // TODO
+        FunctionItem funcItem = new FunctionItem(functionDeclaration);
+        SymbolTable funcSymbolTable = new SymbolTable(SymbolTable.top, functionDeclaration.getName().getName());
+        funcItem.setHandlerSymbolTable(funcSymbolTable);
 
+        try {
+            SymbolTable.root.put(funcItem);
+        } catch (ItemAlreadyExistsException ex) {
+            nameErrors.add(new MethodRedefinition(functionDeclaration.getLine(), functionDeclaration.getName().getName()));
+        }
+
+        SymbolTable.push(funcSymbolTable);
+
+        if(functionDeclaration.getBody() != null) {
+            for (Statement stmt : functionDeclaration.getBody()) {
+                if (stmt instanceof VarDeclaration || stmt instanceof FunctionDeclaration) {
+                    stmt.accept(this);
+                }
+            }
+        }
         return null;
     }
 
