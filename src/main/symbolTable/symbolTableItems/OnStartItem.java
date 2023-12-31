@@ -1,18 +1,19 @@
 package main.symbolTable.symbolTableItems;
 
 import main.ast.node.declaration.OnInitDeclaration;
+import main.ast.node.declaration.OnStartDeclaration;
 import main.symbolTable.SymbolTable;
 
 public class OnStartItem extends SymbolTableItem {
 
     protected SymbolTable onStartSymbolTable;
-    protected OnInitDeclaration onInitDeclaration;
+    protected OnStartDeclaration onStartDeclaration;
     public static final String START_KEY = "OnStart_";
 
-    public OnStartItem(OnInitDeclaration onInitDeclaration)
+    public OnStartItem(OnStartDeclaration onStartDeclaration)
     {
-        this.name = onInitDeclaration.getTradeName().getName();
-        this.onInitDeclaration = onInitDeclaration;
+        this.name = onStartDeclaration.getTradeName().getName();
+        this.onStartDeclaration = onStartDeclaration;
     }
     
     public void setOnStartSymbolTable(SymbolTable onStartSymbolTable)
@@ -28,17 +29,17 @@ public class OnStartItem extends SymbolTableItem {
     public void setName(String name)
     {
         this.name = name;
-        this.onInitDeclaration.getTradeName().setName(name);
+        this.onStartDeclaration.getTradeName().setName(name);
     }
 
-    public void setActorDeclaration(OnInitDeclaration onInitDeclaration)
+    public void setActorDeclaration(OnStartDeclaration onStartDeclaration)
     {
-        this.onInitDeclaration = onInitDeclaration;
+        this.onStartDeclaration = onStartDeclaration;
     }
 
-    public OnInitDeclaration getActorDeclaration()
+    public OnStartDeclaration getActorDeclaration()
     {
-        return onInitDeclaration;
+        return onStartDeclaration;
     }
 
     @Override
