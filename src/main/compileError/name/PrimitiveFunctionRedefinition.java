@@ -11,6 +11,6 @@ public class PrimitiveFunctionRedefinition extends CompileError {
     }
 
     public String getMessage(){
-        return "Line " + line + ": Redefinition of primitive function: " + name;
+        return "Line:" + line + ":Redefinition of primitive function:" + name;
     }
 }

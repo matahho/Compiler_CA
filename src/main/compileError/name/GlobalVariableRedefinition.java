@@ -11,6 +11,6 @@ public class GlobalVariableRedefinition extends CompileError {
     }
 
     public String getMessage(){
-        return "Line " + line + ": Redefinition of global variable " + name;
+        return "Line:" + line + ":Redefinition of global variable " + name;
     }
 }

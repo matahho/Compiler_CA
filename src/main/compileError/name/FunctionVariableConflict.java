@@ -11,6 +11,6 @@ public class FunctionVariableConflict extends CompileError {
     }
 
     public String getMessage(){
-        return "Line " + line + ": Name of variable " + name + " conflicts with the function’s name";
+        return "Line:" + line + ":Name of variable " + name + " conflicts with the function’s name";
     }
 }

@@ -11,6 +11,6 @@ public class IrregularDefenition extends CompileError {
     }
 
     public String getMessage(){
-        return "Line " + line + ": Irregular definition of variable " + name;
+        return "Line:" + line + ":Irregular definition of variable " + name;
     }
 }

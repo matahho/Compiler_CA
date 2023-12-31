@@ -11,6 +11,6 @@ public class MethodRedefinition extends CompileError {
     }
 
     public String getMessage(){
-        return "Line " + line + ": Redefinition of method " + name;
+        return "Line:" + line + ":Redefinition of method " + name;
     }
 }

@@ -11,6 +11,6 @@ public class VariableRedefinition extends CompileError {
     }
 
     public String getMessage(){
-        return "Line " + line + ": Redefinition of variable " + name;
+        return "Line:" + line + ":Redefinition of variable " + name;
     }
 }
