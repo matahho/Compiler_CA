@@ -69,12 +69,11 @@ public class ASTPrinter extends Visitor<Void> {
     @Override
     public Void visit(MainDeclaration mainDeclaration){
         messagePrinter(mainDeclaration.getLine() , mainDeclaration.toString());
-        if (mainDeclaration.getMainTrades() != null){
-            for (VarDeclaration varDeclaration : mainDeclaration.getMainTrades()){
-                varDeclaration.accept(this);
-            }
-
-        }
+        //if (mainDeclaration.getMainTrades() != null){
+        //    for (VarDeclaration varDeclaration : mainDeclaration.getMainTrades()){
+        //        varDeclaration.accept(this);
+        //    }
+        //}
         if (mainDeclaration.getBody() != null){
             for (Statement statement : mainDeclaration.getBody()){
                 statement.accept(this);
