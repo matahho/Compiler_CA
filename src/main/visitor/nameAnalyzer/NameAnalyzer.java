@@ -175,7 +175,7 @@ public class NameAnalyzer extends Visitor<Void> {
         }
         else {
             try {
-                SymbolTable.root.get(varDeclaration.getIdentifier().getName());
+                SymbolTable.root.get(varItem.getKey());
                 nameErrors.add(new GlobalVariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
             } catch (ItemNotFoundException ex){
                 try {
