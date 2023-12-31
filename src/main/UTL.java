@@ -17,12 +17,14 @@ public class UTL {
         UTLParser parser = new UTLParser(tokens);
         Program program = parser.program().pro;
         ASTPrinter printer = new ASTPrinter();
-        printer.visit(program);
         NameAnalyzer nameAnalyzer = new NameAnalyzer();
         nameAnalyzer.visit(program);
         if (!nameAnalyzer.nameErrors.isEmpty()){
             for(CompileError compileError: nameAnalyzer.nameErrors)
                 System.out.println(compileError.getMessage());
+        }
+        else {
+            printer.visit(program);
         }
     }
 }
