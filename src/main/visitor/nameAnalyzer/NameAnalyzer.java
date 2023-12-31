@@ -12,6 +12,7 @@ import main.symbolTable.symbolTableItems.*;
 import main.visitor.Visitor;
 
 import javax.swing.plaf.synth.SynthButtonUI;
+import javax.swing.tree.VariableHeightLayoutCache;
 import java.util.ArrayList;
 
 public class NameAnalyzer extends Visitor<Void> {
@@ -44,6 +45,10 @@ public class NameAnalyzer extends Visitor<Void> {
         // TODO check the onInit name is redundant or not , if it is redundant change its name and put it
         try {
             SymbolTable.root.put(onInitItem); //TODO : top or root??
+            VarDeclaration var = new VarDeclaration();
+            var.setIdentifier(onInitDeclaration.getTradeName());
+            VariableItem onInitTrade = new VariableItem(var);
+            onInitSymbolTable.put(onInitTrade);
         } catch (ItemAlreadyExistsException ex) {
             nameErrors.add(new PrimitiveFunctionRedefinition(onInitDeclaration.getLine(), onInitDeclaration.getTradeName().getName()));
         }
@@ -74,7 +79,11 @@ public class NameAnalyzer extends Visitor<Void> {
 
         // TODO check the onInit name is redundant or not , if it is redundant change its name and put it
         try {
-            SymbolTable.root.put(onStartItem); //TODO : top or root??
+            SymbolTable.root.put(onStartItem); //TODO : top or root?
+            VarDeclaration var = new VarDeclaration();
+            var.setIdentifier(onStartDeclaration.getTradeName());
+            VariableItem onStartTrade = new VariableItem(var);
+            onStartSymbolTable.put(onStartTrade);
         } catch (ItemAlreadyExistsException ex) {
             nameErrors.add(new PrimitiveFunctionRedefinition(onStartDeclaration.getLine(), onStartDeclaration.getTradeName().getName()));
         }
@@ -103,8 +112,7 @@ public class NameAnalyzer extends Visitor<Void> {
         SymbolTable mainSymbolTable = new SymbolTable(SymbolTable.top, "Main");
         mainItem.setMainSymbolTable(mainSymbolTable);
 
-        // TODO check the onInit name is redundant or not , if it is redundant change its name and put it
-        //TODO : NO CHECK FOR MAiN BEING UNIQUE
+        //TODO : NO NEED TO CHECK FOR MAIN BEING UNIQUE
 
         // TODO push onInit symbol table
         SymbolTable.push(mainSymbolTable);
@@ -137,6 +145,12 @@ public class NameAnalyzer extends Visitor<Void> {
         }
 
         SymbolTable.push(funcSymbolTable);
+
+        if(functionDeclaration.getArgs() != null) {
+            for (VarDeclaration var : functionDeclaration.getArgs()) {
+                var.accept(this);
+            }
+        }
 
         if(functionDeclaration.getBody() != null) {
             for (Statement stmt : functionDeclaration.getBody()) {
