@@ -81,6 +81,7 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     (LBRACE (statement {
         if ($statement.statementRet instanceof VarDeclaration && $statement.statementRet.getType() instanceof TradeType){
             $mainDecRet.addActorInstantiation( (VarDeclaration)$statement.statementRet );
+            $mainDecRet.addStatement($statement.statementRet);
         }
         else {
             $mainDecRet.addStatement($statement.statementRet);
@@ -90,6 +91,7 @@ mainDeclaration returns [MainDeclaration mainDecRet]:
     |  statement {
         if ($statement.statementRet instanceof VarDeclaration && $statement.statementRet.getType() instanceof TradeType){
             $mainDecRet.addActorInstantiation( (VarDeclaration)$statement.statementRet );
+            $mainDecRet.addStatement($statement.statementRet);
         }
         else {
             $mainDecRet.addStatement($statement.statementRet);
