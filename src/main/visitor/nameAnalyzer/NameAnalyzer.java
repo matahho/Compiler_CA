@@ -41,7 +41,8 @@ public class NameAnalyzer extends Visitor<Void> {
             onInitDeclaration.accept(this);
         for (OnStartDeclaration onStartDeclaration : program.getStarts())
             onStartDeclaration.accept(this);
-        program.getMain().accept(this);
+        if(program.getMain() != null)
+            program.getMain().accept(this);
         return null;
     }
 
