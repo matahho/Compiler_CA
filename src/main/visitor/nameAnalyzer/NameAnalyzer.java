@@ -11,13 +11,22 @@ import main.symbolTable.itemException.ItemNotFoundException;
 import main.symbolTable.symbolTableItems.*;
 import main.visitor.Visitor;
 
-import javax.swing.plaf.synth.SynthButtonUI;
-import javax.swing.tree.VariableHeightLayoutCache;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NameAnalyzer extends Visitor<Void> {
 
     public ArrayList<CompileError> nameErrors = new ArrayList<>();
+    private static ArrayList<String> preDefined = new ArrayList<>(
+            List.of("int", "string", "for", "while", "else", "if",
+                    "continue", "try", "false", "true", "float", "bool",
+                    "OnInit", "OnStart", "throw", "return", "catch", "break",
+                    "void", "double", "Main", "Digits", "BUY", "SELL", "Bid",
+                    "Ask", "Type", "Volume", "Low", "High", "Close", "Open",
+                    "Time", "Text", "Trade", "Order", "Candle", "Exception",
+                    "RefreshRate", "GetCandle", "Terminate", "Connect", "Observe",
+                    "Print", "Preorder", "parallel")
+    );
 
     @Override
     public Void visit(Program program) {
@@ -189,23 +198,25 @@ public class NameAnalyzer extends Visitor<Void> {
     @Override
     public Void visit(VarDeclaration varDeclaration) {
         VariableItem varItem = new VariableItem(varDeclaration);
-
-        if(SymbolTable.top.equals(SymbolTable.root)){
-            try {
-                SymbolTable.root.put(varItem);
-            } catch (ItemAlreadyExistsException ex){
-                nameErrors.add(new GlobalVariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
-            }
-        }
-        else {
-            try {
-                SymbolTable.root.get(varItem.getKey());
-                nameErrors.add(new GlobalVariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
-            } catch (ItemNotFoundException ex){
+        if(preDefined.contains(varDeclaration.getIdentifier().getName())) {
+            nameErrors.add(new IrregularDefenition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+        } else {
+            if (SymbolTable.top.equals(SymbolTable.root)) {
                 try {
-                    SymbolTable.top.put(varItem);
-                } catch (ItemAlreadyExistsException exx) {
-                    nameErrors.add(new VariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+                    SymbolTable.root.put(varItem);
+                } catch (ItemAlreadyExistsException ex) {
+                    nameErrors.add(new GlobalVariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+                }
+            } else {
+                try {
+                    SymbolTable.root.get(varItem.getKey());
+                    nameErrors.add(new GlobalVariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+                } catch (ItemNotFoundException ex) {
+                    try {
+                        SymbolTable.top.put(varItem);
+                    } catch (ItemAlreadyExistsException exx) {
+                        nameErrors.add(new VariableRedefinition(varDeclaration.getLine(), varDeclaration.getIdentifier().getName()));
+                    }
                 }
             }
         }
